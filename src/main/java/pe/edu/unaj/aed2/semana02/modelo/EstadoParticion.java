@@ -19,11 +19,13 @@ import java.util.Map;
  * @param tipo        qué está ocurriendo
  * @param linea       línea del pseudocódigo que se ejecuta (0 si ninguna)
  * @param variables   valores de las variables en este paso
+ * @param evaluacion  qué se evalúa en la línea actual y con qué valores
  * @param descripcion texto para la leyenda
  */
 public record EstadoParticion(int[] valores, int inicio, int fin, int pivote, int i, int j,
                               boolean[] fijos, int profundidad, Tipo tipo, int linea,
-                              Map<String, String> variables, String descripcion) implements PasoTrazable {
+                              Map<String, String> variables, String evaluacion, String descripcion)
+        implements PasoTrazable {
 
     public enum Tipo { INICIO, LLAMADA, COMPARACION, INTERCAMBIO, PIVOTE_UBICADO, FIN }
 

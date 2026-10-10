@@ -8,6 +8,7 @@ import pe.edu.unaj.aed2.semana02.caso.Escalinata;
 import pe.edu.unaj.aed2.semana02.modelo.QuickSort;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +45,35 @@ class CodigoAlgoritmoTest {
         verificar(QuickSort.CODIGO, QuickSort.pasos(datos));
         verificar(Escalinata.CODIGO_RECURSIVO, Escalinata.pasos(Escalinata.arbolRecursivo(5), false));
         verificar(Escalinata.CODIGO_MEMO, Escalinata.pasos(Escalinata.arbolMemo(5), true));
+    }
+
+    @Test
+    void valoresEnLineaMuestraSoloLasVariablesQueUsaLaLinea() {
+        Map<String, String> valores = PasoTrazable.variables(
+                "fin", 11, "j", 4, "a[j]", 95, "a[j+1]", 101, "i", "—", "huboIntercambio", true);
+        assertEquals("j = 4 · a[j] = 95 · a[j+1] = 101",
+                CodigoAlgoritmo.valoresEnLinea("        if (a[j] > a[j + 1]) {", valores));
+        assertEquals("fin = 11 · j = 4",
+                CodigoAlgoritmo.valoresEnLinea("for (int j = 0; j < fin; j++) {", valores));
+        assertEquals("huboIntercambio = true",
+                CodigoAlgoritmo.valoresEnLinea("    huboIntercambio = true;", valores));
+        // "i" no debe aparecer por "int", "if" ni "huboIntercambio"; además vale "—".
+        assertEquals("", CodigoAlgoritmo.valoresEnLinea("int temp = 0; if (x) { }", valores));
+    }
+
+    @Test
+    void cadaPasoConLineaTieneEvaluacion() {
+        int[] datos = {9, 4, 7, 1, 8, 2, 6, 3};
+        List<List<? extends PasoTrazable>> todos = List.of(Ordenamientos.pasosBurbuja(datos),
+                Ordenamientos.pasosInsercion(datos), QuickSort.pasos(datos),
+                Escalinata.pasos(Escalinata.arbolMemo(5), true));
+        for (List<? extends PasoTrazable> pasos : todos) {
+            for (PasoTrazable p : pasos) {
+                if (p.linea() > 0) {
+                    assertFalse(p.evaluacion().isBlank(), "Paso sin evaluación en la línea " + p.linea());
+                }
+            }
+        }
     }
 
     private static void verificar(CodigoAlgoritmo codigo, List<? extends PasoTrazable> pasos) {

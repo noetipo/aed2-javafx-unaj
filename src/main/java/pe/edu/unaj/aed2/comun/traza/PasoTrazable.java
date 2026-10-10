@@ -17,6 +17,17 @@ public interface PasoTrazable {
     Map<String, String> variables();
 
     /**
+     * Qué se evalúa en la línea actual y con qué valores, p. ej.
+     * {@code "a[j] > a[j + 1]  →  95 > 101  →  falso"}. Vacío si no aplica.
+     */
+    String evaluacion();
+
+    /** "verdadero" / "falso", para escribir evaluaciones en español. */
+    static String vf(boolean valor) {
+        return valor ? "verdadero" : "falso";
+    }
+
+    /**
      * Construye un mapa ordenado e inmutable a partir de pares clave, valor:
      * {@code PasoTrazable.variables("i", 2, "j", 5)}.
      */

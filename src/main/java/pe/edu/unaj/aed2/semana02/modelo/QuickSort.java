@@ -116,12 +116,12 @@ public final class QuickSort {
         boolean[] fijos = new boolean[a.length];
         List<EstadoParticion> pasos = new ArrayList<>();
         pasos.add(new EstadoParticion(a, -1, -1, -1, -1, -1, fijos, 0, EstadoParticion.Tipo.INICIO, 0,
-                Map.of(),
+                Map.of(), "quicksort(a, 0, " + (a.length - 1) + ")",
                 "Arreglo inicial. Quicksort particiona alrededor de un pivote y se llama a sí mismo."));
         pasos(a, 0, a.length - 1, 0, fijos, pasos);
         Arrays.fill(fijos, true);
         pasos.add(new EstadoParticion(a, -1, -1, -1, -1, -1, fijos, 0, EstadoParticion.Tipo.FIN, 0,
-                Map.of(), "Arreglo ordenado."));
+                Map.of(), "", "Arreglo ordenado."));
         return pasos;
     }
 
@@ -134,6 +134,7 @@ public final class QuickSort {
             fijos[inicio] = true;
             pasos.add(new EstadoParticion(a, inicio, fin, -1, -1, -1, fijos, nivel, EstadoParticion.Tipo.LLAMADA, 2,
                     PasoTrazable.variables("inicio", inicio, "fin", fin, "nivel", nivel),
+                    "inicio >= fin  →  " + inicio + " >= " + fin + "  →  verdadero  →  return",
                     "quicksort(" + inicio + ", " + fin + "): un solo elemento, caso base."));
             return;
         }
@@ -141,16 +142,22 @@ public final class QuickSort {
         int i = inicio;
         pasos.add(new EstadoParticion(a, inicio, fin, fin, i, -1, fijos, nivel, EstadoParticion.Tipo.LLAMADA, 3,
                 variables(inicio, fin, nivel, pivote, i, null, a),
+                "inicio >= fin  →  " + inicio + " >= " + fin + "  →  falso;  pivote = a[" + fin + "] = " + pivote
+                        + ";  i = " + inicio,
                 "quicksort(" + inicio + ", " + fin + ") nivel " + nivel + ": pivote = " + pivote + "."));
         for (int j = inicio; j < fin; j++) {
+            boolean menor = a[j] < pivote;
             pasos.add(new EstadoParticion(a, inicio, fin, fin, i, j, fijos, nivel, EstadoParticion.Tipo.COMPARACION, 5,
                     variables(inicio, fin, nivel, pivote, i, j, a),
+                    "a[j] < pivote  →  a[" + j + "] < " + pivote + "  →  " + a[j] + " < " + pivote
+                            + "  →  " + PasoTrazable.vf(menor),
                     "¿" + a[j] + " < " + pivote + "?"));
-            if (a[j] < pivote) {
+            if (menor) {
                 intercambiar(a, i, j);
                 pasos.add(new EstadoParticion(a, inicio, fin, fin, i, j, fijos, nivel,
                         EstadoParticion.Tipo.INTERCAMBIO, 6,
                         variables(inicio, fin, nivel, pivote, i + 1, j, a),
+                        "intercambiar(a, " + i + ", " + j + ");  i++  →  i pasa de " + i + " a " + (i + 1),
                         "Sí: " + a[i] + " pasa a la zona de menores (posición " + i + ")."));
                 i++;
             }
@@ -159,6 +166,8 @@ public final class QuickSort {
         fijos[i] = true;
         pasos.add(new EstadoParticion(a, inicio, fin, i, -1, -1, fijos, nivel, EstadoParticion.Tipo.PIVOTE_UBICADO, 7,
                 variables(inicio, fin, nivel, pivote, i, null, a),
+                "j < fin  →  " + fin + " < " + fin + "  →  falso: termina el for;  intercambiar(a, " + i + ", " + fin
+                        + ")  →  a[" + i + "] = " + pivote,
                 "El pivote " + pivote + " queda en su posición final " + i + "."));
         pasos(a, inicio, i - 1, nivel + 1, fijos, pasos);
         pasos(a, i + 1, fin, nivel + 1, fijos, pasos);

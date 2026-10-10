@@ -135,10 +135,11 @@ public final class Escalinata {
     /** Pasos de ejecución de {@code arbol}, que debe venir de {@link #arbolRecursivo} o {@link #arbolMemo}. */
     public static List<PasoLlamada> pasos(LlamadaRecursiva arbol, boolean conMemo) {
         Simulacion sim = new Simulacion(arbol.totalLlamadas(), conMemo);
-        sim.agregar(-1, PasoLlamada.Tipo.INICIO, 0, "—",
+        sim.agregar(-1, PasoLlamada.Tipo.INICIO, 0, "—", "formas(" + arbol.n() + ")",
                 "Se llamará formas(" + arbol.n() + ")" + (conMemo ? " usando memorización." : "."));
         sim.visitar(arbol);
         sim.agregar(-1, PasoLlamada.Tipo.FIN, 0, String.valueOf(arbol.resultado()),
+                "formas(" + arbol.n() + ") retorna " + arbol.resultado(),
                 "formas(" + arbol.n() + ") = " + arbol.resultado() + " con " + sim.llamadas + " llamadas.");
         return sim.pasos;
     }
@@ -161,14 +162,18 @@ public final class Escalinata {
             llamadas++;
             pila.addLast("f" + l.n());
             estados[l.id()] = PasoLlamada.Estado.EN_PILA;
-            agregar(l.id(), PasoLlamada.Tipo.LLAMADA, 1, "—", "Se llama formas(" + l.n() + ").");
+            agregar(l.id(), PasoLlamada.Tipo.LLAMADA, 1, "—", "n = " + l.n(),
+                    "Se llama formas(" + l.n() + ").");
             if (l.n() <= 1) {
                 estados[l.id()] = PasoLlamada.Estado.RETORNADA;
                 agregar(l.id(), PasoLlamada.Tipo.CASO_BASE, 2, "1",
+                        "n <= 1  →  " + l.n() + " <= 1  →  verdadero  →  return 1",
                         "Caso base: formas(" + l.n() + ") retorna 1.");
             } else if (l.reusada()) {
                 estados[l.id()] = PasoLlamada.Estado.REUSADA;
                 agregar(l.id(), PasoLlamada.Tipo.REUSO, 3, String.valueOf(l.resultado()),
+                        "n <= 1  →  " + l.n() + " <= 1  →  falso;  memo.containsKey(" + l.n()
+                                + ")  →  verdadero  →  return memo.get(" + l.n() + ") = " + l.resultado(),
                         "formas(" + l.n() + ") ya está en memo: retorna " + l.resultado() + " sin recalcular.");
             } else {
                 visitar(l.izquierda());
@@ -177,7 +182,11 @@ public final class Escalinata {
                     memo.put(l.n(), l.resultado());
                 }
                 estados[l.id()] = PasoLlamada.Estado.RETORNADA;
+                String suma = "formas(" + (l.n() - 1) + ") + formas(" + (l.n() - 2) + ")  →  "
+                        + l.izquierda().resultado() + " + " + l.derecha().resultado() + " = " + l.resultado();
                 agregar(l.id(), PasoLlamada.Tipo.RETORNO, conMemo ? 5 : 3, String.valueOf(l.resultado()),
+                        conMemo ? "r = " + suma + ";  memo.put(" + l.n() + ", " + l.resultado() + ");  return "
+                                + l.resultado() : "return " + suma,
                         "formas(" + l.n() + ") = " + l.izquierda().resultado() + " + "
                                 + l.derecha().resultado() + " = " + l.resultado()
                                 + (conMemo ? "; se guarda en memo." : "."));
@@ -185,14 +194,16 @@ public final class Escalinata {
             pila.removeLast();
         }
 
-        void agregar(int nodo, PasoLlamada.Tipo tipo, int linea, String retorno, String descripcion) {
+        void agregar(int nodo, PasoLlamada.Tipo tipo, int linea, String retorno, String evaluacion,
+                     String descripcion) {
             String n = nodo < 0 ? "—" : pila.isEmpty() ? "—" : pila.peekLast().substring(1);
             Map<String, String> variables = conMemo
                     ? PasoTrazable.variables("n", n, "retorna", retorno, "profundidad", pila.size(),
                     "llamadas", llamadas, "pila", String.join(" › ", pila), "memo", memo.toString())
                     : PasoTrazable.variables("n", n, "retorna", retorno, "profundidad", pila.size(),
                     "llamadas", llamadas, "pila", String.join(" › ", pila));
-            pasos.add(new PasoLlamada(nodo, tipo, estados, new ArrayList<>(pila), linea, variables, descripcion));
+            pasos.add(new PasoLlamada(nodo, tipo, estados, new ArrayList<>(pila), linea, variables, evaluacion,
+                    descripcion));
         }
     }
 }

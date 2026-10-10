@@ -57,7 +57,7 @@ public class VisualizadorOrdenamiento extends BorderPane {
         titulo.getStyleClass().add("titulo-vista");
         setTop(new VBox(titulo, opciones));
         SplitPane division = new SplitPane(panel, traza);
-        division.setDividerPositions(0.6);
+        division.setDividerPositions(0.5);
         setCenter(division);
         setBottom(new ControlesPaso(panel));
         cargar();

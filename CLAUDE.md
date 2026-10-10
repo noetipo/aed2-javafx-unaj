@@ -16,7 +16,10 @@ Java 17 (`maven.compiler.release`), JavaFX 21 y JUnit 5. El proyecto es **modula
 - Un paquete por semana: `pe.edu.unaj.aed2.semanaXX` con `modelo`, `vista`, `caso` y `tarea`.
 - `modelo/` es Java puro: **nunca** importar `javafx.*`. Los algoritmos animables exponen
   métodos `pasosXxx(...)` que devuelven `List<Estado>` con records inmutables; la vista solo dibuja.
-- Los records de pasos implementan `comun.traza.PasoTrazable` (línea del pseudocódigo + variables). El modelo
+- Los records de pasos implementan `comun.traza.PasoTrazable`: línea del pseudocódigo, variables y `evaluacion`
+  (qué se evalúa y con qué valores, p. ej. `a[j] > a[j + 1]  →  a[3] > a[4]  →  77 > 101  →  falso`; usar
+  `PasoTrazable.vf` para verdadero/falso). Todo paso con línea > 0 debe tener evaluación. Las claves de variables
+  se escriben como en el Java (`a[j+1]`, ASCII) para que la pestaña Java las ubique en cada línea. El modelo
   publica un `CodigoAlgoritmo` (p. ej. `QuickSort.CODIGO`): el pseudocódigo (`List<String>`, líneas desde 1) y el
   código Java como text block, donde cada línea termina en `//@n` para enlazarla con la línea n del pseudocódigo.
   Ese Java debe compilar y ser correcto (los estudiantes lo copian); `CodigoAlgoritmoTest` verifica los enlaces.

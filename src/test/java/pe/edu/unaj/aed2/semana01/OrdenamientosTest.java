@@ -86,7 +86,7 @@ class OrdenamientosTest {
     void estadoArregloEsInmutable() {
         int[] datos = {3, 2, 1};
         EstadoArreglo e = new EstadoArreglo(datos, 0, 1, EstadoArreglo.Tipo.COMPARACION, 0, true, 0,
-                Map.of(), "");
+                Map.of(), "", "");
         datos[0] = 99;
         e.valores()[1] = 99;
         assertArrayEquals(new int[]{3, 2, 1}, e.valores());

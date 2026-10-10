@@ -14,10 +14,12 @@ import java.util.Map;
  * @param pila        pila de ejecución, desde la llamada más externa a la actual
  * @param linea       línea del pseudocódigo (0 si ninguna)
  * @param variables   valores visibles en este paso
+ * @param evaluacion  qué se evalúa en la línea actual y con qué valores
  * @param descripcion texto para la leyenda
  */
 public record PasoLlamada(int nodo, Tipo tipo, Estado[] estados, List<String> pila,
-                          int linea, Map<String, String> variables, String descripcion)
+                          int linea, Map<String, String> variables, String evaluacion,
+                          String descripcion)
         implements PasoTrazable {
 
     public enum Tipo { INICIO, LLAMADA, CASO_BASE, REUSO, RETORNO, FIN }

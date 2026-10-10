@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,5 +70,28 @@ public final class CodigoAlgoritmo {
             }
         }
         return resultado;
+    }
+
+    /**
+     * Valores de las variables que aparecen en una línea de código, p. ej.
+     * {@code "j = 4 · a[j] = 95 · a[j+1] = 101"}. Compara sin espacios para que
+     * la variable "a[j+1]" coincida con el código "a[j + 1]".
+     */
+    public static String valoresEnLinea(String linea, Map<String, String> valores) {
+        String compacta = linea.replace(" ", "");
+        List<String> partes = new ArrayList<>();
+        for (Map.Entry<String, String> e : valores.entrySet()) {
+            String nombre = e.getKey();
+            if (e.getValue().equals("—")) {
+                continue;
+            }
+            boolean aparece = nombre.matches("\\w+")
+                    ? Pattern.compile("\\b" + Pattern.quote(nombre) + "\\b").matcher(linea).find()
+                    : compacta.contains(nombre.replace(" ", ""));
+            if (aparece) {
+                partes.add(nombre + " = " + e.getValue());
+            }
+        }
+        return String.join(" · ", partes);
     }
 }

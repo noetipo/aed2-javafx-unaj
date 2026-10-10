@@ -64,7 +64,7 @@ public class VistaCasoEscalinata extends BorderPane {
 
         traza.getTabs().add(new Tab("Crecimiento", crearGrafico()));
         SplitPane division = new SplitPane(panel, traza);
-        division.setDividerPositions(0.6);
+        division.setDividerPositions(0.5);
         setCenter(division);
         setBottom(new ControlesPaso(panel));
         cargar();

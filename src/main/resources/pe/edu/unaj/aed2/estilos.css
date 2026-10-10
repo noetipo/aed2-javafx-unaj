@@ -181,3 +181,40 @@
     -fx-font-size: 15px;
     -fx-padding: 0;
 }
+
+/* Pestaña Java: fila = código + anotación con valores (como el depurador de un IDE) */
+.fila-codigo {
+    -fx-background-radius: 4;
+}
+.fila-codigo.linea-actual {
+    -fx-background-color: #fdd835;
+}
+.fila-codigo.linea-actual .linea-codigo {
+    -fx-text-fill: #212121;
+    -fx-font-weight: bold;
+}
+.anotacion-valor {
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 12px;
+    -fx-text-fill: #81c784;
+    -fx-padding: 0 8 0 0;
+}
+.fila-codigo.linea-actual .anotacion-valor {
+    -fx-text-fill: #1b5e20;
+}
+.fila-codigo.linea-actual .anotacion-evaluacion {
+    -fx-text-fill: #b71c1c;
+    -fx-font-weight: bold;
+}
+.evaluacion-caja {
+    -fx-background-color: #fff8e1;
+    -fx-border-color: transparent transparent transparent #fdd835;
+    -fx-border-width: 0 0 0 4;
+    -fx-padding: 8 12 8 12;
+}
+.evaluacion-texto {
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #b71c1c;
+}
