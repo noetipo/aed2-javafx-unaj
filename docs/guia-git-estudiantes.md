@@ -11,7 +11,7 @@ git config --global user.email "tu-correo@unaj.edu.pe"
 
 ## 2. Hacer fork y clonar
 
-1. Entra al repositorio del docente en GitHub y pulsa **Fork**. Así tendrás tu copia en `github.com/<tu-usuario>/aed2-javafx-unaj`.
+1. Entra al repositorio del docente en GitHub (https://github.com/noetipo/aed2-javafx-unaj) y pulsa **Fork**. Así tendrás tu copia en `github.com/<tu-usuario>/aed2-javafx-unaj`.
 2. Clona **tu fork**, no el del docente:
 
 ```bash
@@ -22,7 +22,7 @@ cd aed2-javafx-unaj
 3. Registra el repositorio del docente como `upstream` para recibir las semanas nuevas:
 
 ```bash
-git remote add upstream https://github.com/<docente>/aed2-javafx-unaj.git
+git remote add upstream https://github.com/noetipo/aed2-javafx-unaj.git
 git remote -v
 ```
 
@@ -62,7 +62,7 @@ Haz commits pequeños y con mensajes claros. Varios commits por tarea es lo norm
 ## 6. Abrir el Pull Request
 
 1. En GitHub, en tu fork, aparecerá el botón **Compare & pull request**.
-2. Base: `docente/aed2-javafx-unaj` · `main`. Compare: `tu-usuario/aed2-javafx-unaj` · `tarea/s01-quispe`.
+2. Base: `noetipo/aed2-javafx-unaj` · `main`. Compare: `tu-usuario/aed2-javafx-unaj` · `tarea/s01-quispe`.
 3. Título: `Tarea S01 - Apellido Nombre`.
 4. En la descripción indica qué completaste, qué te costó y la salida de las pruebas.
 
