@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pe.edu.unaj.aed2.semana01.caso.VistaCasoMercado;
 import pe.edu.unaj.aed2.semana01.vista.VisualizadorOrdenamiento;
+import pe.edu.unaj.aed2.semana02.caso.VistaCasoEscalinata;
+import pe.edu.unaj.aed2.semana02.vista.VisualizadorQuickSort;
 
 import java.util.function.Supplier;
 
@@ -70,7 +72,10 @@ public class App extends Application {
         return unidad("Unidad I",
                 semana("Semana 01 · Complejidad y ordenamiento",
                         new Entrada("Visualizador", VisualizadorOrdenamiento::new),
-                        new Entrada("Caso: precios de mercado", VistaCasoMercado::new)));
+                        new Entrada("Caso: precios de mercado", VistaCasoMercado::new)),
+                semana("Semana 02 · Recursividad y divide y vencerás",
+                        new Entrada("Visualizador: quicksort", VisualizadorQuickSort::new),
+                        new Entrada("Caso: escalinata de Huaynaroque", VistaCasoEscalinata::new)));
     }
 
     private TreeItem<Entrada> unidadII() {

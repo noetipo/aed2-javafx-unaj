@@ -58,6 +58,7 @@ src/main/java/pe/edu/unaj/aed2/
 | Semana | Unidad | Tema | Docs |
 |---|---|---|---|
 | 01 | I | Complejidad algorítmica y ordenamientos elementales | [docs/semana-01](docs/semana-01/README.md) |
+| 02 | I | Recursividad y divide y vencerás | [docs/semana-02](docs/semana-02/README.md) |
 
 ## Entregar tareas
 
