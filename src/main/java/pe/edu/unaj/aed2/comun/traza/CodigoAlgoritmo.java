@@ -61,6 +61,31 @@ public final class CodigoAlgoritmo {
         return java;
     }
 
+    /**
+     * La línea Java donde realmente ocurre la línea {@code lineaPseudocodigo}: la primera enlazada solo
+     * a ella. Así, en {@code int p = particionar(...)  //@3,4,5,6,7} (la llamada) gana la línea
+     * de adentro de particionar. Retorna 0 si no hay ninguna.
+     */
+    public int lineaPrincipal(int lineaPseudocodigo) {
+        int primera = 0;
+        for (int k = 0; k < enlaces.size(); k++) {
+            if (enlaces.get(k).contains(lineaPseudocodigo)) {
+                if (enlaces.get(k).size() == 1) {
+                    return k + 1;
+                }
+                if (primera == 0) {
+                    primera = k + 1;
+                }
+            }
+        }
+        return primera;
+    }
+
+    /** true si la línea Java {@code numero} (desde 1) está enlazada con el pseudocódigo. */
+    public boolean estaEnlazada(int numero) {
+        return numero >= 1 && numero <= enlaces.size() && !enlaces.get(numero - 1).isEmpty();
+    }
+
     /** Líneas Java (desde 1) que corresponden a la línea {@code lineaPseudocodigo}. */
     public Set<Integer> lineasJava(int lineaPseudocodigo) {
         Set<Integer> resultado = new LinkedHashSet<>();
@@ -78,6 +103,10 @@ public final class CodigoAlgoritmo {
      * la variable "a[j+1]" coincida con el código "a[j + 1]".
      */
     public static String valoresEnLinea(String linea, Map<String, String> valores) {
+        int comentario = linea.indexOf("//");
+        if (comentario >= 0) {
+            linea = linea.substring(0, comentario); // los comentarios no se ejecutan
+        }
         String compacta = linea.replace(" ", "");
         List<String> partes = new ArrayList<>();
         for (Map.Entry<String, String> e : valores.entrySet()) {

@@ -26,7 +26,11 @@ Java 17 (`maven.compiler.release`), JavaFX 21 y JUnit 5. El proyecto es **modula
   se escriben como en el Java (`a[j+1]`, ASCII) para que la pestaña Java las ubique en cada línea. El modelo
   publica un `CodigoAlgoritmo` (p. ej. `QuickSort.CODIGO`): el pseudocódigo (`List<String>`, líneas desde 1) y el
   código Java como text block, donde cada línea termina en `//@n` para enlazarla con la línea n del pseudocódigo.
-  Ese Java debe compilar y ser correcto (los estudiantes lo copian); `CodigoAlgoritmoTest` verifica los enlaces.
+  Ese Java es una **clase completa lista para copiar y ejecutar**: imports, un método público que **retorna** el
+  resultado (copia con `clone()`, sin modificar la entrada), los auxiliares que hagan falta (`particionar` retorna
+  el índice) y un `main` de ejemplo con salida `Original: [...]` / `Ordenado: [...]`. `CodigoJavaEjecutableTest`
+  lo compila con `javac` y ejecuta su `main`; `CodigoAlgoritmoTest` verifica los enlaces. Una línea que llama a
+  un auxiliar puede llevar varios marcadores (`//@3,4,5`); la evaluación se muestra en la línea de adentro.
 - Cada visualizador combina `PanelAnimacion` + `PanelTraza` (pestañas Pseudocódigo, Java y Traza) en un `SplitPane`,
   con `ControlesPaso` abajo. Los colores salen de `Paleta`, nunca hardcodeados.
 - La teoría de cada semana es `docs/semana-XX/README.md`. Maven la empaqueta en `pe/edu/unaj/aed2/docs/`

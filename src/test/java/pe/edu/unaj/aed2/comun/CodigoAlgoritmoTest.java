@@ -28,6 +28,19 @@ class CodigoAlgoritmoTest {
         assertEquals(Set.of(1, 2), c.lineasJava(1));
         assertEquals(Set.of(2), c.lineasJava(2));
         assertTrue(c.lineasJava(3).isEmpty());
+        assertEquals(1, c.lineaPrincipal(1));
+        assertEquals(2, c.lineaPrincipal(2));
+        assertEquals(0, c.lineaPrincipal(3));
+    }
+
+    @Test
+    void laEvaluacionVaEnLaLineaDeAdentroYNoEnLaLlamada() {
+        CodigoAlgoritmo c = new CodigoAlgoritmo(List.of("a", "b"), """
+                int p = particionar(a);   //@1,2
+                int pivote = a[fin];      //@2
+                """);
+        assertEquals(2, c.lineaPrincipal(2));
+        assertEquals(1, c.lineaPrincipal(1));
     }
 
     @Test
@@ -57,6 +70,8 @@ class CodigoAlgoritmoTest {
                 CodigoAlgoritmo.valoresEnLinea("for (int j = 0; j < fin; j++) {", valores));
         assertEquals("huboIntercambio = true",
                 CodigoAlgoritmo.valoresEnLinea("    huboIntercambio = true;", valores));
+        assertEquals("", CodigoAlgoritmo.valoresEnLinea("    // recorre j hasta fin", valores));
+        assertEquals("j = 4", CodigoAlgoritmo.valoresEnLinea("j++; // avanza hasta fin", valores));
         // "i" no debe aparecer por "int", "if" ni "huboIntercambio"; además vale "—".
         assertEquals("", CodigoAlgoritmo.valoresEnLinea("int temp = 0; if (x) { }", valores));
     }

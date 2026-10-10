@@ -2,20 +2,25 @@ package pe.edu.unaj.aed2.comun.visual;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import pe.edu.unaj.aed2.comun.traza.CodigoAlgoritmo;
 import pe.edu.unaj.aed2.comun.traza.PasoTrazable;
 
@@ -50,6 +55,7 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
     private final List<Label[]> cajasEvaluacion = new ArrayList<>();
     private final List<Label> anotacionesJava = new ArrayList<>();
     private final TableView<Integer> tabla = new TableView<>();
+    private static final int COLUMNA_MAXIMA = 50;
     private CodigoAlgoritmo codigo;
     private boolean sincronizando;
 
@@ -63,6 +69,11 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
         lineasJava.getStyleClass().addAll("pseudocodigo", "codigo-java");
         ScrollPane desplazablePseudo = pestaniaCodigo(lineasPseudo, crearCajaEvaluacion(), variablesPseudo);
         desplazableJava = pestaniaCodigo(lineasJava, crearCajaEvaluacion(), variablesJava);
+        // El botón Copiar queda fijo arriba: el código se desplaza solo hacia la línea activa.
+        HBox barraCopiar = crearBarraCopiar();
+        barraCopiar.setPadding(new Insets(6, 10, 6, 10));
+        VBox pestaniaJava = new VBox(barraCopiar, desplazableJava);
+        VBox.setVgrow(desplazableJava, Priority.ALWAYS);
 
         tabla.setPlaceholder(new Label("Sin pasos"));
         tabla.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -75,13 +86,43 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
         VBox.setVgrow(tabla, Priority.ALWAYS);
 
         getTabs().addAll(new Tab("Pseudocódigo", desplazablePseudo),
-                new Tab("Java", desplazableJava),
+                new Tab("Java", pestaniaJava),
                 new Tab("Traza", contenidoTraza));
 
         setCodigo(codigo);
         panel.pasosProperty().addListener((o, a, b) -> reconstruirTabla());
         panel.indiceProperty().addListener((o, a, b) -> actualizar());
         reconstruirTabla();
+    }
+
+    /** Botón que copia la clase Java completa al portapapeles, para pegarla en un proyecto. */
+    private HBox crearBarraCopiar() {
+        Button copiar = new Button("Copiar código");
+        Label aviso = new Label();
+        aviso.getStyleClass().add("aviso-copiado");
+        PauseTransition borrar = new PauseTransition(Duration.seconds(3));
+        borrar.setOnFinished(e -> aviso.setText(""));
+        copiar.setOnAction(e -> {
+            ClipboardContent contenido = new ClipboardContent();
+            contenido.putString(String.join("\n", codigo.java()) + "\n");
+            Clipboard.getSystemClipboard().setContent(contenido);
+            aviso.setText("Copiado. Pégalo en un archivo " + nombreArchivo() + " y ejecútalo.");
+            borrar.playFromStart();
+        });
+        HBox barra = new HBox(10, copiar, aviso);
+        barra.setAlignment(Pos.CENTER_LEFT);
+        return barra;
+    }
+
+    /** "Burbuja.java" a partir de la línea "public class Burbuja". */
+    private String nombreArchivo() {
+        for (String linea : codigo.java()) {
+            String limpia = linea.strip();
+            if (limpia.startsWith("public class ")) {
+                return limpia.substring("public class ".length()).split("[\\s{]")[0] + ".java";
+            }
+        }
+        return ".java";
     }
 
     /** Recuadro con la explicación en lenguaje natural y, debajo, la expresión en código. */
@@ -138,7 +179,15 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
         lineasJava.getChildren().clear();
         anotacionesJava.clear();
         // Se rellena con espacios (fuente monoespaciada) para alinear las anotaciones en una columna.
-        int ancho = lineas.stream().mapToInt(String::length).max().orElse(0);
+        // La columna se mide solo con las líneas del algoritmo (las enlazadas al pseudocódigo), no con
+        // el main ni los comentarios, y tiene un tope para que los valores queden a la vista.
+        int ancho = 0;
+        for (int k = 0; k < lineas.size(); k++) {
+            if (codigo.estaEnlazada(k + 1)) {
+                ancho = Math.max(ancho, lineas.get(k).length());
+            }
+        }
+        ancho = Math.min(COLUMNA_MAXIMA, ancho);
         String formato = "%" + String.valueOf(lineas.size()).length() + "d  %-" + Math.max(1, ancho) + "s";
         for (int k = 0; k < lineas.size(); k++) {
             Label codigo = new Label(String.format(formato, k + 1, lineas.get(k)));
@@ -217,8 +266,9 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
         resaltar(lineasPseudo, Set.of(lineaActual));
         Set<Integer> enJava = codigo.lineasJava(lineaActual);
         resaltar(lineasJava, enJava);
-        if (!enJava.isEmpty()) {
-            asegurarVisible(enJava.iterator().next());
+        int principal = codigo.lineaPrincipal(lineaActual);
+        if (principal > 0) {
+            asegurarVisible(principal);
         }
 
         Map<String, String> valores = paso == null ? Map.of() : paso.variables();
@@ -233,12 +283,11 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
             caja[1].setVisible(!evaluado.isBlank());
             caja[1].setManaged(!evaluado.isBlank());
         }
-        Integer primeraActiva = enJava.isEmpty() ? null : enJava.iterator().next();
         List<String> java = codigo.java();
         for (int k = 0; k < anotacionesJava.size() && k < java.size(); k++) {
             Label anotacion = anotacionesJava.get(k);
             anotacion.getStyleClass().remove("anotacion-evaluacion");
-            if (primeraActiva != null && primeraActiva == k + 1 && !evaluado.isBlank()) {
+            if (principal == k + 1 && !evaluado.isBlank()) {
                 anotacion.setText("◀ " + evaluado);
                 anotacion.getStyleClass().add("anotacion-evaluacion");
             } else {

@@ -108,27 +108,50 @@ public final class Escalinata {
             "    memo[n] ← r;  retornar r");
 
     public static final CodigoAlgoritmo CODIGO_RECURSIVO = new CodigoAlgoritmo(PSEUDO_RECURSIVO, """
-            public static long formas(int n) {                 //@1
-                if (n <= 1) {                                  //@2
-                    return 1;                                  //@2
+            public class Escalinata {
+
+                // Formas de subir n peldaños dando pasos de 1 o 2.
+                public static long formas(int n) {                 //@1
+                    if (n <= 1) {                                  //@2
+                        return 1;                                  //@2
+                    }
+                    return formas(n - 1) + formas(n - 2);          //@3
                 }
-                return formas(n - 1) + formas(n - 2);          //@3
+
+                public static void main(String[] args) {
+                    for (int n = 0; n <= 10; n++) {
+                        System.out.println("formas(" + n + ") = " + formas(n));
+                    }
+                }
             }
             """);
 
     public static final CodigoAlgoritmo CODIGO_MEMO = new CodigoAlgoritmo(PSEUDO_MEMO, """
-            private static final Map<Integer, Long> memo = new HashMap<>();
+            import java.util.HashMap;
+            import java.util.Map;
 
-            public static long formas(int n) {                 //@1
-                if (n <= 1) {                                  //@2
-                    return 1;                                  //@2
+            public class EscalinataMemo {
+
+                private static final Map<Integer, Long> memo = new HashMap<>();
+
+                // Formas de subir n peldaños dando pasos de 1 o 2, recordando resultados.
+                public static long formas(int n) {                 //@1
+                    if (n <= 1) {                                  //@2
+                        return 1;                                  //@2
+                    }
+                    if (memo.containsKey(n)) {                     //@3
+                        return memo.get(n);                        //@3
+                    }
+                    long r = formas(n - 1) + formas(n - 2);        //@4
+                    memo.put(n, r);                                //@5
+                    return r;                                      //@5
                 }
-                if (memo.containsKey(n)) {                     //@3
-                    return memo.get(n);                        //@3
+
+                public static void main(String[] args) {
+                    for (int n = 0; n <= 60; n += 10) {
+                        System.out.println("formas(" + n + ") = " + formas(n));
+                    }
                 }
-                long r = formas(n - 1) + formas(n - 2);        //@4
-                memo.put(n, r);                                //@5
-                return r;                                      //@5
             }
             """);
 

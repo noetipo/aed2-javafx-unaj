@@ -4,6 +4,7 @@ import pe.edu.unaj.aed2.comun.traza.CodigoAlgoritmo;
 import pe.edu.unaj.aed2.comun.traza.PasoTrazable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -125,7 +126,8 @@ public final class Ordenamientos {
             "        si a[j] > a[j+1]:",
             "            intercambiar a[j] y a[j+1]",
             "            huboIntercambio ← verdadero",
-            "    si no huboIntercambio: terminar");
+            "    si no huboIntercambio: terminar",
+            "retornar a");
 
     /** Pseudocódigo que acompaña a {@link #pasosInsercion}. */
     public static final List<String> PSEUDO_INSERCION = List.of(
@@ -133,40 +135,74 @@ public final class Ordenamientos {
             "    j ← i",
             "    mientras j > 0 y a[j−1] > a[j]:",
             "        intercambiar a[j−1] y a[j]",
-            "        j ← j − 1");
+            "        j ← j − 1",
+            "retornar a");
 
-    /** Burbuja en Java; los marcadores //@n enlazan cada línea con el pseudocódigo. */
+    /**
+     * Clase Java completa, lista para copiar a un proyecto y ejecutar; los marcadores //@n
+     * enlazan cada línea con el pseudocódigo. Devuelve una copia ordenada (no modifica el original).
+     */
     public static final CodigoAlgoritmo CODIGO_BURBUJA = new CodigoAlgoritmo(PSEUDO_BURBUJA, """
-            public static void burbuja(int[] a) {
-                int n = a.length;
-                for (int fin = n - 1; fin > 0; fin--) {        //@1
-                    boolean huboIntercambio = false;           //@2
-                    for (int j = 0; j < fin; j++) {            //@3
-                        if (a[j] > a[j + 1]) {                 //@4
-                            int temp = a[j];                   //@5
-                            a[j] = a[j + 1];                   //@5
-                            a[j + 1] = temp;                   //@5
-                            huboIntercambio = true;            //@6
+            import java.util.Arrays;
+
+            public class Burbuja {
+
+                // Devuelve una copia ordenada; el arreglo original no se modifica.
+                public static int[] burbuja(int[] arreglo) {
+                    int[] a = arreglo.clone();
+                    int n = a.length;
+                    for (int fin = n - 1; fin > 0; fin--) {        //@1
+                        boolean huboIntercambio = false;           //@2
+                        for (int j = 0; j < fin; j++) {            //@3
+                            if (a[j] > a[j + 1]) {                 //@4
+                                int temp = a[j];                   //@5
+                                a[j] = a[j + 1];                   //@5
+                                a[j + 1] = temp;                   //@5
+                                huboIntercambio = true;            //@6
+                            }
+                        }
+                        if (!huboIntercambio) {                    //@7
+                            break;                                 //@7
                         }
                     }
-                    if (!huboIntercambio) {                    //@7
-                        break;                                 //@7
-                    }
+                    return a;                                      //@8
+                }
+
+                public static void main(String[] args) {
+                    int[] datos = {45, 46, 5, 77, 101, 95, 89, 90, 91, 55, 1, 73};
+                    int[] ordenado = burbuja(datos);
+                    System.out.println("Original: " + Arrays.toString(datos));
+                    System.out.println("Ordenado: " + Arrays.toString(ordenado));
                 }
             }
             """);
 
-    /** Inserción (con intercambios, como en la animación) en Java. */
+    /** Inserción (con intercambios, como en la animación) como clase Java completa. */
     public static final CodigoAlgoritmo CODIGO_INSERCION = new CodigoAlgoritmo(PSEUDO_INSERCION, """
-            public static void insercion(int[] a) {
-                for (int i = 1; i < a.length; i++) {           //@1
-                    int j = i;                                 //@2
-                    while (j > 0 && a[j - 1] > a[j]) {         //@3
-                        int temp = a[j - 1];                   //@4
-                        a[j - 1] = a[j];                       //@4
-                        a[j] = temp;                           //@4
-                        j--;                                   //@5
+            import java.util.Arrays;
+
+            public class Insercion {
+
+                // Devuelve una copia ordenada; el arreglo original no se modifica.
+                public static int[] insercion(int[] arreglo) {
+                    int[] a = arreglo.clone();
+                    for (int i = 1; i < a.length; i++) {           //@1
+                        int j = i;                                 //@2
+                        while (j > 0 && a[j - 1] > a[j]) {         //@3
+                            int temp = a[j - 1];                   //@4
+                            a[j - 1] = a[j];                       //@4
+                            a[j] = temp;                           //@4
+                            j--;                                   //@5
+                        }
                     }
+                    return a;                                      //@6
+                }
+
+                public static void main(String[] args) {
+                    int[] datos = {45, 46, 5, 77, 101, 95, 89, 90, 91, 55, 1, 73};
+                    int[] ordenado = insercion(datos);
+                    System.out.println("Original: " + Arrays.toString(datos));
+                    System.out.println("Ordenado: " + Arrays.toString(ordenado));
                 }
             }
             """);
@@ -231,7 +267,8 @@ public final class Ordenamientos {
                         "!huboIntercambio  →  !falso  →  verdadero  →  break",
                         "Terminada la pasada se consulta !huboIntercambio. Como en toda la pasada no se intercambió"
                                 + " nada, huboIntercambio sigue en false y !false es VERDADERO: el arreglo ya está"
-                                + " ordenado. Se ejecuta break, que sale del for externo, y el método termina"
+                                + " ordenado. Se ejecuta break, que sale del for externo; la ejecución pasa directo"
+                                + " a return a, que devuelve la copia ordenada a quien llamó a burbuja"
                                 + (fin - 1 > 0
                                 ? " sin hacer " + (fin - 1 == 1 ? "la pasada que faltaba" : "las " + (fin - 1)
                                         + " pasadas que faltaban") + ". Esta es la parada temprana: por eso el"
@@ -241,12 +278,14 @@ public final class Ordenamientos {
                 return pasos;
             }
         }
-        pasos.add(new EstadoArreglo(a, -1, -1, EstadoArreglo.Tipo.FIN, n, true, 0,
+        pasos.add(new EstadoArreglo(a, -1, -1, EstadoArreglo.Tipo.FIN, n, true, 8,
                 PasoTrazable.variables("comparaciones", comparaciones, "intercambios", intercambios),
-                "fin > 0  →  0 > 0  →  falso: termina el for",
-                "El for externo redujo fin hasta 0 y su condición fin > 0 ya es FALSA, así que termina y el"
-                        + " método regresa a quien lo llamó. Cada pasada dejó un elemento fijo al final: el arreglo"
-                        + " está ordenado con " + comparaciones + " comparaciones y " + intercambios + " intercambios.",
+                "fin > 0  →  0 > 0  →  falso: termina el for;  return a  →  " + Arrays.toString(a),
+                "El for externo redujo fin hasta 0 y su condición fin > 0 ya es FALSA, así que termina. Cada"
+                        + " pasada dejó un elemento fijo al final, así que el arreglo quedó ordenado con "
+                        + comparaciones + " comparaciones y " + intercambios + " intercambios. Se ejecuta return a:"
+                        + " el método devuelve la copia ordenada " + Arrays.toString(a) + " a quien lo llamó (en"
+                        + " el main, se guarda en la variable ordenado). El arreglo original no se modificó.",
                 "Arreglo ordenado."));
         return pasos;
     }
@@ -339,12 +378,14 @@ public final class Ordenamientos {
                 j--;
             }
         }
-        pasos.add(new EstadoArreglo(a, -1, -1, EstadoArreglo.Tipo.FIN, n, false, 0,
+        pasos.add(new EstadoArreglo(a, -1, -1, EstadoArreglo.Tipo.FIN, n, false, 6,
                 PasoTrazable.variables("comparaciones", comparaciones, "intercambios", intercambios),
-                "i < a.length  →  " + n + " < " + n + "  →  falso: termina el for",
+                "i < a.length  →  " + n + " < " + n + "  →  falso: termina el for;  return a  →  "
+                        + Arrays.toString(a),
                 "El for llegó a i = " + n + " y su condición i < a.length (" + n + " < " + n + ") es FALSA:"
-                        + " todos los elementos fueron insertados. El método termina con " + comparaciones
-                        + " comparaciones y " + intercambios + " intercambios.",
+                        + " todos los elementos fueron insertados, con " + comparaciones + " comparaciones y "
+                        + intercambios + " intercambios. Se ejecuta return a: el método devuelve la copia ordenada "
+                        + Arrays.toString(a) + " a quien lo llamó. El arreglo original no se modificó.",
                 "Arreglo ordenado."));
         return pasos;
     }

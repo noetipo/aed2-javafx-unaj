@@ -85,29 +85,61 @@ public final class QuickSort {
             "    quicksort(a, inicio, i−1)",
             "    quicksort(a, i+1, fin)");
 
-    /** Quicksort en Java; los marcadores //@n enlazan cada línea con el pseudocódigo. */
+    /**
+     * Clase Java completa, lista para copiar y ejecutar; los marcadores //@n enlazan cada línea
+     * con el pseudocódigo. ordenar devuelve una copia ordenada y particionar devuelve el índice del pivote.
+     */
     public static final CodigoAlgoritmo CODIGO = new CodigoAlgoritmo(PSEUDOCODIGO, """
-            public static void quicksort(int[] a, int inicio, int fin) {   //@1
-                if (inicio >= fin) {                                       //@2
-                    return;                                                //@2
-                }
-                int pivote = a[fin];                                       //@3
-                int i = inicio;                                            //@3
-                for (int j = inicio; j < fin; j++) {                       //@4
-                    if (a[j] < pivote) {                                   //@5
-                        intercambiar(a, i, j);                             //@6
-                        i++;                                               //@6
-                    }
-                }
-                intercambiar(a, i, fin);                                   //@7
-                quicksort(a, inicio, i - 1);                               //@8
-                quicksort(a, i + 1, fin);                                  //@9
-            }
+            import java.util.Arrays;
 
-            private static void intercambiar(int[] a, int x, int y) {
-                int temp = a[x];
-                a[x] = a[y];
-                a[y] = temp;
+            public class QuickSort {
+
+                // Devuelve una copia ordenada; el arreglo original no se modifica.
+                public static int[] ordenar(int[] arreglo) {
+                    int[] a = arreglo.clone();
+                    quicksort(a, 0, a.length - 1);
+                    return a;
+                }
+
+                // Ordena a[inicio..fin] dentro del mismo arreglo:
+                // cada llamada trabaja sobre una parte de "a",
+                // por eso no necesita devolver nada.
+                private static void quicksort(int[] a, int inicio, int fin) {     //@1
+                    if (inicio >= fin) {                                         //@2
+                        return;                                                  //@2
+                    }
+                    int p = particionar(a, inicio, fin);                         //@3,4,5,6,7
+                    quicksort(a, inicio, p - 1);                                 //@8
+                    quicksort(a, p + 1, fin);                                    //@9
+                }
+
+                // Deja el pivote en su lugar definitivo
+                // y devuelve esa posición.
+                private static int particionar(int[] a, int inicio, int fin) {
+                    int pivote = a[fin];                                         //@3
+                    int i = inicio;                                              //@3
+                    for (int j = inicio; j < fin; j++) {                         //@4
+                        if (a[j] < pivote) {                                     //@5
+                            intercambiar(a, i, j);                               //@6
+                            i++;                                                 //@6
+                        }
+                    }
+                    intercambiar(a, i, fin);                                     //@7
+                    return i;                                                    //@7
+                }
+
+                private static void intercambiar(int[] a, int x, int y) {
+                    int temp = a[x];
+                    a[x] = a[y];
+                    a[y] = temp;
+                }
+
+                public static void main(String[] args) {
+                    int[] datos = {10, 39, 22, 49, 79, 85, 44, 3, 61, 90};
+                    int[] ordenado = ordenar(datos);
+                    System.out.println("Original: " + Arrays.toString(datos));
+                    System.out.println("Ordenado: " + Arrays.toString(ordenado));
+                }
             }
             """);
 
@@ -161,7 +193,9 @@ public final class QuickSort {
                 "Comienza quicksort(a, " + inicio + ", " + fin + ") en el nivel " + nivel + ". " + origen(llamador)
                         + " El if consulta si inicio >= fin: " + inicio + " >= " + fin + " es FALSO, porque hay "
                         + (fin - inicio + 1) + " elementos por ordenar, así que no se retorna y la ejecución sigue."
-                        + " Se elige como pivote el último elemento del rango, a[" + fin + "] = " + pivote
+                        + " Se llama particionar(a, " + inicio + ", " + fin + "), y quicksort queda esperando el"
+                        + " índice que esa función devolverá. Dentro de particionar se elige como pivote el último"
+                        + " elemento del rango, a[" + fin + "] = " + pivote
                         + ", y se pone i = " + inicio + ": i marca la posición donde irá el próximo elemento menor"
                         + " que el pivote. Luego empieza el for con j = " + inicio + ".",
                 "quicksort(" + inicio + ", " + fin + ") nivel " + nivel + ": pivote = " + pivote + "."));
@@ -205,12 +239,13 @@ public final class QuickSort {
         pasos.add(new EstadoParticion(a, inicio, fin, i, -1, -1, fijos, nivel, EstadoParticion.Tipo.PIVOTE_UBICADO, 7,
                 variables(inicio, fin, nivel, pivote, i, null, a),
                 "j < fin  →  " + fin + " < " + fin + "  →  falso: termina el for;  intercambiar(a, " + i + ", " + fin
-                        + ")  →  a[" + i + "] = " + pivote,
+                        + ")  →  a[" + i + "] = " + pivote + ";  return i  →  p = " + i,
                 "El for terminó y todos los menores que " + pivote + " quedaron en a[" + inicio + ".." + (i - 1)
                         + "]" + (i == inicio ? " (no hubo ninguno)" : "") + ". Se llama intercambiar(a, i, fin) con"
                         + " i = " + i + " y fin = " + fin + ": el pivote " + pivote + " pasa a la posición " + i
                         + ", que es su lugar DEFINITIVO, porque a su izquierda solo hay menores y a su derecha"
-                        + " solo mayores o iguales. Ahora la ejecución hace la primera llamada recursiva, "
+                        + " solo mayores o iguales. particionar ejecuta return i: devuelve " + i + " a quicksort,"
+                        + " que lo guarda en p = " + i + ". Ahora quicksort hace la primera llamada recursiva, "
                         + "quicksort(a, " + inicio + ", " + (i - 1) + "), con los menores"
                         + (i - 1 < inicio ? " (rango vacío: regresa de inmediato)" : "")
                         + ", y cuando esa llamada regrese hará la segunda, quicksort(a, " + (i + 1) + ", " + fin
