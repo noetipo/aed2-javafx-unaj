@@ -32,11 +32,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-web</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
         <!-- Convierte la teoría (docs/semana-XX/README.md) a HTML para mostrarla en la app -->
         <dependency>
             <groupId>org.commonmark</groupId>

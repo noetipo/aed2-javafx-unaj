@@ -1,7 +1,6 @@
 module pe.edu.unaj.aed2 {
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.web;
     requires org.commonmark;
     requires org.commonmark.ext.gfm.tables;
 

@@ -21,7 +21,7 @@ Java 17 (`maven.compiler.release`), JavaFX 21 y JUnit 5. El proyecto es **modula
 - Cada visualizador combina `PanelAnimacion` + `PanelTraza` (pestañas Pseudocódigo y Traza) en un `SplitPane`,
   con `ControlesPaso` abajo. Los colores salen de `Paleta`, nunca hardcodeados.
 - La teoría de cada semana es `docs/semana-XX/README.md`. Maven la empaqueta en `pe/edu/unaj/aed2/docs/`
-  y `VistaTeoria` la muestra en la app (CommonMark + WebView). Es una sola fuente para GitHub y la app.
+  y `VistaTeoria` la muestra en la app (CommonMark convertido a controles JavaFX; no usar WebView: javafx.web necesita jdk.jsobject, que no existe desde JDK 24). Es una sola fuente para GitHub y la app.
 - Los benchmarks usan `comun.benchmark.Cronometro` y `GraficoComplejidad`, y corren en un `Task`
   fuera del hilo de JavaFX.
 - `tarea/` contiene métodos con `// TODO n:` que lanzan `UnsupportedOperationException`. Sus pruebas

@@ -93,3 +93,91 @@
     -fx-font-family: "Monospaced";
     -fx-font-size: 12px;
 }
+
+/* Vista de teoría (comun.visual.VistaTeoria): Markdown convertido a controles JavaFX */
+.teoria, .teoria .scroll-pane, .teoria .viewport {
+    -fx-background-color: white;
+}
+.teoria-texto {
+    -fx-font-size: 15px;
+    -fx-fill: #212121;
+}
+.teoria-negrita {
+    -fx-font-weight: bold;
+}
+.teoria-cursiva {
+    -fx-font-style: italic;
+}
+.teoria-h1 .teoria-texto {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-fill: #8b1c1c;
+}
+.teoria-h1 {
+    -fx-border-color: transparent transparent #8b1c1c transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-padding: 0 0 6 0;
+}
+.teoria-h2 .teoria-texto {
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+    -fx-fill: #263238;
+}
+.teoria-h2 {
+    -fx-border-color: transparent transparent #cfd8dc transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 14 0 4 0;
+}
+.teoria-h3 .teoria-texto {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+.teoria-codigo-en-linea {
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 13px;
+    -fx-background-color: #eceff1;
+    -fx-background-radius: 3;
+    -fx-padding: 0 4 0 4;
+}
+.teoria-codigo-marco, .teoria-codigo-marco > .viewport {
+    -fx-background-color: #263238;
+    -fx-background-radius: 6;
+}
+.teoria-codigo {
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 13px;
+    -fx-text-fill: #eceff1;
+    -fx-padding: 12 16 12 16;
+}
+.teoria-vineta {
+    -fx-font-size: 15px;
+    -fx-text-fill: #546e7a;
+}
+.teoria-cita {
+    -fx-border-color: transparent transparent transparent #90caf9;
+    -fx-border-width: 0 0 0 4;
+    -fx-background-color: #f5f9fd;
+    -fx-padding: 6 14 6 14;
+}
+.teoria-tabla {
+    -fx-border-color: #cfd8dc;
+    -fx-border-width: 1 0 0 1;
+}
+.teoria-celda-cabecera, .teoria-celda, .teoria-celda-par {
+    -fx-border-color: #cfd8dc;
+    -fx-border-width: 0 1 1 0;
+    -fx-padding: 6 10 6 10;
+}
+.teoria-celda-cabecera {
+    -fx-background-color: #eceff1;
+}
+.teoria-celda-cabecera .teoria-texto {
+    -fx-font-weight: bold;
+}
+.teoria-celda-par {
+    -fx-background-color: #fafafa;
+}
+.teoria-enlace {
+    -fx-font-size: 15px;
+    -fx-padding: 0;
+}

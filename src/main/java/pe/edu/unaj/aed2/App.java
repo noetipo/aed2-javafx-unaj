@@ -42,6 +42,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+        VistaTeoria.setAbridorEnlaces(getHostServices()::showDocument);
         TreeItem<Entrada> menu = new TreeItem<>(Entrada.grupo("AED II"));
         menu.getChildren().addAll(unidadI(), unidadII());
 
