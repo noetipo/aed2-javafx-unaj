@@ -31,6 +31,8 @@ Java 17 (`maven.compiler.release`), JavaFX 21 y JUnit 5. El proyecto es **modula
   el índice) y un `main` de ejemplo con salida `Original: [...]` / `Ordenado: [...]`. `CodigoJavaEjecutableTest`
   lo compila con `javac` y ejecuta su `main`; `CodigoAlgoritmoTest` verifica los enlaces. Una línea que llama a
   un auxiliar puede llevar varios marcadores (`//@3,4,5`); la evaluación se muestra en la línea de adentro.
+  Si la clase tiene varios métodos animables (p. ej. `insertar` y `buscar`), los marcadores llevan etiqueta
+  (`//@insertar:2 buscar:2`) y cada operación usa `CodigoAlgoritmo.seccion(pseudo, java, "insertar")`.
 - Cada visualizador combina `PanelAnimacion` + `PanelTraza` (pestañas Pseudocódigo, Java y Traza) en un `SplitPane`,
   con `ControlesPaso` abajo. Los colores salen de `Paleta`, nunca hardcodeados.
 - La teoría de cada semana es `docs/semana-XX/README.md`. Maven la empaqueta en `pe/edu/unaj/aed2/docs/`

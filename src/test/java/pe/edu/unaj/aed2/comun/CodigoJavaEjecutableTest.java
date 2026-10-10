@@ -7,6 +7,7 @@ import pe.edu.unaj.aed2.comun.traza.CodigoAlgoritmo;
 import pe.edu.unaj.aed2.semana01.modelo.Ordenamientos;
 import pe.edu.unaj.aed2.semana02.caso.Escalinata;
 import pe.edu.unaj.aed2.semana02.modelo.QuickSort;
+import pe.edu.unaj.aed2.semana03.modelo.TablaHash;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +34,7 @@ class CodigoJavaEjecutableTest {
 
     static Stream<CodigoAlgoritmo> codigos() {
         return Stream.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
-                Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO);
+                Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR);
     }
 
     @ParameterizedTest
@@ -56,8 +57,13 @@ class CodigoJavaEjecutableTest {
             int[] esperado = original.clone();
             Arrays.sort(esperado);
             assertArrayEquals(esperado, ordenado, salida);
-        } else {
+        } else if (clase.startsWith("Escalinata")) {
             assertTrue(salida.contains("formas(10) = 89"), salida);
+        } else if (clase.equals("TablaHash")) {
+            assertTrue(salida.contains("buscar(\"JUL-347\") = true"), salida);
+            assertTrue(salida.contains("buscar(\"PUN-999\") = false"), salida);
+        } else {
+            throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }
     }
 

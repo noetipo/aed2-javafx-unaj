@@ -21,16 +21,28 @@ import java.util.regex.Pattern;
  *     intercambiar(a, j);    //@5
  * }
  * }</pre>
+ * Cuando una misma clase tiene varios métodos animables (p. ej. insertar y buscar), cada
+ * marcador lleva la etiqueta del método: {@code //@insertar:2 buscar:2}. Con
+ * {@link #seccion(List, String, String)} se elige qué etiqueta enlazar; las demás se ignoran.
  */
 public final class CodigoAlgoritmo {
 
-    private static final Pattern MARCADOR = Pattern.compile("\\s*//@([\\d,]+)\\s*$");
+    private static final Pattern MARCADOR = Pattern.compile("\\s*//@([\\w:,\\s]+)$");
 
     private final List<String> pseudocodigo;
     private final List<String> java;
     private final List<Set<Integer>> enlaces;
 
     public CodigoAlgoritmo(List<String> pseudocodigo, String javaConMarcadores) {
+        this(pseudocodigo, javaConMarcadores, null);
+    }
+
+    /** Enlaza solo los marcadores {@code //@etiqueta:n} de la clase completa {@code javaConMarcadores}. */
+    public static CodigoAlgoritmo seccion(List<String> pseudocodigo, String javaConMarcadores, String etiqueta) {
+        return new CodigoAlgoritmo(pseudocodigo, javaConMarcadores, etiqueta);
+    }
+
+    private CodigoAlgoritmo(List<String> pseudocodigo, String javaConMarcadores, String etiqueta) {
         this.pseudocodigo = List.copyOf(pseudocodigo);
         List<String> lineas = new ArrayList<>();
         List<Set<Integer>> marcas = new ArrayList<>();
@@ -38,9 +50,21 @@ public final class CodigoAlgoritmo {
             Matcher m = MARCADOR.matcher(linea);
             Set<Integer> conjunto = new LinkedHashSet<>();
             if (m.find()) {
-                for (String n : m.group(1).split(",")) {
-                    if (!n.isBlank()) {
-                        conjunto.add(Integer.parseInt(n.trim()));
+                for (String token : m.group(1).trim().split("\\s+")) {
+                    String numeros = token;
+                    int dosPuntos = token.indexOf(':');
+                    if (dosPuntos >= 0) {
+                        if (!token.substring(0, dosPuntos).equals(etiqueta)) {
+                            continue;
+                        }
+                        numeros = token.substring(dosPuntos + 1);
+                    } else if (etiqueta != null) {
+                        continue;
+                    }
+                    for (String n : numeros.split(",")) {
+                        if (!n.isBlank()) {
+                            conjunto.add(Integer.parseInt(n.trim()));
+                        }
                     }
                 }
                 linea = linea.substring(0, m.start());

@@ -15,6 +15,8 @@ import pe.edu.unaj.aed2.semana01.caso.VistaCasoMercado;
 import pe.edu.unaj.aed2.semana01.vista.VisualizadorOrdenamiento;
 import pe.edu.unaj.aed2.semana02.caso.VistaCasoEscalinata;
 import pe.edu.unaj.aed2.semana02.vista.VisualizadorQuickSort;
+import pe.edu.unaj.aed2.semana03.caso.VistaCasoMototaxis;
+import pe.edu.unaj.aed2.semana03.vista.VisualizadorTablaHash;
 
 import java.util.function.Supplier;
 
@@ -79,7 +81,11 @@ public class App extends Application {
                 semana("Semana 02 · Recursividad y divide y vencerás",
                         teoria("semana-02"),
                         new Entrada("Visualizador: quicksort", VisualizadorQuickSort::new),
-                        new Entrada("Caso: escalinata de Huaynaroque", VistaCasoEscalinata::new)));
+                        new Entrada("Caso: escalinata de Huaynaroque", VistaCasoEscalinata::new)),
+                semana("Semana 03 · Búsqueda y tablas hash",
+                        teoria("semana-03"),
+                        new Entrada("Visualizador: tabla hash", VisualizadorTablaHash::new),
+                        new Entrada("Caso: padrón de mototaxis", VistaCasoMototaxis::new)));
     }
 
     private TreeItem<Entrada> unidadII() {

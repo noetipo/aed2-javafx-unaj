@@ -290,8 +290,11 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
             if (principal == k + 1 && !evaluado.isBlank()) {
                 anotacion.setText("◀ " + evaluado);
                 anotacion.getStyleClass().add("anotacion-evaluacion");
-            } else {
+            } else if (codigo.estaEnlazada(k + 1)) {
+                // Solo en las líneas del método que se está animando: en otros métodos esas variables no existen.
                 anotacion.setText(CodigoAlgoritmo.valoresEnLinea(java.get(k), valores));
+            } else {
+                anotacion.setText("");
             }
         }
 

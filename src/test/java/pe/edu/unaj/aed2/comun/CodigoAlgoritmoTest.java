@@ -6,6 +6,7 @@ import pe.edu.unaj.aed2.comun.traza.PasoTrazable;
 import pe.edu.unaj.aed2.semana01.modelo.Ordenamientos;
 import pe.edu.unaj.aed2.semana02.caso.Escalinata;
 import pe.edu.unaj.aed2.semana02.modelo.QuickSort;
+import pe.edu.unaj.aed2.semana03.modelo.TablaHash;
 
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,24 @@ class CodigoAlgoritmoTest {
     }
 
     @Test
+    void marcadoresConEtiquetaEnlazanSoloSuSeccion() {
+        String java = """
+                int i = hash(clave);   //@insertar:2 buscar:2
+                agregar(clave);        //@insertar:5
+                return true;           //@buscar:4
+                """;
+        CodigoAlgoritmo insertar = CodigoAlgoritmo.seccion(List.of("a"), java, "insertar");
+        CodigoAlgoritmo buscar = CodigoAlgoritmo.seccion(List.of("a"), java, "buscar");
+        assertEquals(List.of("int i = hash(clave);", "agregar(clave);", "return true;"), insertar.java());
+        assertEquals(Set.of(1), insertar.lineasJava(2));
+        assertEquals(Set.of(2), insertar.lineasJava(5));
+        assertTrue(insertar.lineasJava(4).isEmpty());
+        assertEquals(Set.of(1), buscar.lineasJava(2));
+        assertEquals(Set.of(3), buscar.lineasJava(4));
+        assertTrue(buscar.lineasJava(5).isEmpty());
+    }
+
+    @Test
     void ningunaLineaVisibleConservaMarcadores() {
         for (CodigoAlgoritmo c : todos()) {
             c.java().forEach(l -> assertFalse(l.contains("//@"), l));
@@ -58,6 +77,13 @@ class CodigoAlgoritmoTest {
         verificar(QuickSort.CODIGO, QuickSort.pasos(datos));
         verificar(Escalinata.CODIGO_RECURSIVO, Escalinata.pasos(Escalinata.arbolRecursivo(5), false));
         verificar(Escalinata.CODIGO_MEMO, Escalinata.pasos(Escalinata.arbolMemo(5), true));
+        TablaHash<String> tabla = new TablaHash<>(7);
+        for (String c : new String[]{"JUL-102", "JUL-215", "PUN-031", "JUL-347", "CAR-008", "JUL-520"}) {
+            verificar(TablaHash.CODIGO_INSERTAR, tabla.pasosInsertar(c, c));
+        }
+        verificar(TablaHash.CODIGO_INSERTAR, tabla.pasosInsertar("JUL-215", "x"));
+        verificar(TablaHash.CODIGO_BUSCAR, tabla.pasosBuscar("JUL-347"));
+        verificar(TablaHash.CODIGO_BUSCAR, tabla.pasosBuscar("PUN-999"));
     }
 
     @Test
@@ -82,7 +108,9 @@ class CodigoAlgoritmoTest {
         List<List<? extends PasoTrazable>> todos = List.of(Ordenamientos.pasosBurbuja(datos),
                 Ordenamientos.pasosInsercion(datos), QuickSort.pasos(datos),
                 Escalinata.pasos(Escalinata.arbolMemo(5), true),
-                Escalinata.pasos(Escalinata.arbolRecursivo(5), false));
+                Escalinata.pasos(Escalinata.arbolRecursivo(5), false),
+                new TablaHash<String>(7).pasosInsertar("JUL-102", "x"),
+                ejemploTabla().pasosBuscar("JUL-347"), ejemploTabla().pasosBuscar("PUN-999"));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -91,6 +119,14 @@ class CodigoAlgoritmoTest {
                 }
             }
         }
+    }
+
+    private static TablaHash<String> ejemploTabla() {
+        TablaHash<String> t = new TablaHash<>(7);
+        for (String c : new String[]{"JUL-102", "JUL-215", "PUN-031", "JUL-347", "CAR-008", "JUL-520"}) {
+            t.insertar(c, c);
+        }
+        return t;
     }
 
     private static void verificar(CodigoAlgoritmo codigo, List<? extends PasoTrazable> pasos) {
@@ -105,6 +141,7 @@ class CodigoAlgoritmoTest {
 
     private static List<CodigoAlgoritmo> todos() {
         return List.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
-                Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO);
+                Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
+                TablaHash.CODIGO_BUSCAR);
     }
 }
