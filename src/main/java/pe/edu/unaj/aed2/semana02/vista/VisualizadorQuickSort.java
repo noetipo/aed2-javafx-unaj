@@ -31,7 +31,7 @@ public class VisualizadorQuickSort extends BorderPane {
 
     private final PanelAnimacion<EstadoParticion> panel =
             new PanelAnimacion<>(VisualizadorQuickSort::dibujar, EstadoParticion::descripcion);
-    private final PanelTraza<EstadoParticion> traza = new PanelTraza<>(panel, QuickSort.PSEUDOCODIGO);
+    private final PanelTraza<EstadoParticion> traza = new PanelTraza<>(panel, QuickSort.CODIGO);
     private final ComboBox<String> entrada = new ComboBox<>();
     private final Spinner<Integer> tamanio = new Spinner<>(4, 24, 10);
     private final Label estadisticas = new Label();

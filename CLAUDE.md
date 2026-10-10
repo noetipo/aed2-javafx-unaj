@@ -16,9 +16,11 @@ Java 17 (`maven.compiler.release`), JavaFX 21 y JUnit 5. El proyecto es **modula
 - Un paquete por semana: `pe.edu.unaj.aed2.semanaXX` con `modelo`, `vista`, `caso` y `tarea`.
 - `modelo/` es Java puro: **nunca** importar `javafx.*`. Los algoritmos animables exponen
   métodos `pasosXxx(...)` que devuelven `List<Estado>` con records inmutables; la vista solo dibuja.
-- Los records de pasos implementan `comun.traza.PasoTrazable` (línea del pseudocódigo + variables) y el
-  modelo publica el pseudocódigo como `List<String>` (p. ej. `QuickSort.PSEUDOCODIGO`), con líneas numeradas desde 1.
-- Cada visualizador combina `PanelAnimacion` + `PanelTraza` (pestañas Pseudocódigo y Traza) en un `SplitPane`,
+- Los records de pasos implementan `comun.traza.PasoTrazable` (línea del pseudocódigo + variables). El modelo
+  publica un `CodigoAlgoritmo` (p. ej. `QuickSort.CODIGO`): el pseudocódigo (`List<String>`, líneas desde 1) y el
+  código Java como text block, donde cada línea termina en `//@n` para enlazarla con la línea n del pseudocódigo.
+  Ese Java debe compilar y ser correcto (los estudiantes lo copian); `CodigoAlgoritmoTest` verifica los enlaces.
+- Cada visualizador combina `PanelAnimacion` + `PanelTraza` (pestañas Pseudocódigo, Java y Traza) en un `SplitPane`,
   con `ControlesPaso` abajo. Los colores salen de `Paleta`, nunca hardcodeados.
 - La teoría de cada semana es `docs/semana-XX/README.md`. Maven la empaqueta en `pe/edu/unaj/aed2/docs/`
   y `VistaTeoria` la muestra en la app (CommonMark convertido a controles JavaFX; no usar WebView: javafx.web necesita jdk.jsobject, que no existe desde JDK 24). Es una sola fuente para GitHub y la app.

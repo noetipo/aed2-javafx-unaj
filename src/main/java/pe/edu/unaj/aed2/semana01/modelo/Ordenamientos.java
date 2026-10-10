@@ -1,5 +1,6 @@
 package pe.edu.unaj.aed2.semana01.modelo;
 
+import pe.edu.unaj.aed2.comun.traza.CodigoAlgoritmo;
 import pe.edu.unaj.aed2.comun.traza.PasoTrazable;
 
 import java.util.ArrayList;
@@ -133,6 +134,42 @@ public final class Ordenamientos {
             "    mientras j > 0 y a[j−1] > a[j]:",
             "        intercambiar a[j−1] y a[j]",
             "        j ← j − 1");
+
+    /** Burbuja en Java; los marcadores //@n enlazan cada línea con el pseudocódigo. */
+    public static final CodigoAlgoritmo CODIGO_BURBUJA = new CodigoAlgoritmo(PSEUDO_BURBUJA, """
+            public static void burbuja(int[] a) {
+                int n = a.length;
+                for (int fin = n - 1; fin > 0; fin--) {        //@1
+                    boolean huboIntercambio = false;           //@2
+                    for (int j = 0; j < fin; j++) {            //@3
+                        if (a[j] > a[j + 1]) {                 //@4
+                            int temp = a[j];                   //@5
+                            a[j] = a[j + 1];                   //@5
+                            a[j + 1] = temp;                   //@5
+                            huboIntercambio = true;            //@6
+                        }
+                    }
+                    if (!huboIntercambio) {                    //@7
+                        break;                                 //@7
+                    }
+                }
+            }
+            """);
+
+    /** Inserción (con intercambios, como en la animación) en Java. */
+    public static final CodigoAlgoritmo CODIGO_INSERCION = new CodigoAlgoritmo(PSEUDO_INSERCION, """
+            public static void insercion(int[] a) {
+                for (int i = 1; i < a.length; i++) {           //@1
+                    int j = i;                                 //@2
+                    while (j > 0 && a[j - 1] > a[j]) {         //@3
+                        int temp = a[j - 1];                   //@4
+                        a[j - 1] = a[j];                       //@4
+                        a[j] = temp;                           //@4
+                        j--;                                   //@5
+                    }
+                }
+            }
+            """);
 
     public static List<EstadoArreglo> pasosBurbuja(int[] original) {
         int[] a = original.clone();

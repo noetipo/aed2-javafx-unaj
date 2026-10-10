@@ -36,7 +36,7 @@ public class VistaCasoEscalinata extends BorderPane {
     private static final Color PENDIENTE = Color.web("#eceff1");
 
     private final PanelAnimacion<PasoLlamada> panel = new PanelAnimacion<>(this::dibujar, PasoLlamada::descripcion);
-    private final PanelTraza<PasoLlamada> traza = new PanelTraza<>(panel, Escalinata.PSEUDO_RECURSIVO);
+    private final PanelTraza<PasoLlamada> traza = new PanelTraza<>(panel, Escalinata.CODIGO_RECURSIVO);
     private final Slider peldanios = new Slider(1, N_MAX_ARBOL, 5);
     private final CheckBox memo = new CheckBox("Usar memorización");
     private final Label resultado = new Label();
@@ -87,7 +87,7 @@ public class VistaCasoEscalinata extends BorderPane {
         resultado.setText("formas(" + n + ") = " + arbol.resultado()
                 + "  ·  llamadas: " + arbol.totalLlamadas()
                 + "  ·  reusadas: " + arbol.totalReusadas());
-        traza.setPseudocodigo(conMemo ? Escalinata.PSEUDO_MEMO : Escalinata.PSEUDO_RECURSIVO);
+        traza.setCodigo(conMemo ? Escalinata.CODIGO_MEMO : Escalinata.CODIGO_RECURSIVO);
         panel.setPasos(Escalinata.pasos(arbol, conMemo));
     }
 

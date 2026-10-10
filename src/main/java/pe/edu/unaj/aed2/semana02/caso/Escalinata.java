@@ -1,5 +1,6 @@
 package pe.edu.unaj.aed2.semana02.caso;
 
+import pe.edu.unaj.aed2.comun.traza.CodigoAlgoritmo;
 import pe.edu.unaj.aed2.comun.traza.PasoTrazable;
 import pe.edu.unaj.aed2.semana02.modelo.LlamadaRecursiva;
 import pe.edu.unaj.aed2.semana02.modelo.PasoLlamada;
@@ -105,6 +106,31 @@ public final class Escalinata {
             "    si n está en memo: retornar memo[n]",
             "    r ← formas(n−1) + formas(n−2)",
             "    memo[n] ← r;  retornar r");
+
+    public static final CodigoAlgoritmo CODIGO_RECURSIVO = new CodigoAlgoritmo(PSEUDO_RECURSIVO, """
+            public static long formas(int n) {                 //@1
+                if (n <= 1) {                                  //@2
+                    return 1;                                  //@2
+                }
+                return formas(n - 1) + formas(n - 2);          //@3
+            }
+            """);
+
+    public static final CodigoAlgoritmo CODIGO_MEMO = new CodigoAlgoritmo(PSEUDO_MEMO, """
+            private static final Map<Integer, Long> memo = new HashMap<>();
+
+            public static long formas(int n) {                 //@1
+                if (n <= 1) {                                  //@2
+                    return 1;                                  //@2
+                }
+                if (memo.containsKey(n)) {                     //@3
+                    return memo.get(n);                        //@3
+                }
+                long r = formas(n - 1) + formas(n - 2);        //@4
+                memo.put(n, r);                                //@5
+                return r;                                      //@5
+            }
+            """);
 
     /** Pasos de ejecución de {@code arbol}, que debe venir de {@link #arbolRecursivo} o {@link #arbolMemo}. */
     public static List<PasoLlamada> pasos(LlamadaRecursiva arbol, boolean conMemo) {

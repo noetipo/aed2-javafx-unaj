@@ -29,7 +29,7 @@ public class VisualizadorOrdenamiento extends BorderPane {
 
     private final PanelAnimacion<EstadoArreglo> panel =
             new PanelAnimacion<>(VisualizadorOrdenamiento::dibujar, EstadoArreglo::descripcion);
-    private final PanelTraza<EstadoArreglo> traza = new PanelTraza<>(panel, Ordenamientos.PSEUDO_BURBUJA);
+    private final PanelTraza<EstadoArreglo> traza = new PanelTraza<>(panel, Ordenamientos.CODIGO_BURBUJA);
     private final ComboBox<String> algoritmo = new ComboBox<>();
     private final Spinner<Integer> tamanio = new Spinner<>(4, 30, 12);
     private final Label estadisticas = new Label();
@@ -67,7 +67,7 @@ public class VisualizadorOrdenamiento extends BorderPane {
         int[] datos = Ordenamientos.aleatorio(tamanio.getValue(), semilla);
         boolean burbuja = algoritmo.getValue().equals("Burbuja");
         List<EstadoArreglo> pasos = burbuja ? Ordenamientos.pasosBurbuja(datos) : Ordenamientos.pasosInsercion(datos);
-        traza.setPseudocodigo(burbuja ? Ordenamientos.PSEUDO_BURBUJA : Ordenamientos.PSEUDO_INSERCION);
+        traza.setCodigo(burbuja ? Ordenamientos.CODIGO_BURBUJA : Ordenamientos.CODIGO_INSERCION);
         long comparaciones = pasos.stream().filter(p -> p.tipo() == EstadoArreglo.Tipo.COMPARACION).count();
         long intercambios = pasos.stream().filter(p -> p.tipo() == EstadoArreglo.Tipo.INTERCAMBIO).count();
         estadisticas.setText("Comparaciones: " + comparaciones + " · Intercambios: " + intercambios);

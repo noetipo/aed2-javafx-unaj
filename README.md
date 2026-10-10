@@ -4,8 +4,8 @@ Repositorio del curso **Algoritmos y Estructuras de Datos II** de la Universidad
 Cada semana trae:
 
 - **Teoría** en `docs/semana-XX/README.md`, que también se lee dentro de la aplicación
-- **Visualizador JavaFX** para ver la estructura o el algoritmo paso a paso, con el pseudocódigo
-  (línea actual resaltada), las variables y la traza completa (prueba de escritorio)
+- **Visualizador JavaFX** para ver la estructura o el algoritmo paso a paso, con el pseudocódigo y el código
+  Java (línea actual resaltada en ambos), las variables y la traza completa (prueba de escritorio)
 - **Caso práctico** con datos de Juliaca y Puno
 - **Tarea** con una plantilla de TODOs y pruebas automáticas
 
@@ -45,7 +45,7 @@ src/main/java/pe/edu/unaj/aed2/
 ├── App.java              ventana principal con menú lateral (Unidad I / Unidad II)
 ├── comun/
 │   ├── visual/           PanelAnimacion, ControlesPaso, PanelTraza, VistaTeoria, Paleta, DibujoArbol, DibujoGrafo
-│   ├── traza/            PasoTrazable (línea de pseudocódigo + variables de cada paso)
+│   ├── traza/            PasoTrazable (línea + variables de cada paso), CodigoAlgoritmo (pseudocódigo ↔ Java)
 │   ├── benchmark/        Cronometro, GraficoComplejidad
 │   └── mapa/             MapaSimplificado (coordenadas Juliaca/Puno)
 └── semanaXX/

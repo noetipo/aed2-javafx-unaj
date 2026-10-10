@@ -1,5 +1,6 @@
 package pe.edu.unaj.aed2.semana02.modelo;
 
+import pe.edu.unaj.aed2.comun.traza.CodigoAlgoritmo;
 import pe.edu.unaj.aed2.comun.traza.PasoTrazable;
 
 import java.util.ArrayList;
@@ -83,6 +84,32 @@ public final class QuickSort {
             "    intercambiar a[i] y a[fin]",
             "    quicksort(a, inicio, i−1)",
             "    quicksort(a, i+1, fin)");
+
+    /** Quicksort en Java; los marcadores //@n enlazan cada línea con el pseudocódigo. */
+    public static final CodigoAlgoritmo CODIGO = new CodigoAlgoritmo(PSEUDOCODIGO, """
+            public static void quicksort(int[] a, int inicio, int fin) {   //@1
+                if (inicio >= fin) {                                       //@2
+                    return;                                                //@2
+                }
+                int pivote = a[fin];                                       //@3
+                int i = inicio;                                            //@3
+                for (int j = inicio; j < fin; j++) {                       //@4
+                    if (a[j] < pivote) {                                   //@5
+                        intercambiar(a, i, j);                             //@6
+                        i++;                                               //@6
+                    }
+                }
+                intercambiar(a, i, fin);                                   //@7
+                quicksort(a, inicio, i - 1);                               //@8
+                quicksort(a, i + 1, fin);                                  //@9
+            }
+
+            private static void intercambiar(int[] a, int x, int y) {
+                int temp = a[x];
+                a[x] = a[y];
+                a[y] = temp;
+            }
+            """);
 
     public static List<EstadoParticion> pasos(int[] original) {
         int[] a = original.clone();

@@ -2,6 +2,7 @@ package pe.edu.unaj.aed2.comun.visual;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -10,7 +11,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import pe.edu.unaj.aed2.comun.traza.CodigoAlgoritmo;
 import pe.edu.unaj.aed2.comun.traza.PasoTrazable;
 
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ import java.util.stream.IntStream;
  * Pestañas que acompañan a un {@link PanelAnimacion} para seguir la ejecución:
  * <ul>
  *   <li><b>Pseudocódigo</b>: resalta la línea que se ejecuta y muestra las variables actuales.</li>
+ *   <li><b>Java</b>: el mismo algoritmo en Java, con las líneas equivalentes resaltadas.</li>
  *   <li><b>Traza</b>: prueba de escritorio, una fila por paso; al hacer clic en una fila
  *       la animación salta a ese paso.</li>
  * </ul>
@@ -32,28 +36,25 @@ import java.util.stream.IntStream;
 public class PanelTraza<T extends PasoTrazable> extends TabPane {
 
     private final PanelAnimacion<T> panel;
-    private final VBox lineas = new VBox(2);
-    private final GridPane variables = new GridPane();
+    private final VBox lineasPseudo = new VBox(2);
+    private final VBox lineasJava = new VBox(0);
+    private final GridPane variablesPseudo = new GridPane();
+    private final GridPane variablesJava = new GridPane();
+    private final ScrollPane desplazableJava;
     private final TableView<Integer> tabla = new TableView<>();
+    private CodigoAlgoritmo codigo;
     private boolean sincronizando;
 
-    public PanelTraza(PanelAnimacion<T> panel, List<String> pseudocodigo) {
+    public PanelTraza(PanelAnimacion<T> panel, CodigoAlgoritmo codigo) {
         this.panel = panel;
         getStyleClass().add("panel-traza");
         setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         setMinWidth(300);
 
-        Label tituloVariables = new Label("Variables");
-        tituloVariables.getStyleClass().add("subtitulo-traza");
-        variables.setHgap(12);
-        variables.setVgap(4);
-        variables.getStyleClass().add("variables-traza");
-        lineas.getStyleClass().add("pseudocodigo");
-
-        VBox contenidoCodigo = new VBox(10, lineas, tituloVariables, variables);
-        contenidoCodigo.setPadding(new Insets(10));
-        ScrollPane desplazable = new ScrollPane(contenidoCodigo);
-        desplazable.setFitToWidth(true);
+        lineasPseudo.getStyleClass().add("pseudocodigo");
+        lineasJava.getStyleClass().addAll("pseudocodigo", "codigo-java");
+        ScrollPane desplazablePseudo = pestaniaCodigo(lineasPseudo, variablesPseudo);
+        desplazableJava = pestaniaCodigo(lineasJava, variablesJava);
 
         tabla.setPlaceholder(new Label("Sin pasos"));
         tabla.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -65,24 +66,46 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
         VBox contenidoTraza = new VBox(tabla);
         VBox.setVgrow(tabla, Priority.ALWAYS);
 
-        getTabs().addAll(new Tab("Pseudocódigo", desplazable), new Tab("Traza", contenidoTraza));
+        getTabs().addAll(new Tab("Pseudocódigo", desplazablePseudo),
+                new Tab("Java", desplazableJava),
+                new Tab("Traza", contenidoTraza));
 
-        setPseudocodigo(pseudocodigo);
+        setCodigo(codigo);
         panel.pasosProperty().addListener((o, a, b) -> reconstruirTabla());
         panel.indiceProperty().addListener((o, a, b) -> actualizar());
         reconstruirTabla();
     }
 
-    /** Cambia el pseudocódigo mostrado (p. ej. al elegir otro algoritmo). */
-    public void setPseudocodigo(List<String> pseudocodigo) {
-        lineas.getChildren().clear();
-        for (int k = 0; k < pseudocodigo.size(); k++) {
-            Label linea = new Label(String.format("%2d  %s", k + 1, pseudocodigo.get(k)));
+    private static ScrollPane pestaniaCodigo(VBox lineas, GridPane variables) {
+        Label titulo = new Label("Variables");
+        titulo.getStyleClass().add("subtitulo-traza");
+        variables.setHgap(12);
+        variables.setVgap(4);
+        VBox contenido = new VBox(10, lineas, titulo, variables);
+        contenido.setPadding(new Insets(10));
+        ScrollPane desplazable = new ScrollPane(contenido);
+        desplazable.setFitToWidth(true);
+        return desplazable;
+    }
+
+    /** Cambia el código mostrado (p. ej. al elegir otro algoritmo). */
+    public void setCodigo(CodigoAlgoritmo nuevo) {
+        codigo = nuevo;
+        llenar(lineasPseudo, nuevo.pseudocodigo());
+        llenar(lineasJava, nuevo.java());
+        actualizar();
+    }
+
+    private static void llenar(VBox destino, List<String> lineas) {
+        destino.getChildren().clear();
+        String formato = "%" + String.valueOf(lineas.size()).length() + "d  %s";
+        for (int k = 0; k < lineas.size(); k++) {
+            Label linea = new Label(String.format(formato, k + 1, lineas.get(k)));
             linea.getStyleClass().add("linea-codigo");
             linea.setMaxWidth(Double.MAX_VALUE);
-            lineas.getChildren().add(linea);
+            linea.setMinWidth(Region.USE_PREF_SIZE); // líneas largas: barra horizontal, sin "..."
+            destino.getChildren().add(linea);
         }
-        actualizar();
     }
 
     private void reconstruirTabla() {
@@ -118,27 +141,21 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
     }
 
     private void actualizar() {
+        if (codigo == null) {
+            return;
+        }
         T paso = panel.pasoActual();
         int lineaActual = paso == null ? 0 : paso.linea();
-        for (int k = 0; k < lineas.getChildren().size(); k++) {
-            var nodo = lineas.getChildren().get(k);
-            nodo.getStyleClass().remove("linea-actual");
-            if (k + 1 == lineaActual) {
-                nodo.getStyleClass().add("linea-actual");
-            }
+        resaltar(lineasPseudo, Set.of(lineaActual));
+        Set<Integer> enJava = codigo.lineasJava(lineaActual);
+        resaltar(lineasJava, enJava);
+        if (!enJava.isEmpty()) {
+            asegurarVisible(enJava.iterator().next());
         }
 
-        variables.getChildren().clear();
-        if (paso != null) {
-            int fila = 0;
-            for (Map.Entry<String, String> e : paso.variables().entrySet()) {
-                Label nombre = new Label(e.getKey());
-                nombre.getStyleClass().add("nombre-variable");
-                Label valor = new Label(e.getValue());
-                valor.getStyleClass().add("valor-variable");
-                variables.addRow(fila++, nombre, valor);
-            }
-        }
+        Map<String, String> valores = paso == null ? Map.of() : paso.variables();
+        mostrarVariables(variablesPseudo, valores);
+        mostrarVariables(variablesJava, valores);
 
         int indice = panel.indiceProperty().get();
         if (indice < tabla.getItems().size()) {
@@ -146,6 +163,36 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
             tabla.getSelectionModel().clearAndSelect(indice);
             tabla.scrollTo(Math.max(0, indice - 3));
             sincronizando = false;
+        }
+    }
+
+    private static void resaltar(VBox lineas, Set<Integer> numeros) {
+        for (int k = 0; k < lineas.getChildren().size(); k++) {
+            Node nodo = lineas.getChildren().get(k);
+            nodo.getStyleClass().remove("linea-actual");
+            if (numeros.contains(k + 1)) {
+                nodo.getStyleClass().add("linea-actual");
+            }
+        }
+    }
+
+    /** Desplaza la pestaña Java para que la línea resaltada quede a la vista. */
+    private void asegurarVisible(int numeroLinea) {
+        int total = lineasJava.getChildren().size();
+        if (total > 1) {
+            desplazableJava.setVvalue(Math.max(0, Math.min(1, (numeroLinea - 4) / (double) (total - 1))));
+        }
+    }
+
+    private static void mostrarVariables(GridPane destino, Map<String, String> valores) {
+        destino.getChildren().clear();
+        int fila = 0;
+        for (Map.Entry<String, String> e : valores.entrySet()) {
+            Label nombre = new Label(e.getKey());
+            nombre.getStyleClass().add("nombre-variable");
+            Label valor = new Label(e.getValue());
+            valor.getStyleClass().add("valor-variable");
+            destino.addRow(fila++, nombre, valor);
         }
     }
 }

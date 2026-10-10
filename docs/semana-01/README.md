@@ -36,6 +36,7 @@ Ordenes de crecimiento comunes: 1 < log n < n < n log n < n² < 2ⁿ.
 - **Visualizador**: elige burbuja o inserción, cambia n y avanza paso a paso. Naranja = comparación,
   rojo = intercambio, verde = posición ordenada. En el panel derecho:
   - **Pseudocódigo**: resalta la línea que se ejecuta y muestra `fin`, `j`, `a[j]`, los contadores, etc.
+  - **Java**: el mismo algoritmo en Java, con las líneas equivalentes resaltadas.
   - **Traza**: la prueba de escritorio completa; haz clic en una fila para saltar a ese paso.
 - **Caso: precios de mercado**: ordena el catálogo `precios_mercado.csv` con merge sort, y con **Medir tiempos**
   grafica burbuja, inserción y merge sort para n entre 500 y 6 000.
