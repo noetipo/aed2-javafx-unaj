@@ -1,5 +1,6 @@
 package pe.edu.unaj.aed2.comun.visual;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -45,7 +46,8 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
     private final GridPane variablesPseudo = new GridPane();
     private final GridPane variablesJava = new GridPane();
     private final ScrollPane desplazableJava;
-    private final Label evaluacion = new Label();
+    /** Una caja "Se evalúa" por pestaña de código: {explicación, expresión}. */
+    private final List<Label[]> cajasEvaluacion = new ArrayList<>();
     private final List<Label> anotacionesJava = new ArrayList<>();
     private final TableView<Integer> tabla = new TableView<>();
     private CodigoAlgoritmo codigo;
@@ -59,14 +61,8 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
 
         lineasPseudo.getStyleClass().add("pseudocodigo");
         lineasJava.getStyleClass().addAll("pseudocodigo", "codigo-java");
-        ScrollPane desplazablePseudo = pestaniaCodigo(lineasPseudo, null, variablesPseudo);
-        evaluacion.getStyleClass().add("evaluacion-texto");
-        evaluacion.setWrapText(true);
-        Label tituloEvaluacion = new Label("Se evalúa");
-        tituloEvaluacion.getStyleClass().add("subtitulo-traza");
-        VBox cajaEvaluacion = new VBox(4, tituloEvaluacion, evaluacion);
-        cajaEvaluacion.getStyleClass().add("evaluacion-caja");
-        desplazableJava = pestaniaCodigo(lineasJava, cajaEvaluacion, variablesJava);
+        ScrollPane desplazablePseudo = pestaniaCodigo(lineasPseudo, crearCajaEvaluacion(), variablesPseudo);
+        desplazableJava = pestaniaCodigo(lineasJava, crearCajaEvaluacion(), variablesJava);
 
         tabla.setPlaceholder(new Label("Sin pasos"));
         tabla.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -88,6 +84,24 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
         reconstruirTabla();
     }
 
+    /** Recuadro con la explicación en lenguaje natural y, debajo, la expresión en código. */
+    private VBox crearCajaEvaluacion() {
+        Label titulo = new Label("Se evalúa");
+        titulo.getStyleClass().add("subtitulo-traza");
+        Label explicacion = new Label();
+        explicacion.getStyleClass().add("evaluacion-explicacion");
+        explicacion.setWrapText(true);
+        explicacion.setMinHeight(Region.USE_PREF_SIZE);
+        Label expresion = new Label();
+        expresion.getStyleClass().add("evaluacion-texto");
+        expresion.setWrapText(true);
+        expresion.setMinHeight(Region.USE_PREF_SIZE);
+        cajasEvaluacion.add(new Label[]{explicacion, expresion});
+        VBox caja = new VBox(6, titulo, explicacion, expresion);
+        caja.getStyleClass().add("evaluacion-caja");
+        return caja;
+    }
+
     private static ScrollPane pestaniaCodigo(VBox lineas, Node extra, GridPane variables) {
         Label titulo = new Label("Variables");
         titulo.getStyleClass().add("subtitulo-traza");
@@ -101,6 +115,13 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
         contenido.setPadding(new Insets(10));
         ScrollPane desplazable = new ScrollPane(contenido);
         desplazable.setFitToWidth(true);
+        if (extra instanceof Region recuadro) {
+            // El código puede ser más ancho que la vista (barra horizontal), pero la explicación
+            // debe ajustarse al ancho visible para leerse sin desplazarse.
+            recuadro.maxWidthProperty().bind(Bindings.createDoubleBinding(
+                    () -> Math.max(200, desplazable.getViewportBounds().getWidth() - 20),
+                    desplazable.viewportBoundsProperty()));
+        }
         return desplazable;
     }
 
@@ -205,7 +226,13 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
         mostrarVariables(variablesJava, valores);
 
         String evaluado = paso == null ? "" : paso.evaluacion();
-        evaluacion.setText(evaluado.isBlank() ? "—" : evaluado);
+        String explicado = paso == null ? "" : paso.explicacion();
+        for (Label[] caja : cajasEvaluacion) {
+            caja[0].setText(explicado.isBlank() ? "—" : explicado);
+            caja[1].setText(evaluado.isBlank() ? "" : "En código:  " + evaluado);
+            caja[1].setVisible(!evaluado.isBlank());
+            caja[1].setManaged(!evaluado.isBlank());
+        }
         Integer primeraActiva = enJava.isEmpty() ? null : enJava.iterator().next();
         List<String> java = codigo.java();
         for (int k = 0; k < anotacionesJava.size() && k < java.size(); k++) {

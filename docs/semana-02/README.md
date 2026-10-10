@@ -59,7 +59,8 @@ el número de llamadas baja a 2n − 1. Esta idea es la base de la programación
 
 - **Teoría**: este documento.
 - **Visualizador: quicksort**: las pestañas **Pseudocódigo**, **Java** y **Traza** muestran la línea que se ejecuta y los
-  valores de `inicio`, `fin`, `pivote`, `i` y `j` en cada paso. El fondo celeste marca el rango de la llamada actual, morado el pivote, amarillo la
+  valores de `inicio`, `fin`, `pivote`, `i` y `j` en cada paso. El recuadro **Se evalúa** explica en palabras
+  cada condición y, en la recursión, a qué llamada regresa el control y qué hace esa llamada después. El fondo celeste marca el rango de la llamada actual, morado el pivote, amarillo la
   zona de menores, naranja el elemento comparado y verde los pivotes ya ubicados. Prueba la entrada
   "Ya ordenado (peor caso)" y observa la profundidad de recursión.
 - **Caso: escalinata de Huaynaroque**: ejecuta `formas(n)` llamada por llamada sobre el árbol (gris = pendiente,

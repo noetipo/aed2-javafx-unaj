@@ -18,7 +18,11 @@ Java 17 (`maven.compiler.release`), JavaFX 21 y JUnit 5. El proyecto es **modula
   métodos `pasosXxx(...)` que devuelven `List<Estado>` con records inmutables; la vista solo dibuja.
 - Los records de pasos implementan `comun.traza.PasoTrazable`: línea del pseudocódigo, variables y `evaluacion`
   (qué se evalúa y con qué valores, p. ej. `a[j] > a[j + 1]  →  a[3] > a[4]  →  77 > 101  →  falso`; usar
-  `PasoTrazable.vf` para verdadero/falso). Todo paso con línea > 0 debe tener evaluación. Las claves de variables
+  `PasoTrazable.vf` para verdadero/falso) y `explicacion`: lo mismo en lenguaje natural y detallado, para el
+  recuadro "Se evalúa": qué condición se consulta, con qué valores, qué resulta y a dónde va o regresa la
+  ejecución (entra al if, vuelve al for, regresa a la llamada que la invocó y qué hace esa llamada después).
+  En algoritmos recursivos, cada llamada debe saber quién la invocó y desde qué lado para explicarlo.
+  Todo paso con línea > 0 debe tener evaluación y explicación (lo verifica `CodigoAlgoritmoTest`). Las claves de variables
   se escriben como en el Java (`a[j+1]`, ASCII) para que la pestaña Java las ubique en cada línea. El modelo
   publica un `CodigoAlgoritmo` (p. ej. `QuickSort.CODIGO`): el pseudocódigo (`List<String>`, líneas desde 1) y el
   código Java como text block, donde cada línea termina en `//@n` para enlazarla con la línea n del pseudocódigo.

@@ -18,11 +18,12 @@ import java.util.Map;
  * @param linea       línea del pseudocódigo que se ejecuta (0 si ninguna)
  * @param variables   valores de las variables en este paso
  * @param evaluacion  qué se evalúa en la línea actual y con qué valores
+ * @param explicacion la misma evaluación en lenguaje natural, incluyendo a dónde va la ejecución
  * @param descripcion texto explicativo para la leyenda
  */
 public record EstadoArreglo(int[] valores, int a, int b, Tipo tipo, int ordenados, boolean alFinal,
                             int linea, Map<String, String> variables, String evaluacion,
-                            String descripcion)
+                            String explicacion, String descripcion)
         implements PasoTrazable {
 
     public enum Tipo { INICIO, COMPARACION, INTERCAMBIO, FIN }

@@ -136,10 +136,18 @@ public final class Escalinata {
     public static List<PasoLlamada> pasos(LlamadaRecursiva arbol, boolean conMemo) {
         Simulacion sim = new Simulacion(arbol.totalLlamadas(), conMemo);
         sim.agregar(-1, PasoLlamada.Tipo.INICIO, 0, "—", "formas(" + arbol.n() + ")",
+                "Se llamará formas(" + arbol.n() + ") para contar de cuántas formas se suben " + arbol.n()
+                        + " peldaños. Cada llamada que no sea caso base se pausa para pedir dos resultados más"
+                        + " pequeños, así que observa cómo crece y se vacía la pila de ejecución"
+                        + (conMemo ? ", y cómo memo evita repetir cálculos." : "."),
                 "Se llamará formas(" + arbol.n() + ")" + (conMemo ? " usando memorización." : "."));
-        sim.visitar(arbol);
+        sim.visitar(arbol, null, false);
         sim.agregar(-1, PasoLlamada.Tipo.FIN, 0, String.valueOf(arbol.resultado()),
                 "formas(" + arbol.n() + ") retorna " + arbol.resultado(),
+                "La pila quedó vacía: todas las llamadas regresaron. formas(" + arbol.n() + ") = "
+                        + arbol.resultado() + ", es decir, hay " + arbol.resultado() + " formas de subir "
+                        + arbol.n() + " peldaños. Se hicieron " + sim.llamadas + " llamadas en total"
+                        + (conMemo ? " (sin memo serían " + llamadasRecursivo(arbol.n()) + ")." : "."),
                 "formas(" + arbol.n() + ") = " + arbol.resultado() + " con " + sim.llamadas + " llamadas.");
         return sim.pasos;
     }
@@ -158,44 +166,94 @@ public final class Escalinata {
             this.conMemo = conMemo;
         }
 
-        void visitar(LlamadaRecursiva l) {
+        /**
+         * @param padre     llamada que hizo esta, o null si es la inicial
+         * @param izquierda true si es el primer sumando del padre, formas(n − 1)
+         */
+        void visitar(LlamadaRecursiva l, LlamadaRecursiva padre, boolean izquierda) {
             llamadas++;
             pila.addLast("f" + l.n());
             estados[l.id()] = PasoLlamada.Estado.EN_PILA;
+            String origen = padre == null
+                    ? "Empieza formas(" + l.n() + "), la llamada inicial."
+                    : "formas(" + padre.n() + ") necesita formas(" + (padre.n() - 1) + ") + formas("
+                            + (padre.n() - 2) + "). Para obtener el " + (izquierda ? "primer" : "segundo")
+                            + " sumando se pausa en esa línea y llama a formas(" + l.n() + ").";
+            String plan;
+            if (l.n() <= 1) {
+                plan = " Como n = " + l.n() + ", esta llamada será un caso base.";
+            } else if (l.reusada()) {
+                plan = " Su resultado ya está en memo, así que no hará más llamadas.";
+            } else {
+                plan = " Como n = " + l.n() + " no es caso base" + (conMemo ? " ni está en memo" : "")
+                        + ", tendrá que llamar a formas(" + (l.n() - 1) + ") y luego a formas(" + (l.n() - 2) + ").";
+            }
             agregar(l.id(), PasoLlamada.Tipo.LLAMADA, 1, "—", "n = " + l.n(),
+                    origen + " Se apila un nuevo marco con n = " + l.n() + "; la pila queda: "
+                            + String.join(" › ", pila) + "." + plan,
                     "Se llama formas(" + l.n() + ").");
             if (l.n() <= 1) {
                 estados[l.id()] = PasoLlamada.Estado.RETORNADA;
                 agregar(l.id(), PasoLlamada.Tipo.CASO_BASE, 2, "1",
                         "n <= 1  →  " + l.n() + " <= 1  →  verdadero  →  return 1",
+                        "El if consulta n <= 1: con n = " + l.n() + " es VERDADERO. Es el caso base: con "
+                                + l.n() + " peldaño" + (l.n() == 1 ? "" : "s") + " hay exactamente una forma, así"
+                                + " que formas(" + l.n() + ") devuelve 1 sin hacer más llamadas. "
+                                + regreso(padre, izquierda),
                         "Caso base: formas(" + l.n() + ") retorna 1.");
             } else if (l.reusada()) {
                 estados[l.id()] = PasoLlamada.Estado.REUSADA;
                 agregar(l.id(), PasoLlamada.Tipo.REUSO, 3, String.valueOf(l.resultado()),
                         "n <= 1  →  " + l.n() + " <= 1  →  falso;  memo.containsKey(" + l.n()
                                 + ")  →  verdadero  →  return memo.get(" + l.n() + ") = " + l.resultado(),
+                        "Primero se consulta n <= 1: " + l.n() + " <= 1 es FALSO, no es caso base. Luego se"
+                                + " consulta memo.containsKey(" + l.n() + "): es VERDADERO, porque formas(" + l.n()
+                                + ") ya se calculó antes en otra rama. Se devuelve memo.get(" + l.n() + ") = "
+                                + l.resultado() + " sin repetir ninguna llamada: aquí está el ahorro de la"
+                                + " memorización. " + regreso(padre, izquierda),
                         "formas(" + l.n() + ") ya está en memo: retorna " + l.resultado() + " sin recalcular.");
             } else {
-                visitar(l.izquierda());
-                visitar(l.derecha());
+                visitar(l.izquierda(), l, true);
+                visitar(l.derecha(), l, false);
                 if (conMemo) {
                     memo.put(l.n(), l.resultado());
                 }
                 estados[l.id()] = PasoLlamada.Estado.RETORNADA;
+                long a = l.izquierda().resultado();
+                long b = l.derecha().resultado();
                 String suma = "formas(" + (l.n() - 1) + ") + formas(" + (l.n() - 2) + ")  →  "
-                        + l.izquierda().resultado() + " + " + l.derecha().resultado() + " = " + l.resultado();
+                        + a + " + " + b + " = " + l.resultado();
                 agregar(l.id(), PasoLlamada.Tipo.RETORNO, conMemo ? 5 : 3, String.valueOf(l.resultado()),
                         conMemo ? "r = " + suma + ";  memo.put(" + l.n() + ", " + l.resultado() + ");  return "
                                 + l.resultado() : "return " + suma,
-                        "formas(" + l.n() + ") = " + l.izquierda().resultado() + " + "
-                                + l.derecha().resultado() + " = " + l.resultado()
+                        "formas(" + l.n() + ") ya recibió sus dos resultados: formas(" + (l.n() - 1) + ") = " + a
+                                + " y formas(" + (l.n() - 2) + ") = " + b + ". Los suma: " + a + " + " + b + " = "
+                                + l.resultado() + ". "
+                                + (conMemo ? "Guarda memo[" + l.n() + "] = " + l.resultado() + " para no volver a"
+                                        + " calcularlo y " : "")
+                                + "devuelve " + l.resultado() + "; su marco se quita de la pila. "
+                                + regreso(padre, izquierda),
+                        "formas(" + l.n() + ") = " + a + " + " + b + " = " + l.resultado()
                                 + (conMemo ? "; se guarda en memo." : "."));
             }
             pila.removeLast();
         }
 
+        /** A dónde vuelve la ejecución cuando una llamada termina. */
+        private static String regreso(LlamadaRecursiva padre, boolean izquierda) {
+            if (padre == null) {
+                return "Era la llamada inicial, así que este es el resultado final.";
+            }
+            return izquierda
+                    ? "El control regresa a formas(" + padre.n() + "), que estaba esperando su primer sumando,"
+                            + " formas(" + (padre.n() - 1) + "). Con ese valor guardado, ahora llama a formas("
+                            + (padre.n() - 2) + ")."
+                    : "El control regresa a formas(" + padre.n() + "), que estaba esperando su segundo sumando,"
+                            + " formas(" + (padre.n() - 2) + "). Ya tiene los dos valores y puede sumarlos.";
+        }
+
         void agregar(int nodo, PasoLlamada.Tipo tipo, int linea, String retorno, String evaluacion,
-                     String descripcion) {
+                     String explicacion, String descripcion) {
             String n = nodo < 0 ? "—" : pila.isEmpty() ? "—" : pila.peekLast().substring(1);
             Map<String, String> variables = conMemo
                     ? PasoTrazable.variables("n", n, "retorna", retorno, "profundidad", pila.size(),
@@ -203,7 +261,7 @@ public final class Escalinata {
                     : PasoTrazable.variables("n", n, "retorna", retorno, "profundidad", pila.size(),
                     "llamadas", llamadas, "pila", String.join(" › ", pila));
             pasos.add(new PasoLlamada(nodo, tipo, estados, new ArrayList<>(pila), linea, variables, evaluacion,
-                    descripcion));
+                    explicacion, descripcion));
         }
     }
 }

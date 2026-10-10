@@ -39,6 +39,8 @@ Ordenes de crecimiento comunes: 1 < log n < n < n log n < n² < 2ⁿ.
   - **Java**: el mismo algoritmo en Java, con las líneas equivalentes resaltadas. A la derecha de cada línea
     aparece el valor de sus variables y, en la línea que se ejecuta, qué se evalúa: por ejemplo
     `a[j] > a[j + 1]  →  a[3] > a[4]  →  77 > 101  →  falso`.
+  - **Se evalúa** (debajo del código): explica en palabras qué condición se consulta, con qué valores,
+    qué resulta y a dónde sigue la ejecución (entra al `if`, vuelve al `for`, termina la pasada…).
   - **Traza**: la columna **Evaluación** reúne esas evaluaciones paso a paso, como una prueba de escritorio.
   - Haz clic en una fila de la traza para saltar a ese paso.
 - **Caso: precios de mercado**: ordena el catálogo `precios_mercado.csv` con merge sort, y con **Medir tiempos**

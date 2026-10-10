@@ -22,6 +22,12 @@ public interface PasoTrazable {
      */
     String evaluacion();
 
+    /**
+     * La misma evaluación contada en lenguaje natural: qué condición se consulta, con qué
+     * valores, qué resulta y a dónde va (o regresa) la ejecución después. Vacío si no aplica.
+     */
+    String explicacion();
+
     /** "verdadero" / "falso", para escribir evaluaciones en español. */
     static String vf(boolean valor) {
         return valor ? "verdadero" : "falso";

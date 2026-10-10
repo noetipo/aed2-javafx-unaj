@@ -66,11 +66,13 @@ class CodigoAlgoritmoTest {
         int[] datos = {9, 4, 7, 1, 8, 2, 6, 3};
         List<List<? extends PasoTrazable>> todos = List.of(Ordenamientos.pasosBurbuja(datos),
                 Ordenamientos.pasosInsercion(datos), QuickSort.pasos(datos),
-                Escalinata.pasos(Escalinata.arbolMemo(5), true));
+                Escalinata.pasos(Escalinata.arbolMemo(5), true),
+                Escalinata.pasos(Escalinata.arbolRecursivo(5), false));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
                     assertFalse(p.evaluacion().isBlank(), "Paso sin evaluación en la línea " + p.linea());
+                    assertFalse(p.explicacion().isBlank(), "Paso sin explicación en la línea " + p.linea());
                 }
             }
         }
