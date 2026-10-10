@@ -17,6 +17,8 @@ import pe.edu.unaj.aed2.semana02.caso.VistaCasoEscalinata;
 import pe.edu.unaj.aed2.semana02.vista.VisualizadorQuickSort;
 import pe.edu.unaj.aed2.semana03.caso.VistaCasoMototaxis;
 import pe.edu.unaj.aed2.semana03.vista.VisualizadorTablaHash;
+import pe.edu.unaj.aed2.semana04.caso.VistaCasoDiccionario;
+import pe.edu.unaj.aed2.semana04.vista.VisualizadorArbol;
 
 import java.util.function.Supplier;
 
@@ -85,7 +87,11 @@ public class App extends Application {
                 semana("Semana 03 · Búsqueda y tablas hash",
                         teoria("semana-03"),
                         new Entrada("Visualizador: tabla hash", VisualizadorTablaHash::new),
-                        new Entrada("Caso: padrón de mototaxis", VistaCasoMototaxis::new)));
+                        new Entrada("Caso: padrón de mototaxis", VistaCasoMototaxis::new)),
+                semana("Semana 04 · Árboles binarios de búsqueda",
+                        teoria("semana-04"),
+                        new Entrada("Visualizador: ABB", VisualizadorArbol::new),
+                        new Entrada("Caso: diccionario quechua", VistaCasoDiccionario::new)));
     }
 
     private TreeItem<Entrada> unidadII() {

@@ -57,21 +57,34 @@ public final class DibujoArbol {
             arista(gc, a, izquierdo.apply(n), xy);
             arista(gc, a, derecho.apply(n), xy);
         }
+        // En árboles grandes los nodos se achican para no encimarse; si quedan muy chicos, sin texto.
+        double radio = RADIO;
+        if (contador[0] > 1) {
+            radio = Math.min(radio, dx * 0.45);
+        }
+        if (profundidadMax > 0) {
+            radio = Math.min(radio, dy * 0.45);
+        }
+        radio = Math.max(3, radio);
         for (N n : posiciones.keySet()) {
             double[] a = xy.apply(n);
-            nodo(gc, a[0], a[1], etiqueta.apply(n), color.apply(n));
+            nodo(gc, a[0], a[1], radio >= 9 ? etiqueta.apply(n) : "", color.apply(n), radio);
         }
     }
 
     /** Dibuja un nodo circular con su etiqueta centrada. */
     public static void nodo(GraphicsContext gc, double x, double y, String texto, Color relleno) {
+        nodo(gc, x, y, texto, relleno, RADIO);
+    }
+
+    public static void nodo(GraphicsContext gc, double x, double y, String texto, Color relleno, double radio) {
         gc.setFill(relleno);
-        gc.fillOval(x - RADIO, y - RADIO, 2 * RADIO, 2 * RADIO);
+        gc.fillOval(x - radio, y - radio, 2 * radio, 2 * radio);
         gc.setStroke(Paleta.BORDE);
-        gc.setLineWidth(1.5);
-        gc.strokeOval(x - RADIO, y - RADIO, 2 * RADIO, 2 * RADIO);
+        gc.setLineWidth(radio < 9 ? 1 : 1.5);
+        gc.strokeOval(x - radio, y - radio, 2 * radio, 2 * radio);
         gc.setFill(Paleta.TEXTO);
-        gc.setFont(Font.font("System", FontWeight.BOLD, 12));
+        gc.setFont(Font.font("System", FontWeight.BOLD, Math.max(9, Math.min(12, radio * 0.7))));
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.fillText(texto, x, y);

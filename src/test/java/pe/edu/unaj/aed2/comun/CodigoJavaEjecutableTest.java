@@ -8,6 +8,7 @@ import pe.edu.unaj.aed2.semana01.modelo.Ordenamientos;
 import pe.edu.unaj.aed2.semana02.caso.Escalinata;
 import pe.edu.unaj.aed2.semana02.modelo.QuickSort;
 import pe.edu.unaj.aed2.semana03.modelo.TablaHash;
+import pe.edu.unaj.aed2.semana04.modelo.ArbolBusqueda;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +35,8 @@ class CodigoJavaEjecutableTest {
 
     static Stream<CodigoAlgoritmo> codigos() {
         return Stream.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
-                Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR);
+                Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
+                ArbolBusqueda.CODIGO_INSERTAR);
     }
 
     @ParameterizedTest
@@ -62,6 +64,11 @@ class CodigoJavaEjecutableTest {
         } else if (clase.equals("TablaHash")) {
             assertTrue(salida.contains("buscar(\"JUL-347\") = true"), salida);
             assertTrue(salida.contains("buscar(\"PUN-999\") = false"), salida);
+        } else if (clase.equals("ArbolBusqueda")) {
+            assertTrue(salida.contains("Inorden: [20, 30, 35, 40, 45, 50, 60, 65, 70, 80]"), salida);
+            assertTrue(salida.contains("buscar(45) = true"), salida);
+            assertTrue(salida.contains("buscar(55) = false"), salida);
+            assertTrue(salida.contains("Sin 30: [20, 35, 40, 45, 50, 60, 65, 70, 80]"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }

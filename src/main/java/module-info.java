@@ -25,4 +25,9 @@ module pe.edu.unaj.aed2 {
     exports pe.edu.unaj.aed2.semana03.vista;
     exports pe.edu.unaj.aed2.semana03.caso;
     exports pe.edu.unaj.aed2.semana03.tarea;
+
+    exports pe.edu.unaj.aed2.semana04.modelo;
+    exports pe.edu.unaj.aed2.semana04.vista;
+    exports pe.edu.unaj.aed2.semana04.caso;
+    exports pe.edu.unaj.aed2.semana04.tarea;
 }

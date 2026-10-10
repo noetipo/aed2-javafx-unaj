@@ -7,6 +7,7 @@ import pe.edu.unaj.aed2.semana01.modelo.Ordenamientos;
 import pe.edu.unaj.aed2.semana02.caso.Escalinata;
 import pe.edu.unaj.aed2.semana02.modelo.QuickSort;
 import pe.edu.unaj.aed2.semana03.modelo.TablaHash;
+import pe.edu.unaj.aed2.semana04.modelo.ArbolBusqueda;
 
 import java.util.List;
 import java.util.Map;
@@ -84,6 +85,13 @@ class CodigoAlgoritmoTest {
         verificar(TablaHash.CODIGO_INSERTAR, tabla.pasosInsertar("JUL-215", "x"));
         verificar(TablaHash.CODIGO_BUSCAR, tabla.pasosBuscar("JUL-347"));
         verificar(TablaHash.CODIGO_BUSCAR, tabla.pasosBuscar("PUN-999"));
+        for (int x : new int[]{55, 30, 60, 20, 50, 99}) {
+            ArbolBusqueda<Integer> arbol = arbolEjemplo();
+            verificar(ArbolBusqueda.CODIGO_INSERTAR, arbol.pasosInsertar(x));
+            verificar(ArbolBusqueda.CODIGO_BUSCAR, arbol.pasosBuscar(x));
+            verificar(ArbolBusqueda.CODIGO_ELIMINAR, arbolEjemplo().pasosEliminar(x));
+        }
+        verificar(ArbolBusqueda.CODIGO_INORDEN, arbolEjemplo().pasosInorden());
     }
 
     @Test
@@ -110,7 +118,10 @@ class CodigoAlgoritmoTest {
                 Escalinata.pasos(Escalinata.arbolMemo(5), true),
                 Escalinata.pasos(Escalinata.arbolRecursivo(5), false),
                 new TablaHash<String>(7).pasosInsertar("JUL-102", "x"),
-                ejemploTabla().pasosBuscar("JUL-347"), ejemploTabla().pasosBuscar("PUN-999"));
+                ejemploTabla().pasosBuscar("JUL-347"), ejemploTabla().pasosBuscar("PUN-999"),
+                arbolEjemplo().pasosInsertar(55), arbolEjemplo().pasosBuscar(45), arbolEjemplo().pasosBuscar(55),
+                arbolEjemplo().pasosEliminar(30), arbolEjemplo().pasosEliminar(60), arbolEjemplo().pasosEliminar(20),
+                arbolEjemplo().pasosEliminar(99), arbolEjemplo().pasosInorden());
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -119,6 +130,14 @@ class CodigoAlgoritmoTest {
                 }
             }
         }
+    }
+
+    private static ArbolBusqueda<Integer> arbolEjemplo() {
+        ArbolBusqueda<Integer> a = new ArbolBusqueda<>();
+        for (int c : new int[]{50, 30, 70, 20, 40, 60, 80, 35, 45, 65}) {
+            a.insertar(c);
+        }
+        return a;
     }
 
     private static TablaHash<String> ejemploTabla() {
@@ -142,6 +161,7 @@ class CodigoAlgoritmoTest {
     private static List<CodigoAlgoritmo> todos() {
         return List.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
                 Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
-                TablaHash.CODIGO_BUSCAR);
+                TablaHash.CODIGO_BUSCAR, ArbolBusqueda.CODIGO_INSERTAR, ArbolBusqueda.CODIGO_BUSCAR,
+                ArbolBusqueda.CODIGO_ELIMINAR, ArbolBusqueda.CODIGO_INORDEN);
     }
 }
