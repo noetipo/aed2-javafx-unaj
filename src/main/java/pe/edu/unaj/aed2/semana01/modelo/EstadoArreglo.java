@@ -1,6 +1,9 @@
 package pe.edu.unaj.aed2.semana01.modelo;
 
+import pe.edu.unaj.aed2.comun.traza.PasoTrazable;
+
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Fotografía inmutable del arreglo en un instante del ordenamiento.
@@ -12,15 +15,19 @@ import java.util.Arrays;
  * @param ordenados   cantidad de posiciones que ya están en su lugar definitivo
  * @param alFinal     si es true, las posiciones ordenadas son las últimas (burbuja);
  *                    si es false, son las primeras (inserción, selección)
+ * @param linea       línea del pseudocódigo que se ejecuta (0 si ninguna)
+ * @param variables   valores de las variables en este paso
  * @param descripcion texto explicativo para la leyenda
  */
-public record EstadoArreglo(int[] valores, int a, int b, Tipo tipo,
-                            int ordenados, boolean alFinal, String descripcion) {
+public record EstadoArreglo(int[] valores, int a, int b, Tipo tipo, int ordenados, boolean alFinal,
+                            int linea, Map<String, String> variables, String descripcion)
+        implements PasoTrazable {
 
     public enum Tipo { INICIO, COMPARACION, INTERCAMBIO, FIN }
 
     public EstadoArreglo {
         valores = valores.clone();
+        variables = PasoTrazable.copiar(variables);
     }
 
     @Override

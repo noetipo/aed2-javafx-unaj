@@ -6,6 +6,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
@@ -48,7 +50,7 @@ public class PanelAnimacion<T> extends BorderPane {
     private final BooleanProperty reproduciendo = new SimpleBooleanProperty(false);
     private final Timeline reproduccion;
 
-    private List<T> pasos = List.of();
+    private final ReadOnlyObjectWrapper<List<T>> pasos = new ReadOnlyObjectWrapper<>(List.of());
 
     public PanelAnimacion(Dibujante<T> dibujante, Function<T, String> descriptor) {
         this.dibujante = dibujante;
@@ -81,8 +83,9 @@ public class PanelAnimacion<T> extends BorderPane {
     /** Reemplaza la secuencia de pasos y vuelve al primero. */
     public void setPasos(List<T> nuevosPasos) {
         pausar();
-        pasos = List.copyOf(nuevosPasos);
-        total.set(pasos.size());
+        List<T> copia = List.copyOf(nuevosPasos);
+        total.set(copia.size());
+        pasos.set(copia);
         if (indice.get() == 0) {
             redibujar();
         } else {
@@ -91,7 +94,7 @@ public class PanelAnimacion<T> extends BorderPane {
     }
 
     public boolean siguiente() {
-        if (indice.get() < pasos.size() - 1) {
+        if (indice.get() < pasos.get().size() - 1) {
             indice.set(indice.get() + 1);
             return true;
         }
@@ -113,14 +116,22 @@ public class PanelAnimacion<T> extends BorderPane {
 
     public void irAlFinal() {
         pausar();
-        indice.set(Math.max(0, pasos.size() - 1));
+        indice.set(Math.max(0, pasos.get().size() - 1));
+    }
+
+    /** Salta directamente al paso {@code k} (se ignora si está fuera de rango). */
+    public void irA(int k) {
+        if (k >= 0 && k < pasos.get().size() && k != indice.get()) {
+            pausar();
+            indice.set(k);
+        }
     }
 
     public void reproducir() {
-        if (pasos.isEmpty()) {
+        if (pasos.get().isEmpty()) {
             return;
         }
-        if (indice.get() == pasos.size() - 1) {
+        if (indice.get() == pasos.get().size() - 1) {
             indice.set(0);
         }
         reproduccion.play();
@@ -151,8 +162,23 @@ public class PanelAnimacion<T> extends BorderPane {
         return reproduciendo;
     }
 
+    /** Secuencia actual de pasos; cambia cada vez que se llama a {@link #setPasos}. */
+    public ReadOnlyObjectProperty<List<T>> pasosProperty() {
+        return pasos.getReadOnlyProperty();
+    }
+
+    public List<T> pasos() {
+        return pasos.get();
+    }
+
+    /** Texto explicativo de un paso (el mismo que aparece en la leyenda). */
+    public String describir(T paso) {
+        return descriptor.apply(paso);
+    }
+
     public T pasoActual() {
-        return pasos.isEmpty() ? null : pasos.get(indice.get());
+        List<T> lista = pasos.get();
+        return lista.isEmpty() ? null : lista.get(Math.min(indice.get(), lista.size() - 1));
     }
 
     public void redibujar() {

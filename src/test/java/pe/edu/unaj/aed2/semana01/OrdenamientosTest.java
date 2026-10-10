@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -84,7 +85,8 @@ class OrdenamientosTest {
     @Test
     void estadoArregloEsInmutable() {
         int[] datos = {3, 2, 1};
-        EstadoArreglo e = new EstadoArreglo(datos, 0, 1, EstadoArreglo.Tipo.COMPARACION, 0, true, "");
+        EstadoArreglo e = new EstadoArreglo(datos, 0, 1, EstadoArreglo.Tipo.COMPARACION, 0, true, 0,
+                Map.of(), "");
         datos[0] = 99;
         e.valores()[1] = 99;
         assertArrayEquals(new int[]{3, 2, 1}, e.valores());
@@ -100,5 +102,24 @@ class OrdenamientosTest {
         }
         List<Producto> desc = catalogo.ordenadosPorPrecio(false);
         assertEquals(asc.get(0).precio(), desc.get(desc.size() - 1).precio());
+    }
+
+    @Test
+    void cadaPasoApuntaAUnaLineaValidaDelPseudocodigo() {
+        int[] datos = Ordenamientos.aleatorio(12, 3);
+        for (EstadoArreglo p : Ordenamientos.pasosBurbuja(datos)) {
+            assertTrue(p.linea() >= 0 && p.linea() <= Ordenamientos.PSEUDO_BURBUJA.size());
+        }
+        for (EstadoArreglo p : Ordenamientos.pasosInsercion(datos)) {
+            assertTrue(p.linea() >= 0 && p.linea() <= Ordenamientos.PSEUDO_INSERCION.size());
+        }
+    }
+
+    @Test
+    void trazaLlevaLaCuentaDeComparaciones() {
+        int[] datos = Ordenamientos.aleatorio(15, 8);
+        List<EstadoArreglo> pasos = Ordenamientos.pasosInsercion(datos);
+        String final_ = pasos.get(pasos.size() - 1).variables().get("comparaciones");
+        assertEquals(String.valueOf(Ordenamientos.insercion(datos.clone())), final_);
     }
 }

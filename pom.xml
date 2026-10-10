@@ -14,6 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
         <javafx.version>21.0.6</javafx.version>
+        <commonmark.version>0.30.1</commonmark.version>
         <junit.version>5.12.1</junit.version>
         <!-- Las pruebas de las tareas (@Tag("tarea")) no se ejecutan por defecto.
              Para correrlas: ./mvnw test -Dgroups=tarea -DexcludedGroups=none -->
@@ -30,6 +31,22 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <!-- Convierte la teoría (docs/semana-XX/README.md) a HTML para mostrarla en la app -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>${commonmark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+            <version>${commonmark.version}</version>
         </dependency>
 
         <dependency>
@@ -53,6 +70,17 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <!-- La carpeta docs/ se empaqueta para que la vista de Teoría la lea:
+                 una sola fuente para GitHub y para la aplicación. -->
+            <resource>
+                <directory>docs</directory>
+                <targetPath>pe/edu/unaj/aed2/docs</targetPath>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

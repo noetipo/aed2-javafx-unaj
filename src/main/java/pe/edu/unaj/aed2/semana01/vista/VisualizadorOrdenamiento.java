@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,17 +18,18 @@ import javafx.scene.text.TextAlignment;
 import pe.edu.unaj.aed2.comun.visual.ControlesPaso;
 import pe.edu.unaj.aed2.comun.visual.PanelAnimacion;
 import pe.edu.unaj.aed2.comun.visual.Paleta;
+import pe.edu.unaj.aed2.comun.visual.PanelTraza;
 import pe.edu.unaj.aed2.semana01.modelo.EstadoArreglo;
 import pe.edu.unaj.aed2.semana01.modelo.Ordenamientos;
 
 import java.util.List;
-import java.util.function.Function;
 
 /** Semana 01: animación paso a paso de burbuja e inserción. */
 public class VisualizadorOrdenamiento extends BorderPane {
 
     private final PanelAnimacion<EstadoArreglo> panel =
             new PanelAnimacion<>(VisualizadorOrdenamiento::dibujar, EstadoArreglo::descripcion);
+    private final PanelTraza<EstadoArreglo> traza = new PanelTraza<>(panel, Ordenamientos.PSEUDO_BURBUJA);
     private final ComboBox<String> algoritmo = new ComboBox<>();
     private final Spinner<Integer> tamanio = new Spinner<>(4, 30, 12);
     private final Label estadisticas = new Label();
@@ -54,17 +56,18 @@ public class VisualizadorOrdenamiento extends BorderPane {
         Label titulo = new Label("Semana 01 · Ordenamientos elementales O(n²)");
         titulo.getStyleClass().add("titulo-vista");
         setTop(new VBox(titulo, opciones));
-        setCenter(panel);
+        SplitPane division = new SplitPane(panel, traza);
+        division.setDividerPositions(0.6);
+        setCenter(division);
         setBottom(new ControlesPaso(panel));
         cargar();
     }
 
     private void cargar() {
         int[] datos = Ordenamientos.aleatorio(tamanio.getValue(), semilla);
-        Function<int[], List<EstadoArreglo>> generador = algoritmo.getValue().equals("Burbuja")
-                ? Ordenamientos::pasosBurbuja
-                : Ordenamientos::pasosInsercion;
-        List<EstadoArreglo> pasos = generador.apply(datos);
+        boolean burbuja = algoritmo.getValue().equals("Burbuja");
+        List<EstadoArreglo> pasos = burbuja ? Ordenamientos.pasosBurbuja(datos) : Ordenamientos.pasosInsercion(datos);
+        traza.setPseudocodigo(burbuja ? Ordenamientos.PSEUDO_BURBUJA : Ordenamientos.PSEUDO_INSERCION);
         long comparaciones = pasos.stream().filter(p -> p.tipo() == EstadoArreglo.Tipo.COMPARACION).count();
         long intercambios = pasos.stream().filter(p -> p.tipo() == EstadoArreglo.Tipo.INTERCAMBIO).count();
         estadisticas.setText("Comparaciones: " + comparaciones + " · Intercambios: " + intercambios);

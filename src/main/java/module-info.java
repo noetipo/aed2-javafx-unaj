@@ -1,11 +1,15 @@
 module pe.edu.unaj.aed2 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.web;
+    requires org.commonmark;
+    requires org.commonmark.ext.gfm.tables;
 
     exports pe.edu.unaj.aed2;
     exports pe.edu.unaj.aed2.comun.visual;
     exports pe.edu.unaj.aed2.comun.benchmark;
     exports pe.edu.unaj.aed2.comun.mapa;
+    exports pe.edu.unaj.aed2.comun.traza;
 
     // Un bloque por semana: exports de modelo, vista, caso y tarea.
     exports pe.edu.unaj.aed2.semana01.modelo;

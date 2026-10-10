@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import pe.edu.unaj.aed2.comun.visual.VistaTeoria;
 import pe.edu.unaj.aed2.semana01.caso.VistaCasoMercado;
 import pe.edu.unaj.aed2.semana01.vista.VisualizadorOrdenamiento;
 import pe.edu.unaj.aed2.semana02.caso.VistaCasoEscalinata;
@@ -71,9 +72,11 @@ public class App extends Application {
     private TreeItem<Entrada> unidadI() {
         return unidad("Unidad I",
                 semana("Semana 01 · Complejidad y ordenamiento",
+                        teoria("semana-01"),
                         new Entrada("Visualizador", VisualizadorOrdenamiento::new),
                         new Entrada("Caso: precios de mercado", VistaCasoMercado::new)),
                 semana("Semana 02 · Recursividad y divide y vencerás",
+                        teoria("semana-02"),
                         new Entrada("Visualizador: quicksort", VisualizadorQuickSort::new),
                         new Entrada("Caso: escalinata de Huaynaroque", VistaCasoEscalinata::new)));
     }
@@ -102,6 +105,11 @@ public class App extends Application {
         return item;
     }
 
+    /** Entrada de menú que muestra docs/semana-XX/README.md. */
+    private static Entrada teoria(String carpeta) {
+        return new Entrada("Teoría", () -> new VistaTeoria(carpeta + "/README.md"));
+    }
+
     private static Node bienvenida() {
         Label titulo = new Label("Bienvenido(a)");
         titulo.getStyleClass().add("titulo-vista");
@@ -109,7 +117,9 @@ public class App extends Application {
                 Elige una semana en el menú lateral.
 
                 Cada semana tiene:
-                  • Visualizador: animación paso a paso de la estructura o algoritmo.
+                  • Teoría: los conceptos de la semana.
+                  • Visualizador: animación paso a paso, con el pseudocódigo,
+                    las variables y la traza (prueba de escritorio).
                   • Caso práctico: aplicación a un problema de Juliaca / Puno.
                   • Tarea: plantilla con TODOs en el paquete semanaXX.tarea.""");
         VBox caja = new VBox(titulo, texto);

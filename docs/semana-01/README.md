@@ -32,8 +32,11 @@ Ordenes de crecimiento comunes: 1 < log n < n < n log n < n² < 2ⁿ.
 
 ## 4. En la aplicación
 
+- **Teoría**: este documento.
 - **Visualizador**: elige burbuja o inserción, cambia n y avanza paso a paso. Naranja = comparación,
-  rojo = intercambio, verde = posición ordenada.
+  rojo = intercambio, verde = posición ordenada. En el panel derecho:
+  - **Pseudocódigo**: resalta la línea que se ejecuta y muestra `fin`, `j`, `a[j]`, los contadores, etc.
+  - **Traza**: la prueba de escritorio completa; haz clic en una fila para saltar a ese paso.
 - **Caso: precios de mercado**: ordena el catálogo `precios_mercado.csv` con merge sort, y con **Medir tiempos**
   grafica burbuja, inserción y merge sort para n entre 500 y 6 000.
 

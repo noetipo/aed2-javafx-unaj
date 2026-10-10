@@ -58,3 +58,38 @@
 .bienvenida .titulo-vista {
     -fx-font-size: 24px;
 }
+
+/* Panel de pseudocódigo y traza (comun.visual.PanelTraza) */
+.pseudocodigo {
+    -fx-background-color: #263238;
+    -fx-background-radius: 6;
+    -fx-padding: 10;
+}
+.linea-codigo {
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 13px;
+    -fx-text-fill: #cfd8dc;
+    -fx-padding: 2 6 2 6;
+    -fx-background-radius: 4;
+}
+.linea-codigo.linea-actual {
+    -fx-background-color: #fdd835;
+    -fx-text-fill: #212121;
+    -fx-font-weight: bold;
+}
+.subtitulo-traza {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+.nombre-variable {
+    -fx-font-family: "Monospaced";
+    -fx-text-fill: #546e7a;
+}
+.valor-variable {
+    -fx-font-family: "Monospaced";
+    -fx-font-weight: bold;
+}
+.panel-traza .table-view {
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 12px;
+}

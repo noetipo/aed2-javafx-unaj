@@ -57,11 +57,14 @@ el número de llamadas baja a 2n − 1. Esta idea es la base de la programación
 
 ## 5. En la aplicación
 
-- **Visualizador: quicksort**: el fondo celeste marca el rango de la llamada actual, morado el pivote, amarillo la
+- **Teoría**: este documento.
+- **Visualizador: quicksort**: las pestañas **Pseudocódigo** y **Traza** muestran la línea que se ejecuta y los
+  valores de `inicio`, `fin`, `pivote`, `i` y `j` en cada paso. El fondo celeste marca el rango de la llamada actual, morado el pivote, amarillo la
   zona de menores, naranja el elemento comparado y verde los pivotes ya ubicados. Prueba la entrada
   "Ya ordenado (peor caso)" y observa la profundidad de recursión.
-- **Caso: escalinata de Huaynaroque**: árbol de llamadas de `formas(n)` con y sin memorización, y un gráfico
-  del número de llamadas para n = 1…25.
+- **Caso: escalinata de Huaynaroque**: ejecuta `formas(n)` llamada por llamada sobre el árbol (gris = pendiente,
+  naranja = en la pila, verde = retornó, amarillo = tomada de memo). La traza muestra la **pila de ejecución** y,
+  con memorización, el contenido de `memo`. La pestaña **Crecimiento** grafica las llamadas para n = 1…25.
 
 ## 6. Código relevante
 

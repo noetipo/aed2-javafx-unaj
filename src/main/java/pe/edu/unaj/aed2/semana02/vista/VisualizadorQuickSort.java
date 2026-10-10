@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,6 +18,7 @@ import javafx.scene.text.TextAlignment;
 import pe.edu.unaj.aed2.comun.visual.ControlesPaso;
 import pe.edu.unaj.aed2.comun.visual.PanelAnimacion;
 import pe.edu.unaj.aed2.comun.visual.Paleta;
+import pe.edu.unaj.aed2.comun.visual.PanelTraza;
 import pe.edu.unaj.aed2.semana02.modelo.EstadoParticion;
 import pe.edu.unaj.aed2.semana02.modelo.QuickSort;
 
@@ -29,6 +31,7 @@ public class VisualizadorQuickSort extends BorderPane {
 
     private final PanelAnimacion<EstadoParticion> panel =
             new PanelAnimacion<>(VisualizadorQuickSort::dibujar, EstadoParticion::descripcion);
+    private final PanelTraza<EstadoParticion> traza = new PanelTraza<>(panel, QuickSort.PSEUDOCODIGO);
     private final ComboBox<String> entrada = new ComboBox<>();
     private final Spinner<Integer> tamanio = new Spinner<>(4, 24, 10);
     private final Label estadisticas = new Label();
@@ -55,7 +58,9 @@ public class VisualizadorQuickSort extends BorderPane {
         Label titulo = new Label("Semana 02 · Quicksort: divide y vencerás");
         titulo.getStyleClass().add("titulo-vista");
         setTop(new VBox(titulo, opciones));
-        setCenter(panel);
+        SplitPane division = new SplitPane(panel, traza);
+        division.setDividerPositions(0.6);
+        setCenter(division);
         setBottom(new ControlesPaso(panel));
         cargar();
     }

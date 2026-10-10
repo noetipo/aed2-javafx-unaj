@@ -16,8 +16,12 @@ Java 17 (`maven.compiler.release`), JavaFX 21 y JUnit 5. El proyecto es **modula
 - Un paquete por semana: `pe.edu.unaj.aed2.semanaXX` con `modelo`, `vista`, `caso` y `tarea`.
 - `modelo/` es Java puro: **nunca** importar `javafx.*`. Los algoritmos animables exponen
   métodos `pasosXxx(...)` que devuelven `List<Estado>` con records inmutables; la vista solo dibuja.
-- Las vistas reutilizan `comun.visual.PanelAnimacion` + `ControlesPaso`, y los colores de `Paleta`
-  (no colores hardcodeados).
+- Los records de pasos implementan `comun.traza.PasoTrazable` (línea del pseudocódigo + variables) y el
+  modelo publica el pseudocódigo como `List<String>` (p. ej. `QuickSort.PSEUDOCODIGO`), con líneas numeradas desde 1.
+- Cada visualizador combina `PanelAnimacion` + `PanelTraza` (pestañas Pseudocódigo y Traza) en un `SplitPane`,
+  con `ControlesPaso` abajo. Los colores salen de `Paleta`, nunca hardcodeados.
+- La teoría de cada semana es `docs/semana-XX/README.md`. Maven la empaqueta en `pe/edu/unaj/aed2/docs/`
+  y `VistaTeoria` la muestra en la app (CommonMark + WebView). Es una sola fuente para GitHub y la app.
 - Los benchmarks usan `comun.benchmark.Cronometro` y `GraficoComplejidad`, y corren en un `Task`
   fuera del hilo de JavaFX.
 - `tarea/` contiene métodos con `// TODO n:` que lanzan `UnsupportedOperationException`. Sus pruebas
@@ -30,5 +34,5 @@ Java 17 (`maven.compiler.release`), JavaFX 21 y JUnit 5. El proyecto es **modula
 
 1. Crear `semanaXX/{modelo,vista,caso,tarea}` y sus pruebas.
 2. Exportar los paquetes en `module-info.java`.
-3. Registrar las vistas en `App.unidadI()` o `App.unidadII()`.
+3. Registrar en `App.unidadI()` o `App.unidadII()`: `teoria("semana-XX")`, el visualizador y el caso.
 4. Crear `docs/semana-XX/{README.md,laboratorio.md,tarea.md,img/}` y añadir la fila en la tabla del README.

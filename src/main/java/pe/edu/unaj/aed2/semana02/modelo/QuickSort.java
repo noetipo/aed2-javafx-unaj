@@ -1,8 +1,11 @@
 package pe.edu.unaj.aed2.semana02.modelo;
 
+import pe.edu.unaj.aed2.comun.traza.PasoTrazable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Quicksort con partición de Lomuto (pivote = último elemento del rango).
@@ -69,16 +72,29 @@ public final class QuickSort {
     // Pasos para la animación
     // ------------------------------------------------------------------
 
+    /** Pseudocódigo que acompaña a {@link #pasos}; las líneas se numeran desde 1. */
+    public static final List<String> PSEUDOCODIGO = List.of(
+            "quicksort(a, inicio, fin):",
+            "    si inicio ≥ fin: retornar",
+            "    pivote ← a[fin];  i ← inicio",
+            "    para j ← inicio hasta fin−1:",
+            "        si a[j] < pivote:",
+            "            intercambiar a[i] y a[j];  i ← i + 1",
+            "    intercambiar a[i] y a[fin]",
+            "    quicksort(a, inicio, i−1)",
+            "    quicksort(a, i+1, fin)");
+
     public static List<EstadoParticion> pasos(int[] original) {
         int[] a = original.clone();
         boolean[] fijos = new boolean[a.length];
         List<EstadoParticion> pasos = new ArrayList<>();
-        pasos.add(new EstadoParticion(a, -1, -1, -1, -1, -1, fijos, 0, EstadoParticion.Tipo.INICIO,
+        pasos.add(new EstadoParticion(a, -1, -1, -1, -1, -1, fijos, 0, EstadoParticion.Tipo.INICIO, 0,
+                Map.of(),
                 "Arreglo inicial. Quicksort particiona alrededor de un pivote y se llama a sí mismo."));
         pasos(a, 0, a.length - 1, 0, fijos, pasos);
         Arrays.fill(fijos, true);
-        pasos.add(new EstadoParticion(a, -1, -1, -1, -1, -1, fijos, 0, EstadoParticion.Tipo.FIN,
-                "Arreglo ordenado."));
+        pasos.add(new EstadoParticion(a, -1, -1, -1, -1, -1, fijos, 0, EstadoParticion.Tipo.FIN, 0,
+                Map.of(), "Arreglo ordenado."));
         return pasos;
     }
 
@@ -89,31 +105,42 @@ public final class QuickSort {
         }
         if (inicio == fin) {
             fijos[inicio] = true;
-            pasos.add(new EstadoParticion(a, inicio, fin, -1, -1, -1, fijos, nivel, EstadoParticion.Tipo.LLAMADA,
+            pasos.add(new EstadoParticion(a, inicio, fin, -1, -1, -1, fijos, nivel, EstadoParticion.Tipo.LLAMADA, 2,
+                    PasoTrazable.variables("inicio", inicio, "fin", fin, "nivel", nivel),
                     "quicksort(" + inicio + ", " + fin + "): un solo elemento, caso base."));
             return;
         }
-        pasos.add(new EstadoParticion(a, inicio, fin, fin, inicio, -1, fijos, nivel, EstadoParticion.Tipo.LLAMADA,
-                "quicksort(" + inicio + ", " + fin + ") nivel " + nivel + ": pivote = " + a[fin] + "."));
         int pivote = a[fin];
         int i = inicio;
+        pasos.add(new EstadoParticion(a, inicio, fin, fin, i, -1, fijos, nivel, EstadoParticion.Tipo.LLAMADA, 3,
+                variables(inicio, fin, nivel, pivote, i, null, a),
+                "quicksort(" + inicio + ", " + fin + ") nivel " + nivel + ": pivote = " + pivote + "."));
         for (int j = inicio; j < fin; j++) {
-            pasos.add(new EstadoParticion(a, inicio, fin, fin, i, j, fijos, nivel, EstadoParticion.Tipo.COMPARACION,
+            pasos.add(new EstadoParticion(a, inicio, fin, fin, i, j, fijos, nivel, EstadoParticion.Tipo.COMPARACION, 5,
+                    variables(inicio, fin, nivel, pivote, i, j, a),
                     "¿" + a[j] + " < " + pivote + "?"));
             if (a[j] < pivote) {
                 intercambiar(a, i, j);
                 pasos.add(new EstadoParticion(a, inicio, fin, fin, i, j, fijos, nivel,
-                        EstadoParticion.Tipo.INTERCAMBIO,
+                        EstadoParticion.Tipo.INTERCAMBIO, 6,
+                        variables(inicio, fin, nivel, pivote, i + 1, j, a),
                         "Sí: " + a[i] + " pasa a la zona de menores (posición " + i + ")."));
                 i++;
             }
         }
         intercambiar(a, i, fin);
         fijos[i] = true;
-        pasos.add(new EstadoParticion(a, inicio, fin, i, -1, -1, fijos, nivel, EstadoParticion.Tipo.PIVOTE_UBICADO,
+        pasos.add(new EstadoParticion(a, inicio, fin, i, -1, -1, fijos, nivel, EstadoParticion.Tipo.PIVOTE_UBICADO, 7,
+                variables(inicio, fin, nivel, pivote, i, null, a),
                 "El pivote " + pivote + " queda en su posición final " + i + "."));
         pasos(a, inicio, i - 1, nivel + 1, fijos, pasos);
         pasos(a, i + 1, fin, nivel + 1, fijos, pasos);
+    }
+
+    private static Map<String, String> variables(int inicio, int fin, int nivel, int pivote,
+                                                 int i, Integer j, int[] a) {
+        return PasoTrazable.variables("inicio", inicio, "fin", fin, "nivel", nivel, "pivote", pivote,
+                "i", i, "j", j == null ? "—" : j, "a[j]", j == null ? "—" : a[j]);
     }
 
     private static void intercambiar(int[] a, int i, int j) {

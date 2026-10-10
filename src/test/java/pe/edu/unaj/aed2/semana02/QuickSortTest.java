@@ -65,4 +65,11 @@ class QuickSortTest {
         long ubicados = pasos.stream().filter(p -> p.tipo() == EstadoParticion.Tipo.PIVOTE_UBICADO).count();
         assertTrue(ubicados >= 1 && ubicados <= original.length);
     }
+
+    @Test
+    void cadaPasoApuntaAUnaLineaValidaDelPseudocodigo() {
+        for (EstadoParticion p : QuickSort.pasos(new int[]{9, 4, 7, 1, 8, 2, 6})) {
+            assertTrue(p.linea() >= 0 && p.linea() <= QuickSort.PSEUDOCODIGO.size());
+        }
+    }
 }
