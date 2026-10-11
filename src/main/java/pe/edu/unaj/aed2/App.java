@@ -39,6 +39,8 @@ import pe.edu.unaj.aed2.semana13.caso.VistaCasoExamenes;
 import pe.edu.unaj.aed2.semana13.vista.VisualizadorReinas;
 import pe.edu.unaj.aed2.semana14.caso.VistaCasoPresupuesto;
 import pe.edu.unaj.aed2.semana14.vista.VisualizadorMochila;
+import pe.edu.unaj.aed2.semana15.caso.VistaCasoCompresion;
+import pe.edu.unaj.aed2.semana15.vista.VisualizadorHuffman;
 
 import java.util.function.Supplier;
 
@@ -155,7 +157,11 @@ public class App extends Application {
                 semana("Semana 14 · Programación dinámica",
                         teoria("semana-14"),
                         new Entrada("Visualizador: mochila 0/1", VisualizadorMochila::new),
-                        new Entrada("Caso: presupuesto participativo", VistaCasoPresupuesto::new)));
+                        new Entrada("Caso: presupuesto participativo", VistaCasoPresupuesto::new)),
+                semana("Semana 15 · Algoritmos voraces: Huffman",
+                        teoria("semana-15"),
+                        new Entrada("Visualizador: Huffman", VisualizadorHuffman::new),
+                        new Entrada("Caso: compresión de mensajes", VistaCasoCompresion::new)));
     }
 
     @SafeVarargs

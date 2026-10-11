@@ -73,6 +73,7 @@ src/main/java/pe/edu/unaj/aed2/
 | 12 | II | Flujo máximo: Edmonds–Karp | [docs/semana-12](docs/semana-12/README.md) |
 | 13 | II | Backtracking: N reinas y coloreo | [docs/semana-13](docs/semana-13/README.md) |
 | 14 | II | Programación dinámica: mochila 0/1 | [docs/semana-14](docs/semana-14/README.md) |
+| 15 | II | Algoritmos voraces: códigos de Huffman | [docs/semana-15](docs/semana-15/README.md) |
 
 ## Entregar tareas
 
