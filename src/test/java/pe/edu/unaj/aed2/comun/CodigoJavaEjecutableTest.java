@@ -19,6 +19,7 @@ import pe.edu.unaj.aed2.semana10.modelo.GrafoDirigido;
 import pe.edu.unaj.aed2.semana11.modelo.FloydWarshall;
 import pe.edu.unaj.aed2.semana12.modelo.RedFlujo;
 import pe.edu.unaj.aed2.semana13.modelo.NReinas;
+import pe.edu.unaj.aed2.semana14.modelo.Mochila;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -50,7 +51,8 @@ class CodigoJavaEjecutableTest {
                 Grafo.CODIGO_BFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())),
                 ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
                 GrafoDirigido.CODIGO_KAHN, FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())),
-                RedFlujo.codigo(RedFlujo.cargarLeche()), NReinas.CODIGO);
+                RedFlujo.codigo(RedFlujo.cargarLeche()), NReinas.CODIGO,
+                Mochila.CODIGO);
     }
 
     @ParameterizedTest
@@ -123,6 +125,9 @@ class CodigoJavaEjecutableTest {
         } else if (clase.equals("NReinas")) {
             assertTrue(salida.contains("Columnas por fila: [0, 4, 7, 5, 2, 6, 1, 3]"), salida);
             assertTrue(salida.contains("Q . . . . . . . "), salida);
+        } else if (clase.equals("Mochila")) {
+            assertTrue(salida.contains("Ganancia máxima: 93 soles"), salida);
+            assertTrue(salida.contains("Llevar: [Quinua, Chuño]"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }

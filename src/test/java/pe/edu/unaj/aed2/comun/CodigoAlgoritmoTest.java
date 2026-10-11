@@ -20,6 +20,7 @@ import pe.edu.unaj.aed2.semana10.modelo.MallaCurricular;
 import pe.edu.unaj.aed2.semana11.modelo.FloydWarshall;
 import pe.edu.unaj.aed2.semana12.modelo.RedFlujo;
 import pe.edu.unaj.aed2.semana13.modelo.NReinas;
+import pe.edu.unaj.aed2.semana14.modelo.Mochila;
 
 import java.util.List;
 import java.util.Map;
@@ -131,6 +132,7 @@ class CodigoAlgoritmoTest {
         for (int n = 1; n <= 8; n++) {
             verificar(NReinas.CODIGO, NReinas.pasos(n));
         }
+        verificar(Mochila.CODIGO, Mochila.pasos(Mochila.FERIA, Mochila.CAPACIDAD_FERIA));
         Grafo red = RedVial.cargar().grafo();
         for (String s : red.vertices()) {
             verificar(Grafo.CODIGO_BFS, red.pasosBfs(s, Map.of()));
@@ -180,7 +182,8 @@ class CodigoAlgoritmoTest {
                 MallaCurricular.cargar().grafoConError().pasosKahn(Map.of()),
                 MallaCurricular.cargar().grafoConError().pasosDfs(Map.of()),
                 FloydWarshall.pasos(GrafoPonderado.desde(RedVial.cargar()), Map.of()),
-                RedFlujo.cargarLeche().pasos("AYA", "JUL", Map.of()), NReinas.pasos(6), NReinas.pasos(3));
+                RedFlujo.cargarLeche().pasos("AYA", "JUL", Map.of()), NReinas.pasos(6), NReinas.pasos(3),
+                Mochila.pasos(Mochila.FERIA, Mochila.CAPACIDAD_FERIA));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -244,6 +247,6 @@ class CodigoAlgoritmoTest {
                 ArbolExpansion.codigoPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
                 GrafoDirigido.CODIGO_KAHN, GrafoDirigido.CODIGO_DFS,
                 FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())), RedFlujo.codigo(RedFlujo.cargarLeche()),
-                NReinas.CODIGO);
+                NReinas.CODIGO, Mochila.CODIGO);
     }
 }

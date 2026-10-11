@@ -37,6 +37,8 @@ import pe.edu.unaj.aed2.semana12.caso.VistaCasoLeche;
 import pe.edu.unaj.aed2.semana12.vista.VisualizadorFlujo;
 import pe.edu.unaj.aed2.semana13.caso.VistaCasoExamenes;
 import pe.edu.unaj.aed2.semana13.vista.VisualizadorReinas;
+import pe.edu.unaj.aed2.semana14.caso.VistaCasoPresupuesto;
+import pe.edu.unaj.aed2.semana14.vista.VisualizadorMochila;
 
 import java.util.function.Supplier;
 
@@ -149,7 +151,11 @@ public class App extends Application {
                 semana("Semana 13 · Backtracking",
                         teoria("semana-13"),
                         new Entrada("Visualizador: N reinas", VisualizadorReinas::new),
-                        new Entrada("Caso: horario de exámenes", VistaCasoExamenes::new)));
+                        new Entrada("Caso: horario de exámenes", VistaCasoExamenes::new)),
+                semana("Semana 14 · Programación dinámica",
+                        teoria("semana-14"),
+                        new Entrada("Visualizador: mochila 0/1", VisualizadorMochila::new),
+                        new Entrada("Caso: presupuesto participativo", VistaCasoPresupuesto::new)));
     }
 
     @SafeVarargs
