@@ -38,6 +38,14 @@ public final class DibujoRed {
     public static void dibujar(GraphicsContext gc, RedVial red, Function<String, Color> relleno,
                                Function<String, Color> borde, BiFunction<String, String, Trazo> carretera,
                                Function<String, String> nota, double ancho, double alto) {
+        dibujar(gc, red, relleno, borde, carretera, null, nota, ancho, alto);
+    }
+
+    /** Igual que el anterior, con un texto sobre cada carretera (por ejemplo, sus km); null para omitirlo. */
+    public static void dibujar(GraphicsContext gc, RedVial red, Function<String, Color> relleno,
+                               Function<String, Color> borde, BiFunction<String, String, Trazo> carretera,
+                               BiFunction<String, String, String> etiquetaCarretera,
+                               Function<String, String> nota, double ancho, double alto) {
         List<Lugar> lugares = red.lugares();
         lago(gc, lugares, ancho, alto);
 
@@ -45,7 +53,8 @@ public final class DibujoRed {
             double[] p = posicion(red, a[0], ancho, alto);
             double[] q = posicion(red, a[1], ancho, alto);
             Trazo t = carretera.apply(a[0], a[1]);
-            DibujoGrafo.arista(gc, p[0], p[1], q[0], q[1], null, false, t.color(), t.grosor());
+            DibujoGrafo.arista(gc, p[0], p[1], q[0], q[1],
+                    etiquetaCarretera == null ? null : etiquetaCarretera.apply(a[0], a[1]), false, t.color(), t.grosor());
         }
         for (String v : red.grafo().vertices()) {
             double[] p = posicion(red, v, ancho, alto);

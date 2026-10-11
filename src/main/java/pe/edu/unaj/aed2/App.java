@@ -25,6 +25,8 @@ import pe.edu.unaj.aed2.semana06.caso.VistaCasoTriaje;
 import pe.edu.unaj.aed2.semana06.vista.VisualizadorMonticulo;
 import pe.edu.unaj.aed2.semana07.caso.VistaCasoBloqueo;
 import pe.edu.unaj.aed2.semana07.vista.VisualizadorRecorridos;
+import pe.edu.unaj.aed2.semana08.caso.VistaCasoRutas;
+import pe.edu.unaj.aed2.semana08.vista.VisualizadorDijkstra;
 
 import java.util.function.Supplier;
 
@@ -113,7 +115,11 @@ public class App extends Application {
                 semana("Semana 07 · Grafos: BFS y DFS",
                         teoria("semana-07"),
                         new Entrada("Visualizador: recorridos", VisualizadorRecorridos::new),
-                        new Entrada("Caso: bloqueo de carreteras", VistaCasoBloqueo::new)));
+                        new Entrada("Caso: bloqueo de carreteras", VistaCasoBloqueo::new)),
+                semana("Semana 08 · Caminos más cortos: Dijkstra",
+                        teoria("semana-08"),
+                        new Entrada("Visualizador: Dijkstra", VisualizadorDijkstra::new),
+                        new Entrada("Caso: rutas de reparto", VistaCasoRutas::new)));
     }
 
     @SafeVarargs

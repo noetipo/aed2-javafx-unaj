@@ -12,6 +12,8 @@ import pe.edu.unaj.aed2.semana04.modelo.ArbolBusqueda;
 import pe.edu.unaj.aed2.semana05.modelo.ArbolAVL;
 import pe.edu.unaj.aed2.semana06.modelo.MonticuloMin;
 import pe.edu.unaj.aed2.semana07.modelo.Grafo;
+import pe.edu.unaj.aed2.semana07.modelo.RedVial;
+import pe.edu.unaj.aed2.semana08.modelo.GrafoPonderado;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -40,7 +42,7 @@ class CodigoJavaEjecutableTest {
         return Stream.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
                 Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
                 ArbolBusqueda.CODIGO_INSERTAR, ArbolAVL.CODIGO_INSERTAR, MonticuloMin.CODIGO_INSERTAR,
-                Grafo.CODIGO_BFS);
+                Grafo.CODIGO_BFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())));
     }
 
     @ParameterizedTest
@@ -86,6 +88,10 @@ class CodigoJavaEjecutableTest {
                     + " Desaguadero=5}"), salida);
             assertTrue(salida.contains("DFS desde Juliaca: [Juliaca, Puno, Chucuito, Ilave, Juli, Yunguyo,"
                     + " Desaguadero, Lampa, Pucará, Ayaviri, Azángaro, Putina, Huancané, Moho]"), salida);
+        } else if (clase.equals("Dijkstra")) {
+            assertTrue(salida.contains("Distancias desde Juliaca: {Azángaro=83, Huancané=65, Juliaca=0, Puno=49,"
+                    + " Putina=108}"), salida);
+            assertTrue(salida.contains("Camino a Putina: [Juliaca, Huancané, Putina] = 108 km"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }

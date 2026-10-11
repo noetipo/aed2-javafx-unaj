@@ -13,6 +13,7 @@ import pe.edu.unaj.aed2.semana06.modelo.Heapsort;
 import pe.edu.unaj.aed2.semana06.modelo.MonticuloMin;
 import pe.edu.unaj.aed2.semana07.modelo.Grafo;
 import pe.edu.unaj.aed2.semana07.modelo.RedVial;
+import pe.edu.unaj.aed2.semana08.modelo.GrafoPonderado;
 
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,10 @@ class CodigoAlgoritmoTest {
             verificar(MonticuloMin.CODIGO_EXTRAER, monticulo.pasosExtraer());
         }
         verificar(Heapsort.CODIGO, Heapsort.pasos(new int[]{35, 12, 48, 7, 26, 19, 41, 3, 30, 15}));
+        GrafoPonderado ponderado = GrafoPonderado.desde(RedVial.cargar());
+        for (String s : ponderado.vertices()) {
+            verificar(GrafoPonderado.codigo(ponderado), ponderado.pasosDijkstra(s, Map.of()));
+        }
         Grafo red = RedVial.cargar().grafo();
         for (String s : red.vertices()) {
             verificar(Grafo.CODIGO_BFS, red.pasosBfs(s, Map.of()));
@@ -146,7 +151,8 @@ class CodigoAlgoritmoTest {
                 arbolEjemplo().pasosEliminar(99), arbolEjemplo().pasosInorden(), avlEjemplo().pasosInsertar(5),
                 avlEjemplo().pasosInsertar(20), monticuloEjemplo().pasosInsertar(1), monticuloEjemplo().pasosExtraer(),
                 Heapsort.pasos(new int[]{4, 10, 3, 5, 1}), RedVial.cargar().grafo().pasosBfs("JUL", Map.of()),
-                RedVial.cargar().grafo().pasosDfs("JUL", Map.of()));
+                RedVial.cargar().grafo().pasosDfs("JUL", Map.of()),
+                GrafoPonderado.desde(RedVial.cargar()).pasosDijkstra("JUL", Map.of()));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -205,6 +211,6 @@ class CodigoAlgoritmoTest {
                 TablaHash.CODIGO_BUSCAR, ArbolBusqueda.CODIGO_INSERTAR, ArbolBusqueda.CODIGO_BUSCAR,
                 ArbolBusqueda.CODIGO_ELIMINAR, ArbolBusqueda.CODIGO_INORDEN, ArbolAVL.CODIGO_INSERTAR,
                 MonticuloMin.CODIGO_INSERTAR, MonticuloMin.CODIGO_EXTRAER, Heapsort.CODIGO, Grafo.CODIGO_BFS,
-                Grafo.CODIGO_DFS);
+                Grafo.CODIGO_DFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())));
     }
 }
