@@ -31,6 +31,8 @@ import pe.edu.unaj.aed2.semana09.caso.VistaCasoFibra;
 import pe.edu.unaj.aed2.semana09.vista.VisualizadorArbolExpansion;
 import pe.edu.unaj.aed2.semana10.caso.VistaCasoPlan;
 import pe.edu.unaj.aed2.semana10.vista.VisualizadorOrdenTopologico;
+import pe.edu.unaj.aed2.semana11.caso.VistaCasoAlmacen;
+import pe.edu.unaj.aed2.semana11.vista.VisualizadorFloyd;
 
 import java.util.function.Supplier;
 
@@ -131,7 +133,11 @@ public class App extends Application {
                 semana("Semana 10 · Orden topológico",
                         teoria("semana-10"),
                         new Entrada("Visualizador: Kahn y DFS", VisualizadorOrdenTopologico::new),
-                        new Entrada("Caso: plan de estudios", VistaCasoPlan::new)));
+                        new Entrada("Caso: plan de estudios", VistaCasoPlan::new)),
+                semana("Semana 11 · Todos los pares: Floyd–Warshall",
+                        teoria("semana-11"),
+                        new Entrada("Visualizador: Floyd–Warshall", VisualizadorFloyd::new),
+                        new Entrada("Caso: almacén para heladas", VistaCasoAlmacen::new)));
     }
 
     @SafeVarargs

@@ -17,6 +17,7 @@ import pe.edu.unaj.aed2.semana08.modelo.GrafoPonderado;
 import pe.edu.unaj.aed2.semana09.modelo.ArbolExpansion;
 import pe.edu.unaj.aed2.semana10.modelo.GrafoDirigido;
 import pe.edu.unaj.aed2.semana10.modelo.MallaCurricular;
+import pe.edu.unaj.aed2.semana11.modelo.FloydWarshall;
 
 import java.util.List;
 import java.util.Map;
@@ -122,6 +123,8 @@ class CodigoAlgoritmoTest {
             verificar(GrafoDirigido.CODIGO_KAHN, malla.pasosKahn(Map.of()));
             verificar(GrafoDirigido.CODIGO_DFS, malla.pasosDfs(Map.of()));
         }
+        verificar(FloydWarshall.codigo(ponderado),
+                FloydWarshall.pasos(FloydWarshall.subred(ponderado, FloydWarshall.SUBRED), Map.of()));
         Grafo red = RedVial.cargar().grafo();
         for (String s : red.vertices()) {
             verificar(Grafo.CODIGO_BFS, red.pasosBfs(s, Map.of()));
@@ -169,7 +172,8 @@ class CodigoAlgoritmoTest {
                 ArbolExpansion.pasosPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos()), "JUL", Map.of()),
                 MallaCurricular.cargar().grafo().pasosKahn(Map.of()), MallaCurricular.cargar().grafo().pasosDfs(Map.of()),
                 MallaCurricular.cargar().grafoConError().pasosKahn(Map.of()),
-                MallaCurricular.cargar().grafoConError().pasosDfs(Map.of()));
+                MallaCurricular.cargar().grafoConError().pasosDfs(Map.of()),
+                FloydWarshall.pasos(GrafoPonderado.desde(RedVial.cargar()), Map.of()));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -231,6 +235,7 @@ class CodigoAlgoritmoTest {
                 Grafo.CODIGO_DFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())),
                 ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
                 ArbolExpansion.codigoPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
-                GrafoDirigido.CODIGO_KAHN, GrafoDirigido.CODIGO_DFS);
+                GrafoDirigido.CODIGO_KAHN, GrafoDirigido.CODIGO_DFS,
+                FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())));
     }
 }

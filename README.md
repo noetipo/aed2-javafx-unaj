@@ -69,6 +69,7 @@ src/main/java/pe/edu/unaj/aed2/
 | 08 | II | Caminos más cortos: Dijkstra | [docs/semana-08](docs/semana-08/README.md) |
 | 09 | II | Árbol de expansión mínima: Kruskal y Prim | [docs/semana-09](docs/semana-09/README.md) |
 | 10 | II | Grafos dirigidos: orden topológico | [docs/semana-10](docs/semana-10/README.md) |
+| 11 | II | Todos los pares: Floyd–Warshall | [docs/semana-11](docs/semana-11/README.md) |
 
 ## Entregar tareas
 

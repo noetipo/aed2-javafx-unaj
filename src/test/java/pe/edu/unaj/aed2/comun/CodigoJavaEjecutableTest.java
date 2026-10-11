@@ -16,6 +16,7 @@ import pe.edu.unaj.aed2.semana07.modelo.RedVial;
 import pe.edu.unaj.aed2.semana08.modelo.GrafoPonderado;
 import pe.edu.unaj.aed2.semana09.modelo.ArbolExpansion;
 import pe.edu.unaj.aed2.semana10.modelo.GrafoDirigido;
+import pe.edu.unaj.aed2.semana11.modelo.FloydWarshall;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -46,7 +47,7 @@ class CodigoJavaEjecutableTest {
                 ArbolBusqueda.CODIGO_INSERTAR, ArbolAVL.CODIGO_INSERTAR, MonticuloMin.CODIGO_INSERTAR,
                 Grafo.CODIGO_BFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())),
                 ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
-                GrafoDirigido.CODIGO_KAHN);
+                GrafoDirigido.CODIGO_KAHN, FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())));
     }
 
     @ParameterizedTest
@@ -107,6 +108,11 @@ class CodigoJavaEjecutableTest {
             assertTrue(salida.contains("DFS:  [Programación, POO, Matemática, Discreta, AED I, AED II, Cálculo,"
                     + " Estadística, IA]"), salida);
             assertTrue(salida.contains("Con AED II -> AED I: Hay un ciclo: no existe orden topológico"), salida);
+        } else if (clase.equals("FloydWarshall")) {
+            assertTrue(salida.contains("Juliaca: [0, 49, 83, 65, 108]"), salida);
+            assertTrue(salida.contains("Azángaro: [83, 132, 0, 87, 44]"), salida);
+            assertTrue(salida.contains("Putina: [108, 157, 44, 43, 0]"), salida);
+            assertTrue(salida.contains("Puno -> Putina: [Puno, Juliaca, Huancané, Putina] = 157 km"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }
