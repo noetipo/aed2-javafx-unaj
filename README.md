@@ -71,6 +71,7 @@ src/main/java/pe/edu/unaj/aed2/
 | 10 | II | Grafos dirigidos: orden topológico | [docs/semana-10](docs/semana-10/README.md) |
 | 11 | II | Todos los pares: Floyd–Warshall | [docs/semana-11](docs/semana-11/README.md) |
 | 12 | II | Flujo máximo: Edmonds–Karp | [docs/semana-12](docs/semana-12/README.md) |
+| 13 | II | Backtracking: N reinas y coloreo | [docs/semana-13](docs/semana-13/README.md) |
 
 ## Entregar tareas
 

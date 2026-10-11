@@ -35,6 +35,8 @@ import pe.edu.unaj.aed2.semana11.caso.VistaCasoAlmacen;
 import pe.edu.unaj.aed2.semana11.vista.VisualizadorFloyd;
 import pe.edu.unaj.aed2.semana12.caso.VistaCasoLeche;
 import pe.edu.unaj.aed2.semana12.vista.VisualizadorFlujo;
+import pe.edu.unaj.aed2.semana13.caso.VistaCasoExamenes;
+import pe.edu.unaj.aed2.semana13.vista.VisualizadorReinas;
 
 import java.util.function.Supplier;
 
@@ -143,7 +145,11 @@ public class App extends Application {
                 semana("Semana 12 · Flujo máximo",
                         teoria("semana-12"),
                         new Entrada("Visualizador: Edmonds–Karp", VisualizadorFlujo::new),
-                        new Entrada("Caso: leche a la planta", VistaCasoLeche::new)));
+                        new Entrada("Caso: leche a la planta", VistaCasoLeche::new)),
+                semana("Semana 13 · Backtracking",
+                        teoria("semana-13"),
+                        new Entrada("Visualizador: N reinas", VisualizadorReinas::new),
+                        new Entrada("Caso: horario de exámenes", VistaCasoExamenes::new)));
     }
 
     @SafeVarargs

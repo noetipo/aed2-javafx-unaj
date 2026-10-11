@@ -18,6 +18,7 @@ import pe.edu.unaj.aed2.semana09.modelo.ArbolExpansion;
 import pe.edu.unaj.aed2.semana10.modelo.GrafoDirigido;
 import pe.edu.unaj.aed2.semana11.modelo.FloydWarshall;
 import pe.edu.unaj.aed2.semana12.modelo.RedFlujo;
+import pe.edu.unaj.aed2.semana13.modelo.NReinas;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -49,7 +50,7 @@ class CodigoJavaEjecutableTest {
                 Grafo.CODIGO_BFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())),
                 ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
                 GrafoDirigido.CODIGO_KAHN, FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())),
-                RedFlujo.codigo(RedFlujo.cargarLeche()));
+                RedFlujo.codigo(RedFlujo.cargarLeche()), NReinas.CODIGO);
     }
 
     @ParameterizedTest
@@ -119,6 +120,9 @@ class CodigoJavaEjecutableTest {
             assertTrue(salida.contains("Flujo máximo Ayaviri -> Juliaca: 16 camiones por día"), salida);
             assertTrue(salida.contains("Azángaro -> Pucará: 3/6"), salida);
             assertTrue(salida.contains("Lampa -> Pucará: 6/6"), salida);
+        } else if (clase.equals("NReinas")) {
+            assertTrue(salida.contains("Columnas por fila: [0, 4, 7, 5, 2, 6, 1, 3]"), salida);
+            assertTrue(salida.contains("Q . . . . . . . "), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }

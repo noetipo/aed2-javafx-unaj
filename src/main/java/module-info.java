@@ -70,4 +70,9 @@ module pe.edu.unaj.aed2 {
     exports pe.edu.unaj.aed2.semana12.vista;
     exports pe.edu.unaj.aed2.semana12.caso;
     exports pe.edu.unaj.aed2.semana12.tarea;
+
+    exports pe.edu.unaj.aed2.semana13.modelo;
+    exports pe.edu.unaj.aed2.semana13.vista;
+    exports pe.edu.unaj.aed2.semana13.caso;
+    exports pe.edu.unaj.aed2.semana13.tarea;
 }
