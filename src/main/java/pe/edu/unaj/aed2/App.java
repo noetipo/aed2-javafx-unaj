@@ -23,6 +23,8 @@ import pe.edu.unaj.aed2.semana05.caso.VistaCasoAVL;
 import pe.edu.unaj.aed2.semana05.vista.VisualizadorAVL;
 import pe.edu.unaj.aed2.semana06.caso.VistaCasoTriaje;
 import pe.edu.unaj.aed2.semana06.vista.VisualizadorMonticulo;
+import pe.edu.unaj.aed2.semana07.caso.VistaCasoBloqueo;
+import pe.edu.unaj.aed2.semana07.vista.VisualizadorRecorridos;
 
 import java.util.function.Supplier;
 
@@ -107,7 +109,11 @@ public class App extends Application {
     }
 
     private TreeItem<Entrada> unidadII() {
-        return unidad("Unidad II");
+        return unidad("Unidad II",
+                semana("Semana 07 · Grafos: BFS y DFS",
+                        teoria("semana-07"),
+                        new Entrada("Visualizador: recorridos", VisualizadorRecorridos::new),
+                        new Entrada("Caso: bloqueo de carreteras", VistaCasoBloqueo::new)));
     }
 
     @SafeVarargs

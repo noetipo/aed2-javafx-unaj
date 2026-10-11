@@ -11,6 +11,7 @@ import pe.edu.unaj.aed2.semana03.modelo.TablaHash;
 import pe.edu.unaj.aed2.semana04.modelo.ArbolBusqueda;
 import pe.edu.unaj.aed2.semana05.modelo.ArbolAVL;
 import pe.edu.unaj.aed2.semana06.modelo.MonticuloMin;
+import pe.edu.unaj.aed2.semana07.modelo.Grafo;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -38,7 +39,8 @@ class CodigoJavaEjecutableTest {
     static Stream<CodigoAlgoritmo> codigos() {
         return Stream.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
                 Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
-                ArbolBusqueda.CODIGO_INSERTAR, ArbolAVL.CODIGO_INSERTAR, MonticuloMin.CODIGO_INSERTAR);
+                ArbolBusqueda.CODIGO_INSERTAR, ArbolAVL.CODIGO_INSERTAR, MonticuloMin.CODIGO_INSERTAR,
+                Grafo.CODIGO_BFS);
     }
 
     @ParameterizedTest
@@ -78,6 +80,12 @@ class CodigoJavaEjecutableTest {
             assertTrue(salida.contains("Inorden: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"), salida);
             assertTrue(salida.contains("Altura: 4"), salida);
             assertTrue(salida.contains("Raíz: 8"), salida);
+        } else if (clase.equals("Grafo")) {
+            assertTrue(salida.contains("BFS desde Juliaca: {Juliaca=0, Puno=1, Lampa=1, Pucará=1, Azángaro=1,"
+                    + " Huancané=1, Chucuito=2, Ayaviri=2, Putina=2, Moho=2, Ilave=3, Juli=4, Yunguyo=5,"
+                    + " Desaguadero=5}"), salida);
+            assertTrue(salida.contains("DFS desde Juliaca: [Juliaca, Puno, Chucuito, Ilave, Juli, Yunguyo,"
+                    + " Desaguadero, Lampa, Pucará, Ayaviri, Azángaro, Putina, Huancané, Moho]"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }

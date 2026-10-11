@@ -11,6 +11,8 @@ import pe.edu.unaj.aed2.semana04.modelo.ArbolBusqueda;
 import pe.edu.unaj.aed2.semana05.modelo.ArbolAVL;
 import pe.edu.unaj.aed2.semana06.modelo.Heapsort;
 import pe.edu.unaj.aed2.semana06.modelo.MonticuloMin;
+import pe.edu.unaj.aed2.semana07.modelo.Grafo;
+import pe.edu.unaj.aed2.semana07.modelo.RedVial;
 
 import java.util.List;
 import java.util.Map;
@@ -103,6 +105,11 @@ class CodigoAlgoritmoTest {
             verificar(MonticuloMin.CODIGO_EXTRAER, monticulo.pasosExtraer());
         }
         verificar(Heapsort.CODIGO, Heapsort.pasos(new int[]{35, 12, 48, 7, 26, 19, 41, 3, 30, 15}));
+        Grafo red = RedVial.cargar().grafo();
+        for (String s : red.vertices()) {
+            verificar(Grafo.CODIGO_BFS, red.pasosBfs(s, Map.of()));
+            verificar(Grafo.CODIGO_DFS, red.pasosDfs(s, Map.of()));
+        }
         ArbolAVL<Integer> avl = new ArbolAVL<>();
         for (int x : new int[]{30, 20, 10, 12, 18, 15, 25, 25}) {
             verificar(ArbolAVL.CODIGO_INSERTAR, avl.pasosInsertar(x));
@@ -138,7 +145,8 @@ class CodigoAlgoritmoTest {
                 arbolEjemplo().pasosEliminar(30), arbolEjemplo().pasosEliminar(60), arbolEjemplo().pasosEliminar(20),
                 arbolEjemplo().pasosEliminar(99), arbolEjemplo().pasosInorden(), avlEjemplo().pasosInsertar(5),
                 avlEjemplo().pasosInsertar(20), monticuloEjemplo().pasosInsertar(1), monticuloEjemplo().pasosExtraer(),
-                Heapsort.pasos(new int[]{4, 10, 3, 5, 1}));
+                Heapsort.pasos(new int[]{4, 10, 3, 5, 1}), RedVial.cargar().grafo().pasosBfs("JUL", Map.of()),
+                RedVial.cargar().grafo().pasosDfs("JUL", Map.of()));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -196,6 +204,7 @@ class CodigoAlgoritmoTest {
                 Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
                 TablaHash.CODIGO_BUSCAR, ArbolBusqueda.CODIGO_INSERTAR, ArbolBusqueda.CODIGO_BUSCAR,
                 ArbolBusqueda.CODIGO_ELIMINAR, ArbolBusqueda.CODIGO_INORDEN, ArbolAVL.CODIGO_INSERTAR,
-                MonticuloMin.CODIGO_INSERTAR, MonticuloMin.CODIGO_EXTRAER, Heapsort.CODIGO);
+                MonticuloMin.CODIGO_INSERTAR, MonticuloMin.CODIGO_EXTRAER, Heapsort.CODIGO, Grafo.CODIGO_BFS,
+                Grafo.CODIGO_DFS);
     }
 }
