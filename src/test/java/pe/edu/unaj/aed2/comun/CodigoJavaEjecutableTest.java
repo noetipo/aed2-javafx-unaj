@@ -14,6 +14,7 @@ import pe.edu.unaj.aed2.semana06.modelo.MonticuloMin;
 import pe.edu.unaj.aed2.semana07.modelo.Grafo;
 import pe.edu.unaj.aed2.semana07.modelo.RedVial;
 import pe.edu.unaj.aed2.semana08.modelo.GrafoPonderado;
+import pe.edu.unaj.aed2.semana09.modelo.ArbolExpansion;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +43,8 @@ class CodigoJavaEjecutableTest {
         return Stream.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
                 Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
                 ArbolBusqueda.CODIGO_INSERTAR, ArbolAVL.CODIGO_INSERTAR, MonticuloMin.CODIGO_INSERTAR,
-                Grafo.CODIGO_BFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())));
+                Grafo.CODIGO_BFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())),
+                ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())));
     }
 
     @ParameterizedTest
@@ -92,6 +94,11 @@ class CodigoJavaEjecutableTest {
             assertTrue(salida.contains("Distancias desde Juliaca: {Azángaro=83, Huancané=65, Juliaca=0, Puno=49,"
                     + " Putina=108}"), salida);
             assertTrue(salida.contains("Camino a Putina: [Juliaca, Huancané, Putina] = 108 km"), salida);
+        } else if (clase.equals("ArbolExpansion")) {
+            assertTrue(salida.contains("Kruskal: [Putina-Huancané 43, Azángaro-Putina 44, Juliaca-Puno 49,"
+                    + " Juliaca-Huancané 65] = 201 km"), salida);
+            assertTrue(salida.contains("Prim desde Juliaca: [Juliaca-Puno 49, Juliaca-Huancané 65,"
+                    + " Huancané-Putina 43, Putina-Azángaro 44] = 201 km"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }

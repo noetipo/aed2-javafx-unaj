@@ -14,6 +14,7 @@ import pe.edu.unaj.aed2.semana06.modelo.MonticuloMin;
 import pe.edu.unaj.aed2.semana07.modelo.Grafo;
 import pe.edu.unaj.aed2.semana07.modelo.RedVial;
 import pe.edu.unaj.aed2.semana08.modelo.GrafoPonderado;
+import pe.edu.unaj.aed2.semana09.modelo.ArbolExpansion;
 
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,11 @@ class CodigoAlgoritmoTest {
         for (String s : ponderado.vertices()) {
             verificar(GrafoPonderado.codigo(ponderado), ponderado.pasosDijkstra(s, Map.of()));
         }
+        GrafoPonderado tendidos = GrafoPonderado.desde(ArbolExpansion.cargarTendidos());
+        verificar(ArbolExpansion.codigoKruskal(tendidos), ArbolExpansion.pasosKruskal(tendidos, Map.of()));
+        for (String s : tendidos.vertices()) {
+            verificar(ArbolExpansion.codigoPrim(tendidos), ArbolExpansion.pasosPrim(tendidos, s, Map.of()));
+        }
         Grafo red = RedVial.cargar().grafo();
         for (String s : red.vertices()) {
             verificar(Grafo.CODIGO_BFS, red.pasosBfs(s, Map.of()));
@@ -152,7 +158,9 @@ class CodigoAlgoritmoTest {
                 avlEjemplo().pasosInsertar(20), monticuloEjemplo().pasosInsertar(1), monticuloEjemplo().pasosExtraer(),
                 Heapsort.pasos(new int[]{4, 10, 3, 5, 1}), RedVial.cargar().grafo().pasosBfs("JUL", Map.of()),
                 RedVial.cargar().grafo().pasosDfs("JUL", Map.of()),
-                GrafoPonderado.desde(RedVial.cargar()).pasosDijkstra("JUL", Map.of()));
+                GrafoPonderado.desde(RedVial.cargar()).pasosDijkstra("JUL", Map.of()),
+                ArbolExpansion.pasosKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos()), Map.of()),
+                ArbolExpansion.pasosPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos()), "JUL", Map.of()));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -211,6 +219,8 @@ class CodigoAlgoritmoTest {
                 TablaHash.CODIGO_BUSCAR, ArbolBusqueda.CODIGO_INSERTAR, ArbolBusqueda.CODIGO_BUSCAR,
                 ArbolBusqueda.CODIGO_ELIMINAR, ArbolBusqueda.CODIGO_INORDEN, ArbolAVL.CODIGO_INSERTAR,
                 MonticuloMin.CODIGO_INSERTAR, MonticuloMin.CODIGO_EXTRAER, Heapsort.CODIGO, Grafo.CODIGO_BFS,
-                Grafo.CODIGO_DFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())));
+                Grafo.CODIGO_DFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())),
+                ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
+                ArbolExpansion.codigoPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())));
     }
 }

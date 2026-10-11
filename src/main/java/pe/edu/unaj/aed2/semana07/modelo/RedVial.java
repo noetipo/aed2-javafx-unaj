@@ -32,15 +32,23 @@ public final class RedVial {
     }
 
     public static RedVial cargar() {
+        return cargar(CARRETERAS);
+    }
+
+    /**
+     * Los mismos pueblos con otras aristas, leídas del recurso {@code aristas} (columnas desde;hasta).
+     * Lo usa la semana 09 para los posibles tendidos de fibra óptica.
+     */
+    public static RedVial cargar(String aristas) {
         Map<String, Lugar> pueblos = new LinkedHashMap<>();
         for (String[] c : leer(PUEBLOS)) {
             pueblos.put(c[0], new Lugar(c[0], c[1], Double.parseDouble(c[2]), Double.parseDouble(c[3])));
         }
         Grafo grafo = new Grafo();
         pueblos.keySet().forEach(grafo::agregarVertice);
-        for (String[] c : leer(CARRETERAS)) {
+        for (String[] c : leer(aristas)) {
             if (!pueblos.containsKey(c[0]) || !pueblos.containsKey(c[1])) {
-                throw new IllegalStateException("Carretera con un pueblo desconocido: " + c[0] + "-" + c[1]);
+                throw new IllegalStateException("Arista con un pueblo desconocido: " + c[0] + "-" + c[1]);
             }
             grafo.agregarArista(c[0], c[1]);
         }

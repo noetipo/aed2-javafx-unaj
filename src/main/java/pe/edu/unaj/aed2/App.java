@@ -27,6 +27,8 @@ import pe.edu.unaj.aed2.semana07.caso.VistaCasoBloqueo;
 import pe.edu.unaj.aed2.semana07.vista.VisualizadorRecorridos;
 import pe.edu.unaj.aed2.semana08.caso.VistaCasoRutas;
 import pe.edu.unaj.aed2.semana08.vista.VisualizadorDijkstra;
+import pe.edu.unaj.aed2.semana09.caso.VistaCasoFibra;
+import pe.edu.unaj.aed2.semana09.vista.VisualizadorArbolExpansion;
 
 import java.util.function.Supplier;
 
@@ -119,7 +121,11 @@ public class App extends Application {
                 semana("Semana 08 · Caminos más cortos: Dijkstra",
                         teoria("semana-08"),
                         new Entrada("Visualizador: Dijkstra", VisualizadorDijkstra::new),
-                        new Entrada("Caso: rutas de reparto", VistaCasoRutas::new)));
+                        new Entrada("Caso: rutas de reparto", VistaCasoRutas::new)),
+                semana("Semana 09 · Árbol de expansión mínima",
+                        teoria("semana-09"),
+                        new Entrada("Visualizador: Kruskal y Prim", VisualizadorArbolExpansion::new),
+                        new Entrada("Caso: red de fibra óptica", VistaCasoFibra::new)));
     }
 
     @SafeVarargs

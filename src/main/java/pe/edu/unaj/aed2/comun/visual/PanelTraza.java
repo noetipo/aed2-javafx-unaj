@@ -331,6 +331,7 @@ public class PanelTraza<T extends PasoTrazable> extends TabPane {
         for (Map.Entry<String, String> e : valores.entrySet()) {
             Label nombre = new Label(e.getKey());
             nombre.getStyleClass().add("nombre-variable");
+            nombre.setMinWidth(Region.USE_PREF_SIZE); // un valor largo no debe cortar el nombre con "..."
             Label valor = new Label(e.getValue());
             valor.getStyleClass().add("valor-variable");
             destino.addRow(fila++, nombre, valor);
