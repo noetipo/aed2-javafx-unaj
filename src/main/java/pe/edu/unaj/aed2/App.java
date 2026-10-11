@@ -33,6 +33,8 @@ import pe.edu.unaj.aed2.semana10.caso.VistaCasoPlan;
 import pe.edu.unaj.aed2.semana10.vista.VisualizadorOrdenTopologico;
 import pe.edu.unaj.aed2.semana11.caso.VistaCasoAlmacen;
 import pe.edu.unaj.aed2.semana11.vista.VisualizadorFloyd;
+import pe.edu.unaj.aed2.semana12.caso.VistaCasoLeche;
+import pe.edu.unaj.aed2.semana12.vista.VisualizadorFlujo;
 
 import java.util.function.Supplier;
 
@@ -137,7 +139,11 @@ public class App extends Application {
                 semana("Semana 11 · Todos los pares: Floyd–Warshall",
                         teoria("semana-11"),
                         new Entrada("Visualizador: Floyd–Warshall", VisualizadorFloyd::new),
-                        new Entrada("Caso: almacén para heladas", VistaCasoAlmacen::new)));
+                        new Entrada("Caso: almacén para heladas", VistaCasoAlmacen::new)),
+                semana("Semana 12 · Flujo máximo",
+                        teoria("semana-12"),
+                        new Entrada("Visualizador: Edmonds–Karp", VisualizadorFlujo::new),
+                        new Entrada("Caso: leche a la planta", VistaCasoLeche::new)));
     }
 
     @SafeVarargs

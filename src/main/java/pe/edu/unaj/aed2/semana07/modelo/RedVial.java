@@ -75,6 +75,20 @@ public final class RedVial {
         }
     }
 
+    /** Solo los pueblos pedidos (en ese orden) y las aristas entre ellos; útil para dibujar una zona. */
+    public RedVial zona(List<String> ids) {
+        Map<String, Lugar> elegidos = new LinkedHashMap<>();
+        ids.forEach(id -> elegidos.put(id, pueblos.get(id)));
+        Grafo g = new Grafo();
+        ids.forEach(g::agregarVertice);
+        for (String[] a : grafo.aristas()) {
+            if (elegidos.containsKey(a[0]) && elegidos.containsKey(a[1])) {
+                g.agregarArista(a[0], a[1]);
+            }
+        }
+        return new RedVial(elegidos, g);
+    }
+
     public Grafo grafo() {
         return grafo;
     }

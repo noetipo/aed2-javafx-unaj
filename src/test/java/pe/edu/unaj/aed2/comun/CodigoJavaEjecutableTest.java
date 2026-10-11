@@ -17,6 +17,7 @@ import pe.edu.unaj.aed2.semana08.modelo.GrafoPonderado;
 import pe.edu.unaj.aed2.semana09.modelo.ArbolExpansion;
 import pe.edu.unaj.aed2.semana10.modelo.GrafoDirigido;
 import pe.edu.unaj.aed2.semana11.modelo.FloydWarshall;
+import pe.edu.unaj.aed2.semana12.modelo.RedFlujo;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -47,7 +48,8 @@ class CodigoJavaEjecutableTest {
                 ArbolBusqueda.CODIGO_INSERTAR, ArbolAVL.CODIGO_INSERTAR, MonticuloMin.CODIGO_INSERTAR,
                 Grafo.CODIGO_BFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())),
                 ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
-                GrafoDirigido.CODIGO_KAHN, FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())));
+                GrafoDirigido.CODIGO_KAHN, FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())),
+                RedFlujo.codigo(RedFlujo.cargarLeche()));
     }
 
     @ParameterizedTest
@@ -113,6 +115,10 @@ class CodigoJavaEjecutableTest {
             assertTrue(salida.contains("Azángaro: [83, 132, 0, 87, 44]"), salida);
             assertTrue(salida.contains("Putina: [108, 157, 44, 43, 0]"), salida);
             assertTrue(salida.contains("Puno -> Putina: [Puno, Juliaca, Huancané, Putina] = 157 km"), salida);
+        } else if (clase.equals("FlujoMaximo")) {
+            assertTrue(salida.contains("Flujo máximo Ayaviri -> Juliaca: 16 camiones por día"), salida);
+            assertTrue(salida.contains("Azángaro -> Pucará: 3/6"), salida);
+            assertTrue(salida.contains("Lampa -> Pucará: 6/6"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }
