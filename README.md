@@ -63,6 +63,7 @@ src/main/java/pe/edu/unaj/aed2/
 | 02 | I | Recursividad y divide y vencerás | [docs/semana-02](docs/semana-02/README.md) |
 | 03 | I | Búsqueda y tablas hash | [docs/semana-03](docs/semana-03/README.md) |
 | 04 | I | Árboles binarios de búsqueda | [docs/semana-04](docs/semana-04/README.md) |
+| 05 | I | Árboles AVL | [docs/semana-05](docs/semana-05/README.md) |
 
 ## Entregar tareas
 

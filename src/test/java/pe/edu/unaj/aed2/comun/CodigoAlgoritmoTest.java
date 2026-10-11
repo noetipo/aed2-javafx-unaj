@@ -8,6 +8,7 @@ import pe.edu.unaj.aed2.semana02.caso.Escalinata;
 import pe.edu.unaj.aed2.semana02.modelo.QuickSort;
 import pe.edu.unaj.aed2.semana03.modelo.TablaHash;
 import pe.edu.unaj.aed2.semana04.modelo.ArbolBusqueda;
+import pe.edu.unaj.aed2.semana05.modelo.ArbolAVL;
 
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,10 @@ class CodigoAlgoritmoTest {
             verificar(ArbolBusqueda.CODIGO_ELIMINAR, arbolEjemplo().pasosEliminar(x));
         }
         verificar(ArbolBusqueda.CODIGO_INORDEN, arbolEjemplo().pasosInorden());
+        ArbolAVL<Integer> avl = new ArbolAVL<>();
+        for (int x : new int[]{30, 20, 10, 12, 18, 15, 25, 25}) {
+            verificar(ArbolAVL.CODIGO_INSERTAR, avl.pasosInsertar(x));
+        }
     }
 
     @Test
@@ -121,7 +126,8 @@ class CodigoAlgoritmoTest {
                 ejemploTabla().pasosBuscar("JUL-347"), ejemploTabla().pasosBuscar("PUN-999"),
                 arbolEjemplo().pasosInsertar(55), arbolEjemplo().pasosBuscar(45), arbolEjemplo().pasosBuscar(55),
                 arbolEjemplo().pasosEliminar(30), arbolEjemplo().pasosEliminar(60), arbolEjemplo().pasosEliminar(20),
-                arbolEjemplo().pasosEliminar(99), arbolEjemplo().pasosInorden());
+                arbolEjemplo().pasosEliminar(99), arbolEjemplo().pasosInorden(), avlEjemplo().pasosInsertar(5),
+                avlEjemplo().pasosInsertar(20));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -130,6 +136,14 @@ class CodigoAlgoritmoTest {
                 }
             }
         }
+    }
+
+    private static ArbolAVL<Integer> avlEjemplo() {
+        ArbolAVL<Integer> a = new ArbolAVL<>();
+        for (int x : new int[]{30, 20, 10, 12, 18, 15}) {
+            a.insertar(x);
+        }
+        return a;
     }
 
     private static ArbolBusqueda<Integer> arbolEjemplo() {
@@ -162,6 +176,6 @@ class CodigoAlgoritmoTest {
         return List.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
                 Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
                 TablaHash.CODIGO_BUSCAR, ArbolBusqueda.CODIGO_INSERTAR, ArbolBusqueda.CODIGO_BUSCAR,
-                ArbolBusqueda.CODIGO_ELIMINAR, ArbolBusqueda.CODIGO_INORDEN);
+                ArbolBusqueda.CODIGO_ELIMINAR, ArbolBusqueda.CODIGO_INORDEN, ArbolAVL.CODIGO_INSERTAR);
     }
 }

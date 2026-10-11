@@ -34,6 +34,17 @@ public final class DibujoArbol {
                                    Function<N, N> izquierdo, Function<N, N> derecho,
                                    Function<N, String> etiqueta, Function<N, Color> color,
                                    double ancho, double alto) {
+        dibujar(gc, raiz, izquierdo, derecho, etiqueta, color, null, ancho, alto);
+    }
+
+    /**
+     * Igual que el anterior, y además escribe una nota pequeña junto a cada nodo (por ejemplo,
+     * el factor de equilibrio en un AVL). Una nota que empieza con "!" se pinta en rojo.
+     */
+    public static <N> void dibujar(GraphicsContext gc, N raiz,
+                                   Function<N, N> izquierdo, Function<N, N> derecho,
+                                   Function<N, String> etiqueta, Function<N, Color> color,
+                                   Function<N, String> nota, double ancho, double alto) {
         if (raiz == null) {
             return;
         }
@@ -69,6 +80,15 @@ public final class DibujoArbol {
         for (N n : posiciones.keySet()) {
             double[] a = xy.apply(n);
             nodo(gc, a[0], a[1], radio >= 9 ? etiqueta.apply(n) : "", color.apply(n), radio);
+            String texto = nota == null || radio < 9 ? null : nota.apply(n);
+            if (texto != null && !texto.isEmpty()) {
+                boolean alerta = texto.startsWith("!");
+                gc.setFill(alerta ? Color.web("#c62828") : Color.web("#546e7a"));
+                gc.setFont(Font.font("System", alerta ? FontWeight.BOLD : FontWeight.NORMAL, 11));
+                gc.setTextAlign(TextAlignment.LEFT);
+                gc.setTextBaseline(VPos.BOTTOM);
+                gc.fillText(alerta ? texto.substring(1) : texto, a[0] + radio * 0.8, a[1] - radio * 0.7);
+            }
         }
     }
 
