@@ -43,6 +43,8 @@ import pe.edu.unaj.aed2.semana15.caso.VistaCasoCompresion;
 import pe.edu.unaj.aed2.semana15.vista.VisualizadorHuffman;
 import pe.edu.unaj.aed2.semana16.caso.VistaCasoAutocompletar;
 import pe.edu.unaj.aed2.semana16.vista.VisualizadorTrie;
+import pe.edu.unaj.aed2.semana17.caso.VistaCasoDron;
+import pe.edu.unaj.aed2.semana17.vista.VisualizadorViajante;
 
 import java.util.function.Supplier;
 
@@ -167,7 +169,11 @@ public class App extends Application {
                 semana("Semana 16 · Tries",
                         teoria("semana-16"),
                         new Entrada("Visualizador: trie", VisualizadorTrie::new),
-                        new Entrada("Caso: autocompletar quechua", VistaCasoAutocompletar::new)));
+                        new Entrada("Caso: autocompletar quechua", VistaCasoAutocompletar::new)),
+                semana("Semana 17 · Problemas difíciles: el viajante",
+                        teoria("semana-17"),
+                        new Entrada("Visualizador: vecino más cercano y 2-opt", VisualizadorViajante::new),
+                        new Entrada("Caso: ruta del dron de vacunas", VistaCasoDron::new)));
     }
 
     @SafeVarargs

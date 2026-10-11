@@ -22,6 +22,7 @@ import pe.edu.unaj.aed2.semana13.modelo.NReinas;
 import pe.edu.unaj.aed2.semana14.modelo.Mochila;
 import pe.edu.unaj.aed2.semana15.modelo.Huffman;
 import pe.edu.unaj.aed2.semana16.modelo.Trie;
+import pe.edu.unaj.aed2.semana17.modelo.Viajante;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -54,7 +55,8 @@ class CodigoJavaEjecutableTest {
                 ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
                 GrafoDirigido.CODIGO_KAHN, FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())),
                 RedFlujo.codigo(RedFlujo.cargarLeche()), NReinas.CODIGO,
-                Mochila.CODIGO, Huffman.CODIGO, Trie.CODIGO_INSERTAR);
+                Mochila.CODIGO, Huffman.CODIGO, Trie.CODIGO_INSERTAR,
+                new Viajante(RedVial.cargar(), Viajante.EJEMPLO).codigo("vecino", RedVial.cargar().nombres()));
     }
 
     @ParameterizedTest
@@ -137,6 +139,10 @@ class CodigoJavaEjecutableTest {
             assertTrue(salida.contains("pu -> [puka, puma, puriy, puñuy]"), salida);
             assertTrue(salida.contains("pa -> [pacha, para]"), salida);
             assertTrue(salida.contains("pi -> []"), salida);
+        } else if (clase.equals("Viajante")) {
+            assertTrue(salida.contains("Vecino más cercano: [Juliaca, Lampa, Azángaro, Ayaviri, Huancané, Moho, Puno,"
+                    + " Ilave] = 464 km"), salida);
+            assertTrue(salida.contains("Con 2-opt: ") && salida.contains("= 392 km"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }

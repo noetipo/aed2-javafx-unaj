@@ -75,6 +75,7 @@ src/main/java/pe/edu/unaj/aed2/
 | 14 | II | Programación dinámica: mochila 0/1 | [docs/semana-14](docs/semana-14/README.md) |
 | 15 | II | Algoritmos voraces: códigos de Huffman | [docs/semana-15](docs/semana-15/README.md) |
 | 16 | II | Tries: árbol de prefijos | [docs/semana-16](docs/semana-16/README.md) |
+| 17 | II | Problemas difíciles: el viajante y las heurísticas | [docs/semana-17](docs/semana-17/README.md) |
 
 ## Entregar tareas
 
