@@ -68,6 +68,7 @@ src/main/java/pe/edu/unaj/aed2/
 | 07 | II | Grafos: representación, BFS y DFS | [docs/semana-07](docs/semana-07/README.md) |
 | 08 | II | Caminos más cortos: Dijkstra | [docs/semana-08](docs/semana-08/README.md) |
 | 09 | II | Árbol de expansión mínima: Kruskal y Prim | [docs/semana-09](docs/semana-09/README.md) |
+| 10 | II | Grafos dirigidos: orden topológico | [docs/semana-10](docs/semana-10/README.md) |
 
 ## Entregar tareas
 

@@ -15,6 +15,7 @@ import pe.edu.unaj.aed2.semana07.modelo.Grafo;
 import pe.edu.unaj.aed2.semana07.modelo.RedVial;
 import pe.edu.unaj.aed2.semana08.modelo.GrafoPonderado;
 import pe.edu.unaj.aed2.semana09.modelo.ArbolExpansion;
+import pe.edu.unaj.aed2.semana10.modelo.GrafoDirigido;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -44,7 +45,8 @@ class CodigoJavaEjecutableTest {
                 Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
                 ArbolBusqueda.CODIGO_INSERTAR, ArbolAVL.CODIGO_INSERTAR, MonticuloMin.CODIGO_INSERTAR,
                 Grafo.CODIGO_BFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())),
-                ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())));
+                ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
+                GrafoDirigido.CODIGO_KAHN);
     }
 
     @ParameterizedTest
@@ -99,6 +101,12 @@ class CodigoJavaEjecutableTest {
                     + " Juliaca-Huancané 65] = 201 km"), salida);
             assertTrue(salida.contains("Prim desde Juliaca: [Juliaca-Puno 49, Juliaca-Huancané 65,"
                     + " Huancané-Putina 43, Putina-Azángaro 44] = 201 km"), salida);
+        } else if (clase.equals("OrdenTopologico")) {
+            assertTrue(salida.contains("Kahn: [Matemática, Programación, Cálculo, Discreta, POO, Estadística, AED I,"
+                    + " AED II, IA]"), salida);
+            assertTrue(salida.contains("DFS:  [Programación, POO, Matemática, Discreta, AED I, AED II, Cálculo,"
+                    + " Estadística, IA]"), salida);
+            assertTrue(salida.contains("Con AED II -> AED I: Hay un ciclo: no existe orden topológico"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }

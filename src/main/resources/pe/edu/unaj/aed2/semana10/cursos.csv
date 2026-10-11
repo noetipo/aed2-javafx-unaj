@@ -1,0 +1,17 @@
+id;nombre;corto;fila
+MAT;Matemática Básica;Matemática;0
+PRO;Introducción a la Programación;Programación;2
+COM;Comunicación;Comunicación;4
+CAL;Cálculo I;Cálculo I;0
+DIS;Matemática Discreta;Discreta;1
+POO;Programación Orientada a Objetos;POO;2
+MET;Metodología de la Investigación;Metodología;4
+EST;Estadística;Estadística;0
+AED;Algoritmos y Estructuras de Datos I;AED I;1
+BDA;Base de Datos;Base de Datos;3
+AE2;Algoritmos y Estructuras de Datos II;AED II;1
+SOP;Sistemas Operativos;Sist. Operativos;2
+ISW;Ingeniería de Software;Ing. Software;3
+INA;Inteligencia Artificial;Int. Artificial;0
+RED;Redes de Computadoras;Redes;2
+TES;Proyecto de Tesis;Tesis;3

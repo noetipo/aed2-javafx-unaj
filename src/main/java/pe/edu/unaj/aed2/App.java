@@ -29,6 +29,8 @@ import pe.edu.unaj.aed2.semana08.caso.VistaCasoRutas;
 import pe.edu.unaj.aed2.semana08.vista.VisualizadorDijkstra;
 import pe.edu.unaj.aed2.semana09.caso.VistaCasoFibra;
 import pe.edu.unaj.aed2.semana09.vista.VisualizadorArbolExpansion;
+import pe.edu.unaj.aed2.semana10.caso.VistaCasoPlan;
+import pe.edu.unaj.aed2.semana10.vista.VisualizadorOrdenTopologico;
 
 import java.util.function.Supplier;
 
@@ -125,7 +127,11 @@ public class App extends Application {
                 semana("Semana 09 · Árbol de expansión mínima",
                         teoria("semana-09"),
                         new Entrada("Visualizador: Kruskal y Prim", VisualizadorArbolExpansion::new),
-                        new Entrada("Caso: red de fibra óptica", VistaCasoFibra::new)));
+                        new Entrada("Caso: red de fibra óptica", VistaCasoFibra::new)),
+                semana("Semana 10 · Orden topológico",
+                        teoria("semana-10"),
+                        new Entrada("Visualizador: Kahn y DFS", VisualizadorOrdenTopologico::new),
+                        new Entrada("Caso: plan de estudios", VistaCasoPlan::new)));
     }
 
     @SafeVarargs

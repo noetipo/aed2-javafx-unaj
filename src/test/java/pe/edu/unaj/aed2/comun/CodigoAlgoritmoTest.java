@@ -15,6 +15,8 @@ import pe.edu.unaj.aed2.semana07.modelo.Grafo;
 import pe.edu.unaj.aed2.semana07.modelo.RedVial;
 import pe.edu.unaj.aed2.semana08.modelo.GrafoPonderado;
 import pe.edu.unaj.aed2.semana09.modelo.ArbolExpansion;
+import pe.edu.unaj.aed2.semana10.modelo.GrafoDirigido;
+import pe.edu.unaj.aed2.semana10.modelo.MallaCurricular;
 
 import java.util.List;
 import java.util.Map;
@@ -116,6 +118,10 @@ class CodigoAlgoritmoTest {
         for (String s : tendidos.vertices()) {
             verificar(ArbolExpansion.codigoPrim(tendidos), ArbolExpansion.pasosPrim(tendidos, s, Map.of()));
         }
+        for (GrafoDirigido malla : List.of(MallaCurricular.cargar().grafo(), MallaCurricular.cargar().grafoConError())) {
+            verificar(GrafoDirigido.CODIGO_KAHN, malla.pasosKahn(Map.of()));
+            verificar(GrafoDirigido.CODIGO_DFS, malla.pasosDfs(Map.of()));
+        }
         Grafo red = RedVial.cargar().grafo();
         for (String s : red.vertices()) {
             verificar(Grafo.CODIGO_BFS, red.pasosBfs(s, Map.of()));
@@ -160,7 +166,10 @@ class CodigoAlgoritmoTest {
                 RedVial.cargar().grafo().pasosDfs("JUL", Map.of()),
                 GrafoPonderado.desde(RedVial.cargar()).pasosDijkstra("JUL", Map.of()),
                 ArbolExpansion.pasosKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos()), Map.of()),
-                ArbolExpansion.pasosPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos()), "JUL", Map.of()));
+                ArbolExpansion.pasosPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos()), "JUL", Map.of()),
+                MallaCurricular.cargar().grafo().pasosKahn(Map.of()), MallaCurricular.cargar().grafo().pasosDfs(Map.of()),
+                MallaCurricular.cargar().grafoConError().pasosKahn(Map.of()),
+                MallaCurricular.cargar().grafoConError().pasosDfs(Map.of()));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -221,6 +230,7 @@ class CodigoAlgoritmoTest {
                 MonticuloMin.CODIGO_INSERTAR, MonticuloMin.CODIGO_EXTRAER, Heapsort.CODIGO, Grafo.CODIGO_BFS,
                 Grafo.CODIGO_DFS, GrafoPonderado.codigo(GrafoPonderado.desde(RedVial.cargar())),
                 ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
-                ArbolExpansion.codigoPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())));
+                ArbolExpansion.codigoPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
+                GrafoDirigido.CODIGO_KAHN, GrafoDirigido.CODIGO_DFS);
     }
 }
