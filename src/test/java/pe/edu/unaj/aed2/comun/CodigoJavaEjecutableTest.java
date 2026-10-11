@@ -21,6 +21,7 @@ import pe.edu.unaj.aed2.semana12.modelo.RedFlujo;
 import pe.edu.unaj.aed2.semana13.modelo.NReinas;
 import pe.edu.unaj.aed2.semana14.modelo.Mochila;
 import pe.edu.unaj.aed2.semana15.modelo.Huffman;
+import pe.edu.unaj.aed2.semana16.modelo.Trie;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -53,7 +54,7 @@ class CodigoJavaEjecutableTest {
                 ArbolExpansion.codigoKruskal(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
                 GrafoDirigido.CODIGO_KAHN, FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())),
                 RedFlujo.codigo(RedFlujo.cargarLeche()), NReinas.CODIGO,
-                Mochila.CODIGO, Huffman.CODIGO);
+                Mochila.CODIGO, Huffman.CODIGO, Trie.CODIGO_INSERTAR);
     }
 
     @ParameterizedTest
@@ -132,6 +133,10 @@ class CodigoJavaEjecutableTest {
         } else if (clase.equals("Huffman")) {
             assertTrue(salida.contains("Huffman: 51 bits; ASCII: 136 bits"), salida);
             assertTrue(salida.contains("a=11"), salida);
+        } else if (clase.equals("Trie")) {
+            assertTrue(salida.contains("pu -> [puka, puma, puriy, puñuy]"), salida);
+            assertTrue(salida.contains("pa -> [pacha, para]"), salida);
+            assertTrue(salida.contains("pi -> []"), salida);
         } else {
             throw new AssertionError("Agrega aquí cómo verificar la salida de " + clase);
         }

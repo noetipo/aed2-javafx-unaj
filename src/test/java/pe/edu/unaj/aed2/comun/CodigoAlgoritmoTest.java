@@ -22,6 +22,7 @@ import pe.edu.unaj.aed2.semana12.modelo.RedFlujo;
 import pe.edu.unaj.aed2.semana13.modelo.NReinas;
 import pe.edu.unaj.aed2.semana14.modelo.Mochila;
 import pe.edu.unaj.aed2.semana15.modelo.Huffman;
+import pe.edu.unaj.aed2.semana16.modelo.Trie;
 
 import java.util.List;
 import java.util.Map;
@@ -137,6 +138,10 @@ class CodigoAlgoritmoTest {
         for (String t : List.of(Huffman.EJEMPLO, "a", "aaab", "Allillanchu?")) {
             verificar(Huffman.CODIGO, Huffman.pasos(t));
         }
+        verificar(Trie.CODIGO_INSERTAR, Trie.pasosInsertar(Trie.EJEMPLO));
+        for (String p : List.of("", "p", "pu", "pi", "pacha", "x")) {
+            verificar(Trie.CODIGO_AUTOCOMPLETAR, Trie.pasosAutocompletar(Trie.EJEMPLO, p));
+        }
         Grafo red = RedVial.cargar().grafo();
         for (String s : red.vertices()) {
             verificar(Grafo.CODIGO_BFS, red.pasosBfs(s, Map.of()));
@@ -187,7 +192,9 @@ class CodigoAlgoritmoTest {
                 MallaCurricular.cargar().grafoConError().pasosDfs(Map.of()),
                 FloydWarshall.pasos(GrafoPonderado.desde(RedVial.cargar()), Map.of()),
                 RedFlujo.cargarLeche().pasos("AYA", "JUL", Map.of()), NReinas.pasos(6), NReinas.pasos(3),
-                Mochila.pasos(Mochila.FERIA, Mochila.CAPACIDAD_FERIA), Huffman.pasos(Huffman.EJEMPLO));
+                Mochila.pasos(Mochila.FERIA, Mochila.CAPACIDAD_FERIA), Huffman.pasos(Huffman.EJEMPLO),
+                Trie.pasosInsertar(Trie.EJEMPLO), Trie.pasosAutocompletar(Trie.EJEMPLO, "pu"),
+                Trie.pasosAutocompletar(Trie.EJEMPLO, "pi"));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -251,6 +258,6 @@ class CodigoAlgoritmoTest {
                 ArbolExpansion.codigoPrim(GrafoPonderado.desde(ArbolExpansion.cargarTendidos())),
                 GrafoDirigido.CODIGO_KAHN, GrafoDirigido.CODIGO_DFS,
                 FloydWarshall.codigo(GrafoPonderado.desde(RedVial.cargar())), RedFlujo.codigo(RedFlujo.cargarLeche()),
-                NReinas.CODIGO, Mochila.CODIGO, Huffman.CODIGO);
+                NReinas.CODIGO, Mochila.CODIGO, Huffman.CODIGO, Trie.CODIGO_INSERTAR, Trie.CODIGO_AUTOCOMPLETAR);
     }
 }

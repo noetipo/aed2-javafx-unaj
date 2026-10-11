@@ -41,6 +41,8 @@ import pe.edu.unaj.aed2.semana14.caso.VistaCasoPresupuesto;
 import pe.edu.unaj.aed2.semana14.vista.VisualizadorMochila;
 import pe.edu.unaj.aed2.semana15.caso.VistaCasoCompresion;
 import pe.edu.unaj.aed2.semana15.vista.VisualizadorHuffman;
+import pe.edu.unaj.aed2.semana16.caso.VistaCasoAutocompletar;
+import pe.edu.unaj.aed2.semana16.vista.VisualizadorTrie;
 
 import java.util.function.Supplier;
 
@@ -161,7 +163,11 @@ public class App extends Application {
                 semana("Semana 15 · Algoritmos voraces: Huffman",
                         teoria("semana-15"),
                         new Entrada("Visualizador: Huffman", VisualizadorHuffman::new),
-                        new Entrada("Caso: compresión de mensajes", VistaCasoCompresion::new)));
+                        new Entrada("Caso: compresión de mensajes", VistaCasoCompresion::new)),
+                semana("Semana 16 · Tries",
+                        teoria("semana-16"),
+                        new Entrada("Visualizador: trie", VisualizadorTrie::new),
+                        new Entrada("Caso: autocompletar quechua", VistaCasoAutocompletar::new)));
     }
 
     @SafeVarargs
