@@ -21,6 +21,8 @@ import pe.edu.unaj.aed2.semana04.caso.VistaCasoDiccionario;
 import pe.edu.unaj.aed2.semana04.vista.VisualizadorArbol;
 import pe.edu.unaj.aed2.semana05.caso.VistaCasoAVL;
 import pe.edu.unaj.aed2.semana05.vista.VisualizadorAVL;
+import pe.edu.unaj.aed2.semana06.caso.VistaCasoTriaje;
+import pe.edu.unaj.aed2.semana06.vista.VisualizadorMonticulo;
 
 import java.util.function.Supplier;
 
@@ -97,7 +99,11 @@ public class App extends Application {
                 semana("Semana 05 · Árboles AVL",
                         teoria("semana-05"),
                         new Entrada("Visualizador: AVL", VisualizadorAVL::new),
-                        new Entrada("Caso: diccionario con AVL", VistaCasoAVL::new)));
+                        new Entrada("Caso: diccionario con AVL", VistaCasoAVL::new)),
+                semana("Semana 06 · Montículos y colas de prioridad",
+                        teoria("semana-06"),
+                        new Entrada("Visualizador: montículo y heapsort", VisualizadorMonticulo::new),
+                        new Entrada("Caso: emergencias con triaje", VistaCasoTriaje::new)));
     }
 
     private TreeItem<Entrada> unidadII() {

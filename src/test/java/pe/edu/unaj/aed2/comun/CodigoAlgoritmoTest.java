@@ -9,6 +9,8 @@ import pe.edu.unaj.aed2.semana02.modelo.QuickSort;
 import pe.edu.unaj.aed2.semana03.modelo.TablaHash;
 import pe.edu.unaj.aed2.semana04.modelo.ArbolBusqueda;
 import pe.edu.unaj.aed2.semana05.modelo.ArbolAVL;
+import pe.edu.unaj.aed2.semana06.modelo.Heapsort;
+import pe.edu.unaj.aed2.semana06.modelo.MonticuloMin;
 
 import java.util.List;
 import java.util.Map;
@@ -93,6 +95,14 @@ class CodigoAlgoritmoTest {
             verificar(ArbolBusqueda.CODIGO_ELIMINAR, arbolEjemplo().pasosEliminar(x));
         }
         verificar(ArbolBusqueda.CODIGO_INORDEN, arbolEjemplo().pasosInorden());
+        MonticuloMin<Integer> monticulo = new MonticuloMin<>();
+        for (int x : new int[]{40, 20, 50, 10, 30, 15, 5}) {
+            verificar(MonticuloMin.CODIGO_INSERTAR, monticulo.pasosInsertar(x));
+        }
+        while (!monticulo.estaVacio()) {
+            verificar(MonticuloMin.CODIGO_EXTRAER, monticulo.pasosExtraer());
+        }
+        verificar(Heapsort.CODIGO, Heapsort.pasos(new int[]{35, 12, 48, 7, 26, 19, 41, 3, 30, 15}));
         ArbolAVL<Integer> avl = new ArbolAVL<>();
         for (int x : new int[]{30, 20, 10, 12, 18, 15, 25, 25}) {
             verificar(ArbolAVL.CODIGO_INSERTAR, avl.pasosInsertar(x));
@@ -127,7 +137,8 @@ class CodigoAlgoritmoTest {
                 arbolEjemplo().pasosInsertar(55), arbolEjemplo().pasosBuscar(45), arbolEjemplo().pasosBuscar(55),
                 arbolEjemplo().pasosEliminar(30), arbolEjemplo().pasosEliminar(60), arbolEjemplo().pasosEliminar(20),
                 arbolEjemplo().pasosEliminar(99), arbolEjemplo().pasosInorden(), avlEjemplo().pasosInsertar(5),
-                avlEjemplo().pasosInsertar(20));
+                avlEjemplo().pasosInsertar(20), monticuloEjemplo().pasosInsertar(1), monticuloEjemplo().pasosExtraer(),
+                Heapsort.pasos(new int[]{4, 10, 3, 5, 1}));
         for (List<? extends PasoTrazable> pasos : todos) {
             for (PasoTrazable p : pasos) {
                 if (p.linea() > 0) {
@@ -136,6 +147,14 @@ class CodigoAlgoritmoTest {
                 }
             }
         }
+    }
+
+    private static MonticuloMin<Integer> monticuloEjemplo() {
+        MonticuloMin<Integer> m = new MonticuloMin<>();
+        for (int x : new int[]{40, 20, 50, 10, 30, 15}) {
+            m.insertar(x);
+        }
+        return m;
     }
 
     private static ArbolAVL<Integer> avlEjemplo() {
@@ -176,6 +195,7 @@ class CodigoAlgoritmoTest {
         return List.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
                 Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
                 TablaHash.CODIGO_BUSCAR, ArbolBusqueda.CODIGO_INSERTAR, ArbolBusqueda.CODIGO_BUSCAR,
-                ArbolBusqueda.CODIGO_ELIMINAR, ArbolBusqueda.CODIGO_INORDEN, ArbolAVL.CODIGO_INSERTAR);
+                ArbolBusqueda.CODIGO_ELIMINAR, ArbolBusqueda.CODIGO_INORDEN, ArbolAVL.CODIGO_INSERTAR,
+                MonticuloMin.CODIGO_INSERTAR, MonticuloMin.CODIGO_EXTRAER, Heapsort.CODIGO);
     }
 }

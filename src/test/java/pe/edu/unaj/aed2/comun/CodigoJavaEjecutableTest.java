@@ -10,6 +10,7 @@ import pe.edu.unaj.aed2.semana02.modelo.QuickSort;
 import pe.edu.unaj.aed2.semana03.modelo.TablaHash;
 import pe.edu.unaj.aed2.semana04.modelo.ArbolBusqueda;
 import pe.edu.unaj.aed2.semana05.modelo.ArbolAVL;
+import pe.edu.unaj.aed2.semana06.modelo.MonticuloMin;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -37,7 +38,7 @@ class CodigoJavaEjecutableTest {
     static Stream<CodigoAlgoritmo> codigos() {
         return Stream.of(Ordenamientos.CODIGO_BURBUJA, Ordenamientos.CODIGO_INSERCION, QuickSort.CODIGO,
                 Escalinata.CODIGO_RECURSIVO, Escalinata.CODIGO_MEMO, TablaHash.CODIGO_INSERTAR,
-                ArbolBusqueda.CODIGO_INSERTAR, ArbolAVL.CODIGO_INSERTAR);
+                ArbolBusqueda.CODIGO_INSERTAR, ArbolAVL.CODIGO_INSERTAR, MonticuloMin.CODIGO_INSERTAR);
     }
 
     @ParameterizedTest
@@ -60,6 +61,9 @@ class CodigoJavaEjecutableTest {
             int[] esperado = original.clone();
             Arrays.sort(esperado);
             assertArrayEquals(esperado, ordenado, salida);
+            if (clase.equals("Monticulo")) {
+                assertTrue(salida.contains("Extraídos: 5 10 15 20 30 40 50"), salida);
+            }
         } else if (clase.startsWith("Escalinata")) {
             assertTrue(salida.contains("formas(10) = 89"), salida);
         } else if (clase.equals("TablaHash")) {

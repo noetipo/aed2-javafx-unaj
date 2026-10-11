@@ -64,6 +64,7 @@ src/main/java/pe/edu/unaj/aed2/
 | 03 | I | Búsqueda y tablas hash | [docs/semana-03](docs/semana-03/README.md) |
 | 04 | I | Árboles binarios de búsqueda | [docs/semana-04](docs/semana-04/README.md) |
 | 05 | I | Árboles AVL | [docs/semana-05](docs/semana-05/README.md) |
+| 06 | I | Montículos, colas de prioridad y heapsort | [docs/semana-06](docs/semana-06/README.md) |
 
 ## Entregar tareas
 
